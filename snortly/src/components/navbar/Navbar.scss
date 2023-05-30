@@ -1,0 +1,24 @@
+@import "../../styles/colors.scss";
+
+.navbar {
+    background-color: $menu-bg-color;
+
+    color: $font-white;
+
+    height: 50px;
+}
+
+.navbar-burger {
+    color: $white;
+}
+
+.navbar-menu {
+    background-color: $menu-bg-color;
+}
+
+.navbar-start {
+    width: 100%;
+
+    justify-content: center;
+    gap: 1.5rem;
+}

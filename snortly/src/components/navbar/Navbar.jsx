@@ -1,0 +1,70 @@
+import React, { useRef } from "react";
+import { Link } from "react-router-dom";
+
+import logoWhite from './snortHub_Logo1.png';
+
+import './Navbar.scss'
+import '../../styles/globals.scss'
+
+
+function Navbar() {
+
+    // Both refs used to controll two elements that needs additional class to show on mobile 
+    const navbarBurger = useRef(null);
+    const navbarMenu = useRef(null);
+
+    // Funtion that toggles classes of both elements (in mobile mode)
+    function toggleMenu() {
+        navbarBurger.current.classList.toggle("is-active")
+        navbarMenu.current.classList.toggle("is-active")
+    }
+
+
+    return (
+        <nav className="navbar" role="navigation" aria-label="main navigation">
+            <div className="container">
+                <div className="navbar-brand">
+
+                    {/* Logo  */}
+                    <a className="navbar-item" href="/">
+                        <img alt="" src={logoWhite} />
+                    </a>
+
+                    {/* Nav burger  */}
+                    <button onClick={toggleMenu} ref={navbarBurger} className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+
+                <div id="navbarBasicExample" className="navbar-menu" ref={navbarMenu}>
+                    {/* Nav start, our main options */}
+                    <div className="navbar-start">
+                        <Link className="navLinkLight" href='/'>  Hot  </Link>
+                        <Link className="navLinkLight" href='/'>  Trending  </Link>
+                        <Link className="navLinkLight" href='/'>  Fresh  </Link>
+                    </div>
+
+                    {/* Login / sign up buttons, with user profile  */}
+                    <div className="navbar-end">
+                        <div className="navbar-item">
+                            <div className="buttons">
+                                <Link to="/signin" className="button btnPurple">
+                                    <strong>Sign up</strong>
+                                </Link>
+
+                                <Link to="/login" className="button btnLightBorder">
+                                    Log in
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    )
+
+}
+
+export default Navbar;
