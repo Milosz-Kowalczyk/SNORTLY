@@ -1,13 +1,17 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import logoWhite from './snortHub_Logo1.png';
 
 import './Navbar.scss'
 import '../../styles/globals.scss'
+import { ContextPopups } from "../../context/popupsContext";
 
 
 function Navbar() {
+
+    // const x = useContext(Context)
+    const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
 
     // Both refs used to controll two elements that needs additional class to show on mobile 
     const navbarBurger = useRef(null);
@@ -17,6 +21,12 @@ function Navbar() {
     function toggleMenu() {
         navbarBurger.current.classList.toggle("is-active")
         navbarMenu.current.classList.toggle("is-active")
+    }
+
+    // Function when login button is clicked
+    function handleLoginButtonClick() {
+        setShowPopup(true);
+        setCurrentPopup("LOGIN_FORM");
     }
 
 
@@ -50,13 +60,13 @@ function Navbar() {
                     <div className="navbar-end">
                         <div className="navbar-item">
                             <div className="buttons">
-                                <Link to="/signin" className="button btnPurple">
+                                <button className="button btnPurple">
                                     <strong>Sign up</strong>
-                                </Link>
+                                </button>
 
-                                <Link to="/login" className="button btnLightBorder">
+                                <button onClick={handleLoginButtonClick} className="button btnLightBorder">
                                     Log in
-                                </Link>
+                                </button>
                             </div>
                         </div>
                     </div>
