@@ -1,0 +1,125 @@
+@import "../styles/colors.scss";
+@import "../styles/mixins.scss";
+
+.mainContainer {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: row;
+
+    margin-top: 4rem;
+
+    gap: 3rem;
+
+    @include bulmaTablet {
+        max-width: 90%;
+    }
+
+    .sideContainer {
+        flex: 1;
+        height: 600px;
+
+        // background-color: $menu-bg-light1;
+
+        .HeyYouBox {
+            width: 100%;
+            min-width: 260px;
+            min-height: 200px;
+
+            border-radius: 4px;
+
+            background-color: $menu-bg-color;
+
+            padding: 1.5rem 1rem;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            gap: 0.5rem;
+
+            button {
+                width: 60%;
+                margin-top: 0.5rem;
+            }
+
+            .HeyYouBoxTitle {
+                font-size: 26px;
+                font-weight: 600;
+
+                color: $font-white;
+                text-align: center;
+            }
+
+            .HeyYouBoxText {
+                font-size: 18px;
+                font-weight: 400px;
+                line-height: 1.15;
+                color: $font-lightGrey;
+
+                text-align: center;
+            }
+        }
+
+        .AdBox {
+            width: 100%;
+            height: 200px;
+
+            border-radius: 4px;
+
+            background-color: $menu-bg-color;
+
+            overflow: hidden;
+
+            .AdBoxTitleContainer {
+                width: 100%;
+                padding: 0.5rem 0.75rem;
+
+                .AdBoxTitle {
+                    font-size: 18px;
+                    font-weight: 600;
+
+                    color: $font-white;
+                    text-align: left;
+                }
+            }
+
+            .AdBoxImageContainer {
+                width: 100%;
+
+                img {
+                    max-width: 260px;
+                    height: auto;
+                }
+            }
+        }
+    }
+
+    .leftSideContainer {
+        @include tablet {
+            display: none;
+        }
+    }
+
+    .middleSideContainer {
+        flex: 3;
+        min-height: 100%;
+
+        background-color: $menu-bg-color;
+
+        border-radius: 4px;
+    }
+
+    .rightSideContainer {
+        max-width: 260px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        @media screen and (max-width: 1215px) {
+            display: none;
+        }
+    }
+}

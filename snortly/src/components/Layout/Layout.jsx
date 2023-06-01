@@ -5,16 +5,12 @@ import PopupsContext from "../../context/popupsContext";
 function Layout(props) {
 
     return (
-        <div>
+        <PopupsContext>
 
-            <PopupsContext>
+            <Navbar />
+            {props.children}
 
-                <Navbar />
-
-                {props.children}
-
-            </PopupsContext>
-        </div>
+        </PopupsContext>
     )
 }
 

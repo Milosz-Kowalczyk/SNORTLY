@@ -79,7 +79,7 @@ function SigninForm() {
                         <input value={userUsername} onChange={(e) => { handleUsernameChange(e) }} className="input" type="email" placeholder="Email" />
 
                         <span className={"icon is-small is-left " + classes.myIcon}>
-                            <i class="fa-solid fa-user"></i>
+                            <i className="fa-solid fa-user"></i>
                         </span>
                     </p>
 

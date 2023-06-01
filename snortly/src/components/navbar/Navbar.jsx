@@ -10,7 +10,6 @@ import { ContextPopups } from "../../context/popupsContext";
 
 function Navbar() {
 
-    // const x = useContext(Context)
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
 
     // Both refs used to controll two elements that needs additional class to show on mobile 
