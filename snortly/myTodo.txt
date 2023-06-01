@@ -1,0 +1,5 @@
+Here you type things that you wanted to do before you went .. 
+
+
+31.05.2023 
+- Skończyłeś na tworzeniu errorMessage stuff, zrób to, dodaj style globalne 

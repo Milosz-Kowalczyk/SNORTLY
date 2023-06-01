@@ -11,7 +11,7 @@
     z-index: 1000;
     backdrop-filter: blur(4px);
 
-    .LoginContainerWrapper {
+    .ContainerWrapper {
         width: 100%;
         height: 100%;
 
@@ -19,10 +19,10 @@
         align-items: center;
         justify-content: center;
 
-        .LoginContainer {
+        .Container {
             width: 450px;
             max-width: 90%;
-            min-height: 500px;
+            min-height: 300px;
 
             background-color: $menu-bg-color;
 
@@ -49,10 +49,10 @@
                 }
             }
 
-            .LoginTitle {
+            .FormTitle {
                 font-size: 40px;
                 font-weight: 600;
-                color: $font-lightGrey;
+                color: $font-white;
 
                 text-align: center;
 
@@ -75,8 +75,6 @@
             }
 
             input {
-                margin-bottom: 2rem;
-
                 background-color: $menu-bg-light1;
                 box-shadow: none;
                 border: none;
@@ -84,6 +82,12 @@
                 color: $font-white;
                 font-family: inherit;
                 font-weight: 500;
+
+                margin-bottom: 1rem;
+
+                &:focus {
+                    border: 1px solid $strong-purple;
+                }
             }
 
             button {

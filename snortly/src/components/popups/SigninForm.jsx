@@ -2,18 +2,19 @@ import React, { useContext, useState } from 'react'
 import classes from './LoginSigninStyles.module.scss';
 import { ContextPopups } from '../../context/popupsContext'
 
-// Login Form popup 
+// Sign in popup
 
-function LoginForm() {
+function SigninForm() {
 
-    const { setCurrentPopup, setShowPopup } = useContext(ContextPopups);
+    const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
 
     // This state will display error message container depending on boolean value
     const [isError, setIsError] = useState(false);
 
 
     // Input states, we want user to be able to login via username or email!
-    const [userEmailUsername, setUserEmailUsername] = useState("")
+    const [userUsername, setUserUsername] = useState("")
+    const [userEmail, setUserEmail] = useState("")
     const [userPassword, setUserPassword] = useState("")
 
     // Closes login popup
@@ -29,9 +30,15 @@ function LoginForm() {
     }
 
     // Handles email or username input field
-    function handleEmailUsernameChange(e) {
+    function handleUsernameChange(e) {
         let value = e.target.value;
-        setUserEmailUsername(value);
+        setUserUsername(value);
+    }
+
+    // Handles email or username input field
+    function handleEmailChange(e) {
+        let value = e.target.value;
+        setUserEmail(value);
     }
 
     // Handles Password field
@@ -41,22 +48,17 @@ function LoginForm() {
     }
 
     // When user clicks that already has a account
-    function handleSwitchToSignin() {
-        setCurrentPopup("SIGNIN_FORM")
+    function handleSwitchToLogin() {
+        setCurrentPopup("LOGIN_FORM")
     }
 
-    // When user clicks 'Forgot password?'
-    function handleSwitchToForgotPassword() {
-        setCurrentPopup("FORGOT_PASSWORD_FORM")
-    }
-
-    // When user clicks 'continue', then we try to login
-    function handleLoginButtonPress() {
-        console.log("Login button pressed!")
-        console.log(userEmailUsername, userPassword)
+    // When user clicks on signin button
+    function handleSigninButtonPress() {
+        console.log("Sign in button pressed!")
+        console.log(userUsername, userEmail, userPassword)
 
         // Test error handler
-        if (userEmailUsername === "") setIsError(true)
+        if (userEmail === "") setIsError(true)
     }
 
     return (
@@ -69,12 +71,22 @@ function LoginForm() {
                     {/* // Close window button */}
                     <i onClick={handleLoginCloseClick} className={"fa-solid fa-xmark " + classes.closeIcon}></i>
 
-                    <h1 className={classes.FormTitle}> Login </h1>
+                    <h1 className={classes.FormTitle}> Join us </h1>
+
+                    {/* Username Input  */}
+                    <p className={classes.inputLabel}> Enter username </p>
+                    <p className={"control has-icons-left has-icons-right " + classes.myControl}>
+                        <input value={userUsername} onChange={(e) => { handleUsernameChange(e) }} className="input" type="email" placeholder="Email" />
+
+                        <span className={"icon is-small is-left " + classes.myIcon}>
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                    </p>
 
                     {/* Email Input  */}
-                    <p className={classes.inputLabel}> Enter email or username </p>
+                    <p className={classes.inputLabel}> Enter email </p>
                     <p className={"control has-icons-left has-icons-right " + classes.myControl}>
-                        <input value={userEmailUsername} onChange={(e) => { handleEmailUsernameChange(e) }} className="input" type="email" placeholder="Email" />
+                        <input value={userEmail} onChange={(e) => { handleEmailChange(e) }} className="input" type="email" placeholder="Email" />
 
                         <span className={"icon is-small is-left " + classes.myIcon}>
                             <i className="fas fa-envelope"></i>
@@ -85,14 +97,11 @@ function LoginForm() {
                     {/* Password Input  */}
                     <p className={classes.inputLabel}> Enter password </p>
                     <p className={"control has-icons-left " + classes.myControl}>
-                        <input style={{ marginBottom: "0.25rem" }} value={userPassword} onChange={(e) => { handlePasswordChange(e) }} className="input" type="password" placeholder="Password" />
+                        <input value={userPassword} onChange={(e) => { handlePasswordChange(e) }} className="input" type="password" placeholder="Password" />
                         <span className={"icon is-small is-left " + classes.myIcon}>
                             <i className="fas fa-lock"></i>
                         </span>
                     </p>
-
-                    {/* Forgot password  */}
-                    <span onClick={handleSwitchToForgotPassword} style={{ alignSelf: "flex-start", marginBottom: "0.75rem" }} className='linkText'> Forgot password? </span>
 
                     {/* Error Message  */}
                     {
@@ -107,13 +116,13 @@ function LoginForm() {
 
 
                     {/* Login Button  */}
-                    <button onClick={handleLoginButtonPress} className='btnFormMaxWidth btnPurple'>
+                    <button onClick={handleSigninButtonPress} className='btnFormMaxWidth btnPurple'>
                         Continue
                     </button>
 
                     <br /> <br />
                     <p className='textGray-medium text-center'>
-                        Don&apos;t have an account yet? <br /><span className='linkText' onClick={handleSwitchToSignin}>Create one</span>
+                        Already have an account? <br /><span onClick={handleSwitchToLogin} className='linkText'>Log in</span>
                     </p>
 
                 </div>
@@ -124,4 +133,4 @@ function LoginForm() {
     )
 }
 
-export default LoginForm
+export default SigninForm

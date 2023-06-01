@@ -2,19 +2,15 @@ import React, { useContext, useState } from 'react'
 import classes from './LoginSigninStyles.module.scss';
 import { ContextPopups } from '../../context/popupsContext'
 
-// Login Form popup 
-
-function LoginForm() {
+function ForgotPasswordForm() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups);
 
     // This state will display error message container depending on boolean value
     const [isError, setIsError] = useState(false);
 
-
     // Input states, we want user to be able to login via username or email!
-    const [userEmailUsername, setUserEmailUsername] = useState("")
-    const [userPassword, setUserPassword] = useState("")
+    const [userEmail, setUserEmail] = useState("")
 
     // Closes login popup
     function handleLoginCloseClick() {
@@ -29,15 +25,9 @@ function LoginForm() {
     }
 
     // Handles email or username input field
-    function handleEmailUsernameChange(e) {
+    function handleEmailChange(e) {
         let value = e.target.value;
-        setUserEmailUsername(value);
-    }
-
-    // Handles Password field
-    function handlePasswordChange(e) {
-        let value = e.target.value;
-        setUserPassword(value)
+        setUserEmail(value);
     }
 
     // When user clicks that already has a account
@@ -45,18 +35,13 @@ function LoginForm() {
         setCurrentPopup("SIGNIN_FORM")
     }
 
-    // When user clicks 'Forgot password?'
-    function handleSwitchToForgotPassword() {
-        setCurrentPopup("FORGOT_PASSWORD_FORM")
-    }
-
     // When user clicks 'continue', then we try to login
     function handleLoginButtonPress() {
-        console.log("Login button pressed!")
-        console.log(userEmailUsername, userPassword)
+        console.log("Forgot button pressed!")
+        console.log(userEmail)
 
         // Test error handler
-        if (userEmailUsername === "") setIsError(true)
+        if (userEmail === "") setIsError(true)
     }
 
     return (
@@ -69,30 +54,18 @@ function LoginForm() {
                     {/* // Close window button */}
                     <i onClick={handleLoginCloseClick} className={"fa-solid fa-xmark " + classes.closeIcon}></i>
 
-                    <h1 className={classes.FormTitle}> Login </h1>
+                    <h1 style={{ marginBottom: "0.5rem", textAlign: "left" }} className={classes.FormTitle}> Reset password </h1>
+                    <p className='textGray-medium'> Enter the email address associated with your account and we&apos;ll send you a link to reset your password</p>
 
                     {/* Email Input  */}
-                    <p className={classes.inputLabel}> Enter email or username </p>
+                    <p style={{ marginTop: '1.5rem' }} className={classes.inputLabel}> Enter email </p>
                     <p className={"control has-icons-left has-icons-right " + classes.myControl}>
-                        <input value={userEmailUsername} onChange={(e) => { handleEmailUsernameChange(e) }} className="input" type="email" placeholder="Email" />
+                        <input value={userEmail} onChange={(e) => { handleEmailChange(e) }} className="input" type="email" placeholder="Email" />
 
                         <span className={"icon is-small is-left " + classes.myIcon}>
                             <i className="fas fa-envelope"></i>
                         </span>
                     </p>
-
-
-                    {/* Password Input  */}
-                    <p className={classes.inputLabel}> Enter password </p>
-                    <p className={"control has-icons-left " + classes.myControl}>
-                        <input style={{ marginBottom: "0.25rem" }} value={userPassword} onChange={(e) => { handlePasswordChange(e) }} className="input" type="password" placeholder="Password" />
-                        <span className={"icon is-small is-left " + classes.myIcon}>
-                            <i className="fas fa-lock"></i>
-                        </span>
-                    </p>
-
-                    {/* Forgot password  */}
-                    <span onClick={handleSwitchToForgotPassword} style={{ alignSelf: "flex-start", marginBottom: "0.75rem" }} className='linkText'> Forgot password? </span>
 
                     {/* Error Message  */}
                     {
@@ -124,4 +97,4 @@ function LoginForm() {
     )
 }
 
-export default LoginForm
+export default ForgotPasswordForm

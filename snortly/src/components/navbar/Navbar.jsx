@@ -29,6 +29,12 @@ function Navbar() {
         setCurrentPopup("LOGIN_FORM");
     }
 
+    // Function when sign in button is clicked
+    function handleSigninButtonClick() {
+        setShowPopup(true);
+        setCurrentPopup("SIGNIN_FORM");
+    }
+
 
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -60,7 +66,7 @@ function Navbar() {
                     <div className="navbar-end">
                         <div className="navbar-item">
                             <div className="buttons">
-                                <button className="button btnPurple">
+                                <button onClick={handleSigninButtonClick} className="button btnPurple">
                                     <strong>Sign up</strong>
                                 </button>
 
