@@ -3,10 +3,42 @@ import React, { useContext } from 'react';
 import '../styles/globals.scss';
 import classes from '../styles/HomePage.module.scss';
 import { ContextPopups } from '../context/popupsContext';
+import { convertDateToDayAndMonth, getDaysDifference } from '../utils/helpers';
 
 function HomePage() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
+
+    const DUMMY_DATA =
+        [
+            {
+                postOwner: 'Theboy271',
+                postId: '21',
+                postOwnerAvatar: 'https://cdn-icons-png.flaticon.com/512/4140/4140037.png',
+                postCreationDate: '2023-06-02',
+                postTitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas hendrerit',
+                postLikes: '10421',
+                postDislikes: '102',
+                postComments: '52',
+                postTags: ['Programming', 'Funny', 'Breaking news'],
+                postImage: 'https://miro.medium.com/v2/resize:fit:439/1*ZYyXvhYDGvELzYoXYpPLMg.png'
+            },
+            {
+                postOwner: 'MyNig1',
+                postId: '41',
+                postOwnerAvatar: 'https://cdn-icons-png.flaticon.com/512/924/924915.png',
+                postCreationDate: '2023-05-01',
+                postTitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas hendrerit',
+                postLikes: '5201',
+                postDislikes: '421',
+                postComments: '11',
+                postTags: ['Programming', 'WTF'],
+                postImage: 'https://preview.redd.it/ptsqu8ii7po81.png?auto=webp&s=2d7078e7444fd01d2bb78714e7c1e1c59736904f'
+            },
+
+        ]
+
+
 
     // When user clicks on signin button on 'Hey you' container
     function handleSingupButtonClick() {
@@ -23,6 +55,7 @@ function HomePage() {
             <div className={classes.leftSideContainer + ' ' + classes.sideContainer}>
 
                 {/* Hello you box  */}
+                {/* Left side, also categories are here  */}
                 <div className={classes.HeyYouBox}>
                     <h2 className={classes.HeyYouBoxTitle}> Hello You </h2>
                     <p className={classes.HeyYouBoxText}> Sign up now to see more content! </p>
@@ -33,9 +66,87 @@ function HomePage() {
                 </div>
             </div>
 
+
+
+
+            {/* Here, we display memes (middle section ) */}
             <div className={classes.middleSideContainer + ' ' + classes.sideContainer}>
-                aaqq
+
+                {
+                    DUMMY_DATA.map((ele, idx) => {
+                        let dateDifference = getDaysDifference(ele.postCreationDate);
+
+                        return (
+                            <div key={`meme-${idx}-${ele.postId}`} className={classes.PostContainer}>
+
+
+
+                                {/* Post Info, Date + Username  */}
+                                <div className={classes.PostInfoContainer}>
+                                    <img className={classes.PostOwnerAvatar} src={ele.postOwnerAvatar} alt="" />
+                                    <h2 className={classes.PostOwner}> {ele.postOwner} </h2>
+
+                                    {(parseInt(dateDifference) > 7)
+                                        ?
+                                        <span className={classes.PostDate}> {convertDateToDayAndMonth(ele.postCreationDate)}</span>
+                                        :
+                                        <span className={classes.PostDate}> {dateDifference}d </span>
+                                    }
+
+                                </div>
+
+
+
+                                {/* Post title  */}
+                                <div className={classes.PostTitleContainer}>
+                                    <h2 className={classes.PostTitle}> {ele.postTitle} </h2>
+                                </div>
+
+
+
+                                {/* Display tags  */}
+                                <div className={classes.PostTagsContainer}>
+                                    {
+                                        ele.postTags.map((ele) => {
+                                            return (
+                                                <button className={classes.PostTag}>
+                                                    {ele}
+                                                </button>
+                                            )
+                                        })
+                                    }
+                                </div>
+
+
+                                {/* Post image  */}
+                                <div className={classes.PostImageContainer}>
+                                    <img src={ele.postImage} alt="" />
+                                </div>
+
+
+
+                                {/* Post reactions, likes, dislikes and comments  */}
+                                <div className={classes.PostReactionsContainer}>
+                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonLike}> <i class="fa-solid fa-thumbs-up"></i> {ele.postLikes} </button>
+                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonDislike}> <i class="fa-solid fa-thumbs-down"></i> {ele.postDislikes} </button>
+                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonComment}> <i class="fa-solid fa-comments"></i> {ele.postComments} </button>
+                                </div>
+
+                                {/* <div className={classes.PostEnd}>
+                                    <hr className={classes.PostEndHr} />
+                                </div> */}
+
+                            </div>
+
+                        )
+                    })
+                }
+
             </div>
+
+
+
+
 
             {/* We treat adBox as place to show best memes and also ads :)  */}
             <div className={classes.rightSideContainer + ' ' + classes.sideContainer}>

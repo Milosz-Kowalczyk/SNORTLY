@@ -6,3 +6,4 @@ Here you type things that you wanted to do before you went ..
 
 01.06.2023 
 - Dodaj podstawowy wzór aplikacji (Home page)
+- Dodaj wzór memów bazując na 2-3 memach, zrób to jako gotową symulację 
