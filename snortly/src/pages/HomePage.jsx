@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import '../styles/globals.scss';
 import classes from '../styles/HomePage.module.scss';
 import { ContextPopups } from '../context/popupsContext';
-import { convertDateToDayAndMonth, convertDateToDayMonthYear, extractHourAndMinutes, getDaysDifference, isInCurrentYear } from '../utils/helpers';
+import { convertDateToDayAndMonth, convertDateToDayMonthYear, extractHourAndMinutes, getDaysDifference, isInCurrentYear } from '../utils/dateFormatHelper';
 
 
 function DisplayFormatedDate({ dateDifference, postCreationDate }) {
@@ -43,6 +43,113 @@ function DisplayFormatedDate({ dateDifference, postCreationDate }) {
     console.log(dateDifference, postCreationDate);
 
     return <span className={classes.PostDate}>{dateDifference}d</span>;
+}
+
+function DisplayImageWithHeightCheckup({ imageSrc }) {
+    const imageRef = useRef(null);
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const MAX_IMAGE_HEIGHT = 1000;
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [wasImageExpandedOnce, setWasImageExpandedOnce] = useState(false);
+
+    // Use Effect to change state with image will actually load and then we want to 
+    // Run again, to add expand button if neccesasary
+    useEffect(() => {
+        if (imageRef.current && imageRef.current.complete) {
+            setIsImageLoaded(true);
+        }
+    }, []);
+
+    function handleExpandImageClick() {
+        setIsExpanded(!isExpanded);
+        setWasImageExpandedOnce(true);
+    }
+
+    if (isImageLoaded) {
+        const imageHeight = imageRef.current.clientHeight;
+
+        // If image is below MAX_IMAGE_HEIGHT, display normally 
+        if (imageHeight < MAX_IMAGE_HEIGHT) {
+            return (
+                <div className={classes.PostImageContainer}>
+                    <img ref={imageRef} src={imageSrc} alt="" />
+                </div>
+            );
+        }
+        // If image is higher than MAX_IMAHE_HEIGHT, display image with expand button 
+        else if (imageHeight > MAX_IMAGE_HEIGHT) {
+            return (
+                <>
+                    <div
+                        className={
+                            (!isExpanded)
+                                ? classes.PostImageContainerNotExpanded
+                                : classes.PostImageContainerExpanded
+                        }
+                    >
+                        <img ref={imageRef} src={imageSrc} alt="" />
+                    </div>
+
+                    {!isExpanded &&
+                        <div className={classes.PostImageExpandContainer}>
+                            <button onClick={handleExpandImageClick} className={"btnPurple"}>
+                                Expand image
+                            </button>
+                        </div>
+
+                        // Here you can decide, if we want to display 'hide image' button 
+                        // By default, i think it is better to not show it, so when user clicks it
+                        // it will expand image and thats it
+
+                        // :
+                        // <div className={classes.PostImageExpandContainer}>
+                        //     <button onClick={handleExpandImageClick} className={"btnPurple"}>
+                        //         Hide image
+                        //     </button>
+                        // </div>
+                    }
+                </>
+            );
+        }
+        // This is neccessary, because when we click hide and show once, we get image height at 1000 
+        // which will return normal image without expand button, so this is our helper
+        // to display expand button 
+        else if (wasImageExpandedOnce) {
+            return (
+                <>
+                    <div
+                        className={
+                            !isExpanded
+                                ? classes.PostImageContainerNotExpanded
+                                : classes.PostImageContainerExpanded
+                        }
+                    >
+                        <img ref={imageRef} src={imageSrc} alt="" />
+                    </div>
+
+                    {!isExpanded ? (
+                        <div className={classes.PostImageExpandContainer}>
+                            <button onClick={handleExpandImageClick} className={"btnPurple"}>
+                                Expand image
+                            </button>
+                        </div>
+                    ) : (
+                        <div className={classes.PostImageExpandContainer}>
+                            <button onClick={handleExpandImageClick} className={"btnPurple"}>
+                                Hide image
+                            </button>
+                        </div>
+                    )}
+                </>
+            );
+        }
+    }
+
+    return (
+        <div className={classes.PostImageContainer}>
+            <img ref={imageRef} src={imageSrc} alt="" onLoad={() => setIsImageLoaded(true)} />
+        </div>
+    );
 }
 
 
@@ -191,6 +298,18 @@ function HomePage() {
                 postImage: 'https://pbs.twimg.com/media/Enm7QC7XYAEO-4L.jpg'
             },
             {
+                postOwner: 'MyMan1212',
+                postId: '2221',
+                postOwnerAvatar: 'https://cdn-icons-png.flaticon.com/512/3284/3284735.png',
+                postCreationDate: '2023-06-04 16:30:00',
+                postTitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas hendrerit',
+                postLikes: '212',
+                postDislikes: '12',
+                postComments: '1',
+                postTags: ['Sport'],
+                postImage: 'https://i.imgflip.com/6ywwha.jpg'
+            },
+            {
                 postOwner: 'MyNig1',
                 postId: '41',
                 postOwnerAvatar: 'https://cdn-icons-png.flaticon.com/512/924/924915.png',
@@ -310,9 +429,10 @@ function HomePage() {
 
 
                                 {/* Post image  */}
-                                <div className={classes.PostImageContainer}>
-                                    <img src={ele.postImage} alt="" />
-                                </div>
+                                {/* Here we also check if image is not too big in height */}
+                                {/* if so, we add box that says 'Extend image or something' */}
+
+                                <DisplayImageWithHeightCheckup imageSrc={ele.postImage} />
 
 
 
