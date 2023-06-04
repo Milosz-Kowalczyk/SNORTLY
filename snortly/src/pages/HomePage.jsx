@@ -9,6 +9,101 @@ function HomePage() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
 
+
+    // Data for categories 
+    const DUMMY_CATEGORIES = [
+        {
+            fontAwesomeIcon: 'fa-solid fa-code',
+            categoryTitle: 'Programming'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-masks-theater',
+            categoryTitle: 'Humor'
+        },
+        {
+            fontAwesomeIcon: 'fa-regular fa-face-laugh-squint',
+            categoryTitle: 'Funny'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-gamepad',
+            categoryTitle: 'Gaming'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-car-rear',
+            categoryTitle: 'Cars'
+        },
+        {
+            fontAwesomeIcon: 'fa-regular fa-newspaper',
+            categoryTitle: 'Latest News'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-bomb',
+            categoryTitle: 'WTF'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-motorcycle',
+            categoryTitle: 'Motor'
+        },
+        {
+            fontAwesomeIcon: 'fa-regular fa-circle-question',
+            categoryTitle: 'Ask'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-dice',
+            categoryTitle: 'Random'
+        },
+        {
+            fontAwesomeIcon: 'fa-regular fa-gem',
+            categoryTitle: 'Memes'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-paw',
+            categoryTitle: 'Animals'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-rocket',
+            categoryTitle: 'Science'
+        },
+        {
+            fontAwesomeIcon: 'fa-regular fa-comments',
+            categoryTitle: 'Comic'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-volleyball',
+            categoryTitle: 'Sport'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-dumbbell',
+            categoryTitle: 'Gym'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-face-grin-hearts',
+            categoryTitle: 'Wholesome'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-utensils',
+            categoryTitle: 'Food'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-martini-glass-citrus',
+            categoryTitle: 'Drink'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-tv',
+            categoryTitle: 'Movies & TV'
+        },
+        {
+            fontAwesomeIcon: 'fa-brands fa-bitcoin',
+            categoryTitle: 'Crypto'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-virus-covid',
+            categoryTitle: 'Covid-19'
+        },
+
+    ]
+
+    // Data for posts 
     const DUMMY_DATA =
         [
             {
@@ -52,6 +147,8 @@ function HomePage() {
 
         <div className={'container ' + classes.mainContainer}>
 
+            {/* Hello You box  */}
+            {/* Categories  */}
             <div className={classes.leftSideContainer + ' ' + classes.sideContainer}>
 
                 {/* Hello you box  */}
@@ -63,6 +160,24 @@ function HomePage() {
                     <button onClick={handleSingupButtonClick} className='button btnPurple'>
                         Sign up
                     </button>
+                </div>
+
+                {/* Categories  */}
+                <div className={classes.CategoriesBox}>
+                    <h2 className={classes.CategoriesBoxTitle}> Categories </h2>
+
+                    {/* Display all categories here  */}
+                    {
+                        DUMMY_CATEGORIES.map((ele, idx) => {
+                            return (
+                                <div key={`category-${idx}`} className={classes.CategoryBox} >
+                                    <div className={classes.CategoryBoxIconContainer}> <i class={ele.fontAwesomeIcon}></i> </div>
+                                    <p className={classes.CategoryTitle}> {ele.categoryTitle} </p>
+                                </div>
+                            )
+                        })
+                    }
+
                 </div>
             </div>
 
