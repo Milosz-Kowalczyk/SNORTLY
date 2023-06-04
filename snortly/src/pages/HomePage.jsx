@@ -345,6 +345,8 @@ function HomePage() {
 
         ]
 
+    const DUMMY_POPULAR_TAGS = ['Humor', 'WTF', 'Covid-19', 'Food', 'Drink', 'Economy & business', 'Crypto'];
+
     // When user clicks on signin button on 'Hey you' container
     function handleSingupButtonClick() {
         setCurrentPopup("SIGNIN_FORM")
@@ -357,31 +359,124 @@ function HomePage() {
 
             {/* Hello You box  */}
             {/* Categories  */}
-            <div className={classes.leftSideContainer + ' ' + classes.sideContainer}>
+            <div className={classes.ContainerWrapper + ' ' + classes.LeftContainerWrapper}>
+                <div className={classes.leftSideContainer}>
 
-                {/* Hello you box  */}
-                {/* Left side, also categories are here  */}
-                <div className={classes.HeyYouBox}>
-                    <h2 className={classes.HeyYouBoxTitle}> Hello You </h2>
-                    <p className={classes.HeyYouBoxText}> Sign up now to see more content! </p>
+                    {/* Hello you box  */}
+                    {/* Left side, also categories are here  */}
+                    <div className={classes.HeyYouBox}>
+                        <h2 className={classes.HeyYouBoxTitle}> Hello You </h2>
+                        <p className={classes.HeyYouBoxText}> Sign up now to see more content! </p>
 
-                    <button onClick={handleSingupButtonClick} className='button btnPurple'>
-                        Sign up
-                    </button>
+                        <button onClick={handleSingupButtonClick} className='button btnPurple'>
+                            Sign up
+                        </button>
+                    </div>
+
+                    {/* Categories  */}
+                    <div className={classes.CategoriesBox}>
+                        <h2 className={classes.CategoriesBoxTitle}> Categories </h2>
+
+                        {/* Display all categories here  */}
+                        {
+                            DUMMY_CATEGORIES.map((ele, idx) => {
+                                return (
+                                    <div key={`category-${idx}`} className={classes.CategoryBox} >
+                                        <div className={classes.CategoryBoxIconContainer}> <i className={ele.fontAwesomeIcon}></i> </div>
+                                        <p className={classes.CategoryTitle}> {ele.categoryTitle} </p>
+                                    </div>
+                                )
+                            })
+                        }
+
+                    </div>
                 </div>
+            </div>
 
-                {/* Categories  */}
-                <div className={classes.CategoriesBox}>
-                    <h2 className={classes.CategoriesBoxTitle}> Categories </h2>
 
-                    {/* Display all categories here  */}
+
+            {/* Here, we display memes (middle section ) */}
+            <div className={classes.ContainerWrapper + ' ' + classes.MiddleContainerWrapper}>
+
+                <div className={classes.middleSideContainer}>
+
+                    {/* Here we display popular tags  */}
+                    <div className={classes.middleSidePopularTagsContainer}>
+                        <h2 className={classes.PopularTagsTitle}> Popular tags right now </h2>
+                        <div className={classes.PopularTagsBox}>
+                            {
+                                DUMMY_POPULAR_TAGS.map((ele, idx) => (
+                                    <button className="btnPurple" key={`popular-tag-${ele}-${idx}`}>
+                                        {ele}
+                                    </button>
+                                ))
+                            }
+                        </div>
+                    </div>
+
                     {
-                        DUMMY_CATEGORIES.map((ele, idx) => {
+                        DUMMY_DATA.map((ele, idx) => {
+                            let dateDifference = getDaysDifference(ele.postCreationDate);
+
                             return (
-                                <div key={`category-${idx}`} className={classes.CategoryBox} >
-                                    <div className={classes.CategoryBoxIconContainer}> <i className={ele.fontAwesomeIcon}></i> </div>
-                                    <p className={classes.CategoryTitle}> {ele.categoryTitle} </p>
+                                <div key={`meme-${idx}-${ele.postId}`} className={classes.PostContainer}>
+
+
+
+                                    {/* Post Info, Date + Username  */}
+                                    <div className={classes.PostInfoContainer}>
+                                        <img className={classes.PostOwnerAvatar} src={ele.postOwnerAvatar} alt="" />
+                                        <h2 className={classes.PostOwner}> {ele.postOwner} </h2>
+
+                                        {/* Display post creation date with correct format */}
+                                        <DisplayFormatedDate dateDifference={dateDifference} postCreationDate={ele.postCreationDate} />
+
+                                    </div>
+
+
+
+                                    {/* Post title  */}
+                                    <div className={classes.PostTitleContainer}>
+                                        <h2 className={classes.PostTitle}> {ele.postTitle} </h2>
+                                    </div>
+
+
+
+                                    {/* Display tags  */}
+                                    <div className={classes.PostTagsContainer}>
+                                        {
+                                            ele.postTags.map((ele, idx) => {
+                                                return (
+                                                    <button key={`tag-${idx}-${ele}`} className={classes.PostTag}>
+                                                        {ele}
+                                                    </button>
+                                                )
+                                            })
+                                        }
+                                    </div>
+
+
+                                    {/* Post image  */}
+                                    {/* Here we also check if image is not too big in height */}
+                                    {/* if so, we add box that says 'Extend image or something' */}
+
+                                    <DisplayImageWithHeightCheckup imageSrc={ele.postImage} />
+
+
+
+                                    {/* Post reactions, likes, dislikes and comments  */}
+                                    <div className={classes.PostReactionsContainer}>
+                                        <button className={classes.reactionButton + ' ' + classes.reactionButtonLike}> <i className="fa-solid fa-thumbs-up"></i> {ele.postLikes} </button>
+                                        <button className={classes.reactionButton + ' ' + classes.reactionButtonDislike}> <i className="fa-solid fa-thumbs-down"></i> {ele.postDislikes} </button>
+                                        <button className={classes.reactionButton + ' ' + classes.reactionButtonComment}> <i className="fa-solid fa-comments"></i> {ele.postComments} </button>
+                                    </div>
+
+                                    {/* <div className={classes.PostEnd}>
+                                    <hr className={classes.PostEndHr} />
+                                </div> */}
+
                                 </div>
+
                             )
                         })
                     }
@@ -392,101 +487,27 @@ function HomePage() {
 
 
 
-            {/* Here, we display memes (middle section ) */}
-            <div className={classes.middleSideContainer + ' ' + classes.sideContainer}>
-
-                {
-                    DUMMY_DATA.map((ele, idx) => {
-                        let dateDifference = getDaysDifference(ele.postCreationDate);
-
-                        return (
-                            <div key={`meme-${idx}-${ele.postId}`} className={classes.PostContainer}>
-
-
-
-                                {/* Post Info, Date + Username  */}
-                                <div className={classes.PostInfoContainer}>
-                                    <img className={classes.PostOwnerAvatar} src={ele.postOwnerAvatar} alt="" />
-                                    <h2 className={classes.PostOwner}> {ele.postOwner} </h2>
-
-                                    {/* Display post creation date with correct format */}
-                                    <DisplayFormatedDate dateDifference={dateDifference} postCreationDate={ele.postCreationDate} />
-
-                                </div>
-
-
-
-                                {/* Post title  */}
-                                <div className={classes.PostTitleContainer}>
-                                    <h2 className={classes.PostTitle}> {ele.postTitle} </h2>
-                                </div>
-
-
-
-                                {/* Display tags  */}
-                                <div className={classes.PostTagsContainer}>
-                                    {
-                                        ele.postTags.map((ele, idx) => {
-                                            return (
-                                                <button key={`tag-${idx}-${ele}`} className={classes.PostTag}>
-                                                    {ele}
-                                                </button>
-                                            )
-                                        })
-                                    }
-                                </div>
-
-
-                                {/* Post image  */}
-                                {/* Here we also check if image is not too big in height */}
-                                {/* if so, we add box that says 'Extend image or something' */}
-
-                                <DisplayImageWithHeightCheckup imageSrc={ele.postImage} />
-
-
-
-                                {/* Post reactions, likes, dislikes and comments  */}
-                                <div className={classes.PostReactionsContainer}>
-                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonLike}> <i className="fa-solid fa-thumbs-up"></i> {ele.postLikes} </button>
-                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonDislike}> <i className="fa-solid fa-thumbs-down"></i> {ele.postDislikes} </button>
-                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonComment}> <i className="fa-solid fa-comments"></i> {ele.postComments} </button>
-                                </div>
-
-                                {/* <div className={classes.PostEnd}>
-                                    <hr className={classes.PostEndHr} />
-                                </div> */}
-
-                            </div>
-
-                        )
-                    })
-                }
-
-            </div>
-
-
-
-
-
             {/* We treat adBox as place to show best memes and also ads :)  */}
-            <div className={classes.rightSideContainer + ' ' + classes.sideContainer}>
-                <div className={classes.AdBox}>
-                    <div className={classes.AdBoxTitleContainer}>
-                        <h2 className={classes.AdBoxTitle}> Hottest meme </h2>
+            <div className={classes.ContainerWrapper + ' ' + classes.RightContainerWrapper}>
+                <div className={classes.rightSideContainer}>
+                    <div className={classes.AdBox}>
+                        <div className={classes.AdBoxTitleContainer}>
+                            <h2 className={classes.AdBoxTitle}> Hottest meme </h2>
+                        </div>
+
+                        <div className={classes.AdBoxImageContainer}>
+                            <img src="https://miro.medium.com/v2/resize:fit:1400/0*z1mm6izqSeDiKukb" alt="" />
+                        </div>
                     </div>
 
-                    <div className={classes.AdBoxImageContainer}>
-                        <img src="https://miro.medium.com/v2/resize:fit:1400/0*z1mm6izqSeDiKukb" alt="" />
-                    </div>
-                </div>
+                    <div className={classes.AdBox}>
+                        <div className={classes.AdBoxTitleContainer}>
+                            <h2 className={classes.AdBoxTitle}> Meme of the week </h2>
+                        </div>
 
-                <div className={classes.AdBox}>
-                    <div className={classes.AdBoxTitleContainer}>
-                        <h2 className={classes.AdBoxTitle}> Meme of the week </h2>
-                    </div>
-
-                    <div className={classes.AdBoxImageContainer}>
-                        <img src="https://assets-global.website-files.com/5f3c19f18169b62a0d0bf387/60d33be7eedf8e1f31aabcec_BwENfmI0CU5dZGYlSyo142mpfG08-rYgTS-Qm47uMUXN6JXtmdZvtzVzTooUQdXTWmTD8uzF9N6XQJA2vUIMi53tunFyVtvOBJTNfOjHit2P_JkTmFzFsK7ep6Vb9781XZnRAryH.png" alt="" />
+                        <div className={classes.AdBoxImageContainer}>
+                            <img src="https://assets-global.website-files.com/5f3c19f18169b62a0d0bf387/60d33be7eedf8e1f31aabcec_BwENfmI0CU5dZGYlSyo142mpfG08-rYgTS-Qm47uMUXN6JXtmdZvtzVzTooUQdXTWmTD8uzF9N6XQJA2vUIMi53tunFyVtvOBJTNfOjHit2P_JkTmFzFsK7ep6Vb9781XZnRAryH.png" alt="" />
+                        </div>
                     </div>
                 </div>
             </div>

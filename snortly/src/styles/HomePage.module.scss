@@ -4,13 +4,13 @@
 
 .mainContainer {
     width: 100%;
+    height: calc(100vh - 50px);
+
+    // overflow: hidden;
 
     display: flex;
     flex-direction: row;
     justify-content: center;
-
-    margin-top: 4rem;
-    padding-bottom: 6rem;
 
     gap: 4rem;
 
@@ -18,367 +18,442 @@
         max-width: 90%;
     }
 
-    .sideContainer {
+    .ContainerWrapper {
         flex: 1;
+        min-width: min-content;
+        max-height: calc(100vh - 50px);
 
-        // background-color: $menu-bg-light1;
+        overflow-y: scroll;
+
+        // Hide scrollbar
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
-    .leftSideContainer {
-        display: flex;
-        flex-direction: column;
-
-        gap: 2rem;
-
-        @include tablet {
+    .LeftContainerWrapper {
+        @include bulmaTablet {
             display: none;
         }
 
-        .HeyYouBox {
+        .leftSideContainer {
             width: 100%;
-            min-width: 260px;
-            min-height: 200px;
-
-            border-radius: 4px;
-
-            background-color: $menu-bg-color;
-
-            padding: 1.5rem 1rem;
-
             display: flex;
             flex-direction: column;
-            align-items: center;
 
-            gap: 0.5rem;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
 
-            button {
-                width: 60%;
-                margin-top: 0.5rem;
+            gap: 2rem;
+
+            @include tablet {
+                display: none;
             }
 
-            .HeyYouBoxTitle {
-                font-size: 26px;
-                font-weight: 600;
-
-                color: $font-white;
-                text-align: center;
-            }
-
-            .HeyYouBoxText {
-                font-size: 18px;
-                font-weight: 400px;
-                line-height: 1.15;
-                color: $font-lightGrey;
-
-                text-align: center;
-            }
-        }
-
-        .CategoriesBox {
-            width: 100%;
-            min-height: 100px;
-
-            border-radius: 4px;
-
-            background-color: $menu-bg-color;
-
-            overflow: hidden;
-
-            padding: 1rem;
-
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-
-            .CategoriesBoxTitle {
-                font-size: 22px;
-                font-weight: 600;
-                color: $font-white;
-
-                margin-bottom: 1rem;
-            }
-
-            .CategoryBox {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-
-                gap: 0.5rem;
-
-                color: $font-white;
-
-                padding-left: 0.25rem;
+            .HeyYouBox {
+                width: 100%;
+                min-width: 260px;
+                min-height: 200px;
 
                 border-radius: 4px;
-                cursor: pointer;
 
-                // For equal space after icon
-                .CategoryBoxIconContainer {
-                    width: 32px;
-                }
+                background-color: $menu-bg-color;
 
-                .CategoryTitle {
-                    font-size: 18px;
-                    font-weight: 400;
-                    color: $font-white;
-                }
-
-                &:hover {
-                    background-color: $light-purple;
-                }
-            }
-        }
-    }
-
-    .middleSideContainer {
-        flex: 3;
-        // max-width: 600px;
-
-        // background-color: $menu-bg-color;
-
-        border-radius: 4px;
-
-        display: flex;
-        flex-direction: column;
-        gap: 6rem;
-
-        .PostContainer {
-            width: 100%;
-            min-height: 200px;
-
-            // background-color: $menu-bg-color;
-
-            display: flex;
-            flex-direction: column;
-
-            align-items: center;
-            gap: 1rem;
-
-            .PostInfoContainer {
-                width: 100%;
+                padding: 1.5rem 1rem;
 
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
 
                 gap: 0.5rem;
 
-                color: $font-lightGrey;
-                font-weight: 500;
-
-                .PostOwner {
-                    font-weight: 500;
-                }
-
-                .PostOwnerAvatar {
-                    max-width: 24px;
-                    min-width: 24px;
-                    height: auto;
-
-                    background-color: $menu-bg-color;
-                    border-radius: 50px;
-                }
-
-                .PostDate {
-                    letter-spacing: 1px;
-                    font-weight: 300;
-                    font-size: 0.8em;
-                }
-            }
-
-            .PostTitleContainer {
-                width: 100%;
-
-                .PostTitle {
-                    font-size: 22px;
-                    font-weight: 600;
-                    color: $font-lightGrey;
-                }
-            }
-
-            .PostImageContainer {
-                width: 100%;
-                background-color: $black;
-
-                display: flex;
-                justify-content: center;
-            }
-
-            .PostImageContainerNotExpanded {
-                width: 100%;
-                max-height: $MAX_IMAGE_EXPAND_HEIGHT;
-
-                overflow: hidden;
-
-                background-color: $black;
-
-                img {
-                    display: block;
-                    margin: 0 auto;
-                }
-            }
-
-            .PostImageContainerExpanded {
-                width: 100%;
-
-                overflow: hidden;
-
-                background-color: $black;
-
-                display: flex;
-                justify-content: center;
-            }
-
-            .PostImageExpandContainer {
-                width: 100%;
-                max-height: 40px;
-
                 button {
-                    width: 100%;
-                    margin-top: -1rem;
+                    width: 60%;
+                    margin-top: 0.5rem;
+                }
 
-                    font-size: 22px;
+                .HeyYouBoxTitle {
+                    font-size: 26px;
                     font-weight: 600;
 
-                    padding: 0.5rem;
+                    color: $font-white;
+                    text-align: center;
+                }
+
+                .HeyYouBoxText {
+                    font-size: 18px;
+                    font-weight: 400px;
+                    line-height: 1.15;
+                    color: $font-lightGrey;
+
+                    text-align: center;
                 }
             }
 
-            .PostTagsContainer {
+            .CategoriesBox {
                 width: 100%;
+                min-height: 100px;
+
+                border-radius: 4px;
+
+                background-color: $menu-bg-color;
+
+                overflow: hidden;
+
+                padding: 1rem;
 
                 display: flex;
-                flex-direction: row;
-                gap: 0.5rem;
+                flex-direction: column;
+                gap: 0.25rem;
 
-                .PostTag {
-                    font-size: 10px;
+                .CategoriesBoxTitle {
+                    font-size: 22px;
                     font-weight: 600;
-                    font-family: inherit;
+                    color: $font-white;
 
-                    border: 0;
+                    margin-bottom: 1rem;
+                }
+
+                .CategoryBox {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    gap: 0.5rem;
+
+                    color: $font-white;
+
+                    padding-left: 0.25rem;
+
                     border-radius: 4px;
-                    background-color: $postTagBackground;
-                    color: $postTagText;
-
-                    padding: 0.2rem 0.6rem;
-
                     cursor: pointer;
+
+                    // For equal space after icon
+                    .CategoryBoxIconContainer {
+                        width: 32px;
+                    }
+
+                    .CategoryTitle {
+                        font-size: 18px;
+                        font-weight: 400;
+                        color: $font-white;
+                    }
 
                     &:hover {
                         background-color: $light-purple;
                     }
                 }
             }
-
-            .PostReactionsContainer {
-                width: 100%;
-
-                display: flex;
-                flex-direction: row;
-                gap: 0.75rem;
-
-                .reactionButton {
-                    min-width: 100px;
-                    font-size: 16px;
-                    font-weight: 700;
-                    font-family: inherit;
-                    border: 0;
-                    border-radius: 4px;
-                    background-color: $menu-bg-light1;
-                    color: $font-lightGrey;
-
-                    padding: 0.5rem 1rem;
-                    transition: all 150ms;
-
-                    cursor: pointer;
-
-                    i {
-                        color: $font-white;
-                        margin-right: 0.5rem;
-                        transition: all 150ms;
-                    }
-                }
-
-                .reactionButtonLike {
-                    &:hover {
-                        i {
-                            color: $reactionLike;
-                        }
-                    }
-                }
-
-                .reactionButtonDislike {
-                    &:hover {
-                        i {
-                            color: $reactionDislike;
-                        }
-                    }
-                }
-
-                .reactionButtonComment {
-                    &:hover {
-                        i {
-                            color: $reactionComment;
-                        }
-                    }
-                }
-            }
-
-            // .PostEnd {
-            //     width: 100%;
-
-            //     margin-top: 3rem;
-
-            //     .PostEndHr {
-            //         border: 0;
-            //         border: 1px solid $menu-bg-light1;
-            //         border-radius: 4px;
-            //     }
-            // }
         }
     }
 
-    .rightSideContainer {
-        max-width: 260px;
+    .MiddleContainerWrapper {
+        flex: 3;
 
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        justify-content: flex-start;
+        align-items: center;
 
+        .middleSidePopularTagsContainer {
+            margin-top: 2rem;
+            margin-bottom: -2rem;
+
+            .PopularTagsTitle {
+                font-size: 22px;
+                font-weight: 600;
+                color: $font-white;
+
+                margin-bottom: 0.5rem;
+            }
+
+            .PopularTagsBox {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+
+                overflow-x: scroll;
+
+                // padding-bottom: 1rem;
+
+                // Hide scrollbar
+                // -ms-overflow-style: none; /* IE and Edge */
+                // scrollbar-width: none; /* Firefox */
+                // &::-webkit-scrollbar {
+                //     display: none;
+                // }
+
+                gap: 0.75rem;
+
+                button {
+                    border-radius: 4px;
+                    font-size: 18px;
+
+                    padding: 0.25rem 1.25rem;
+
+                    white-space: nowrap;
+                }
+            }
+        }
+
+        .middleSideContainer {
+            max-width: 600px;
+
+            // background-color: $menu-bg-color;
+
+            border-radius: 4px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 6rem;
+
+            padding-bottom: 2rem;
+
+            .PostContainer {
+                width: 100%;
+                min-height: 200px;
+
+                // background-color: $menu-bg-color;
+
+                display: flex;
+                flex-direction: column;
+
+                align-items: center;
+                gap: 1rem;
+
+                .PostInfoContainer {
+                    width: 100%;
+
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    gap: 0.5rem;
+
+                    color: $font-lightGrey;
+                    font-weight: 500;
+
+                    .PostOwner {
+                        font-weight: 500;
+                    }
+
+                    .PostOwnerAvatar {
+                        max-width: 24px;
+                        min-width: 24px;
+                        height: auto;
+
+                        background-color: $menu-bg-color;
+                        border-radius: 50px;
+                    }
+
+                    .PostDate {
+                        letter-spacing: 1px;
+                        font-weight: 300;
+                        font-size: 0.8em;
+                    }
+                }
+
+                .PostTitleContainer {
+                    width: 100%;
+
+                    .PostTitle {
+                        font-size: 22px;
+                        font-weight: 600;
+                        color: $font-lightGrey;
+                    }
+                }
+
+                .PostImageContainer {
+                    width: 100%;
+                    background-color: $black;
+
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .PostImageContainerNotExpanded {
+                    width: 100%;
+                    max-height: $MAX_IMAGE_EXPAND_HEIGHT;
+
+                    overflow: hidden;
+
+                    background-color: $black;
+
+                    img {
+                        display: block;
+                        margin: 0 auto;
+                    }
+                }
+
+                .PostImageContainerExpanded {
+                    width: 100%;
+
+                    overflow: hidden;
+
+                    background-color: $black;
+
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .PostImageExpandContainer {
+                    width: 100%;
+                    max-height: 40px;
+
+                    button {
+                        width: 100%;
+                        margin-top: -1rem;
+
+                        font-size: 22px;
+                        font-weight: 600;
+
+                        padding: 0.5rem;
+                    }
+                }
+
+                .PostTagsContainer {
+                    width: 100%;
+
+                    display: flex;
+                    flex-direction: row;
+                    gap: 0.5rem;
+
+                    .PostTag {
+                        font-size: 10px;
+                        font-weight: 600;
+                        font-family: inherit;
+
+                        border: 0;
+                        border-radius: 4px;
+                        background-color: $postTagBackground;
+                        color: $postTagText;
+
+                        padding: 0.2rem 0.6rem;
+
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: $light-purple;
+                        }
+                    }
+                }
+
+                .PostReactionsContainer {
+                    width: 100%;
+
+                    display: flex;
+                    flex-direction: row;
+                    gap: 0.75rem;
+
+                    .reactionButton {
+                        min-width: 100px;
+                        font-size: 16px;
+                        font-weight: 700;
+                        font-family: inherit;
+                        border: 0;
+                        border-radius: 4px;
+                        background-color: $menu-bg-light1;
+                        color: $font-lightGrey;
+
+                        padding: 0.5rem 1rem;
+                        transition: all 150ms;
+
+                        cursor: pointer;
+
+                        i {
+                            color: $font-white;
+                            margin-right: 0.5rem;
+                            transition: all 150ms;
+                        }
+                    }
+
+                    .reactionButtonLike {
+                        &:hover {
+                            i {
+                                color: $reactionLike;
+                            }
+                        }
+                    }
+
+                    .reactionButtonDislike {
+                        &:hover {
+                            i {
+                                color: $reactionDislike;
+                            }
+                        }
+                    }
+
+                    .reactionButtonComment {
+                        &:hover {
+                            i {
+                                color: $reactionComment;
+                            }
+                        }
+                    }
+                }
+
+                // .PostEnd {
+                //     width: 100%;
+
+                //     margin-top: 3rem;
+
+                //     .PostEndHr {
+                //         border: 0;
+                //         border: 1px solid $menu-bg-light1;
+                //         border-radius: 4px;
+                //     }
+                // }
+            }
+        }
+    }
+
+    .RightContainerWrapper {
         @media screen and (max-width: 1215px) {
             display: none;
         }
 
-        .AdBox {
-            width: 100%;
-            height: 200px;
+        .rightSideContainer {
+            max-width: 260px;
 
-            border-radius: 4px;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
 
-            background-color: $menu-bg-color;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
 
-            overflow: hidden;
-
-            .AdBoxTitleContainer {
+            .AdBox {
                 width: 100%;
-                padding: 0.5rem 0.75rem;
+                height: 200px;
 
-                .AdBoxTitle {
-                    font-size: 18px;
-                    font-weight: 600;
+                border-radius: 4px;
 
-                    color: $font-white;
-                    text-align: left;
+                background-color: $menu-bg-color;
+
+                overflow: hidden;
+
+                .AdBoxTitleContainer {
+                    width: 100%;
+                    padding: 0.5rem 0.75rem;
+
+                    .AdBoxTitle {
+                        font-size: 18px;
+                        font-weight: 600;
+
+                        color: $font-white;
+                        text-align: left;
+                    }
                 }
-            }
 
-            .AdBoxImageContainer {
-                width: 100%;
+                .AdBoxImageContainer {
+                    width: 100%;
 
-                img {
-                    max-width: 260px;
-                    height: auto;
+                    img {
+                        max-width: 260px;
+                        height: auto;
+                    }
                 }
             }
         }
