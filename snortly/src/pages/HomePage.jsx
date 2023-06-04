@@ -3,7 +3,48 @@ import React, { useContext } from 'react';
 import '../styles/globals.scss';
 import classes from '../styles/HomePage.module.scss';
 import { ContextPopups } from '../context/popupsContext';
-import { convertDateToDayAndMonth, getDaysDifference } from '../utils/helpers';
+import { convertDateToDayAndMonth, convertDateToDayMonthYear, extractHourAndMinutes, getDaysDifference, isInCurrentYear } from '../utils/helpers';
+
+
+function DisplayFormatedDate({ dateDifference, postCreationDate }) {
+    /*
+    Here is our global function that displays date on comments, post etc. in every situation
+
+    dateDifference: int, number of difference between today and creationDate 
+    postCreationDate: String date in format: dd-mm-yyyy
+
+    We want to:
+        - Display 1d, 2d if post is max one week old
+        - Display 01.02 (dd.mm) if post is in current year and is above week old
+        - Display 01.02.2023 if post is not in current year 
+    */
+
+    let isDateInCurrentYear = isInCurrentYear(postCreationDate);
+
+    // - Display 14:30 HH:mm format if post is from today
+    if (parseInt(dateDifference) === 0) {
+        return <span className={classes.PostDate}>{extractHourAndMinutes(postCreationDate)}</span>;
+    }
+    // - Display 1d, 2d if post is max one week old
+    else if (parseInt(dateDifference) < 8) {
+        return <span className={classes.PostDate}>{dateDifference}d</span>;
+    }
+
+    // - Display 01.02(dd.mm) if post is in current year and is above week old
+    else if (parseInt(dateDifference) > 7 && isDateInCurrentYear) {
+        return <span className={classes.PostDate}>{convertDateToDayAndMonth(postCreationDate)}</span>;
+    }
+
+    // - Display 01.02.2023 if post is not in current year 
+    else if (!isDateInCurrentYear) {
+        return <span className={classes.PostDate}>{convertDateToDayMonthYear(postCreationDate)}</span>;
+    }
+
+    console.log(dateDifference, postCreationDate);
+
+    return <span className={classes.PostDate}>{dateDifference}d</span>;
+}
+
 
 function HomePage() {
 
@@ -100,6 +141,25 @@ function HomePage() {
             fontAwesomeIcon: 'fa-solid fa-virus-covid',
             categoryTitle: 'Covid-19'
         },
+        {
+            fontAwesomeIcon: 'fa-regular fa-star',
+            categoryTitle: 'Celebrities'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-mars',
+            categoryTitle: 'Men'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-venus',
+            categoryTitle: 'Women'
+        },
+        {
+            fontAwesomeIcon: 'fa-solid fa-coins',
+            categoryTitle: 'Economy & business'
+        },
+
+
+
 
     ]
 
@@ -110,7 +170,7 @@ function HomePage() {
                 postOwner: 'Theboy271',
                 postId: '21',
                 postOwnerAvatar: 'https://cdn-icons-png.flaticon.com/512/4140/4140037.png',
-                postCreationDate: '2023-06-02',
+                postCreationDate: '2023-06-04 14:30:00',
                 postTitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas hendrerit',
                 postLikes: '10421',
                 postDislikes: '102',
@@ -119,10 +179,22 @@ function HomePage() {
                 postImage: 'https://miro.medium.com/v2/resize:fit:439/1*ZYyXvhYDGvELzYoXYpPLMg.png'
             },
             {
+                postOwner: 'MyMan',
+                postId: '212',
+                postOwnerAvatar: 'https://cdn-icons-png.flaticon.com/512/3284/3284735.png',
+                postCreationDate: '2023-06-04 15:30:00',
+                postTitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas hendrerit',
+                postLikes: '212',
+                postDislikes: '12',
+                postComments: '1',
+                postTags: ['Breaking news'],
+                postImage: 'https://pbs.twimg.com/media/Enm7QC7XYAEO-4L.jpg'
+            },
+            {
                 postOwner: 'MyNig1',
                 postId: '41',
                 postOwnerAvatar: 'https://cdn-icons-png.flaticon.com/512/924/924915.png',
-                postCreationDate: '2023-05-01',
+                postCreationDate: '2023-05-01 13:52:12',
                 postTitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas hendrerit',
                 postLikes: '5201',
                 postDislikes: '421',
@@ -130,10 +202,20 @@ function HomePage() {
                 postTags: ['Programming', 'WTF'],
                 postImage: 'https://preview.redd.it/ptsqu8ii7po81.png?auto=webp&s=2d7078e7444fd01d2bb78714e7c1e1c59736904f'
             },
+            {
+                postOwner: 'MyNig1',
+                postId: '42',
+                postOwnerAvatar: 'https://cdn-icons-png.flaticon.com/512/924/924915.png',
+                postCreationDate: '2021-05-01 14:20:11',
+                postTitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas hendrerit',
+                postLikes: '2341',
+                postDislikes: '2311',
+                postComments: '9812',
+                postTags: ['News', 'WTF'],
+                postImage: 'https://i.pinimg.com/736x/4f/d7/6f/4fd76ff09d0dd0a629c12248aa624eca.jpg'
+            },
 
         ]
-
-
 
     // When user clicks on signin button on 'Hey you' container
     function handleSingupButtonClick() {
@@ -142,8 +224,6 @@ function HomePage() {
     }
 
     return (
-
-        // <Layout>
 
         <div className={'container ' + classes.mainContainer}>
 
@@ -171,7 +251,7 @@ function HomePage() {
                         DUMMY_CATEGORIES.map((ele, idx) => {
                             return (
                                 <div key={`category-${idx}`} className={classes.CategoryBox} >
-                                    <div className={classes.CategoryBoxIconContainer}> <i class={ele.fontAwesomeIcon}></i> </div>
+                                    <div className={classes.CategoryBoxIconContainer}> <i className={ele.fontAwesomeIcon}></i> </div>
                                     <p className={classes.CategoryTitle}> {ele.categoryTitle} </p>
                                 </div>
                             )
@@ -201,12 +281,8 @@ function HomePage() {
                                     <img className={classes.PostOwnerAvatar} src={ele.postOwnerAvatar} alt="" />
                                     <h2 className={classes.PostOwner}> {ele.postOwner} </h2>
 
-                                    {(parseInt(dateDifference) > 7)
-                                        ?
-                                        <span className={classes.PostDate}> {convertDateToDayAndMonth(ele.postCreationDate)}</span>
-                                        :
-                                        <span className={classes.PostDate}> {dateDifference}d </span>
-                                    }
+                                    {/* Display post creation date with correct format */}
+                                    <DisplayFormatedDate dateDifference={dateDifference} postCreationDate={ele.postCreationDate} />
 
                                 </div>
 
@@ -222,9 +298,9 @@ function HomePage() {
                                 {/* Display tags  */}
                                 <div className={classes.PostTagsContainer}>
                                     {
-                                        ele.postTags.map((ele) => {
+                                        ele.postTags.map((ele, idx) => {
                                             return (
-                                                <button className={classes.PostTag}>
+                                                <button key={`tag-${idx}-${ele}`} className={classes.PostTag}>
                                                     {ele}
                                                 </button>
                                             )
@@ -242,9 +318,9 @@ function HomePage() {
 
                                 {/* Post reactions, likes, dislikes and comments  */}
                                 <div className={classes.PostReactionsContainer}>
-                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonLike}> <i class="fa-solid fa-thumbs-up"></i> {ele.postLikes} </button>
-                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonDislike}> <i class="fa-solid fa-thumbs-down"></i> {ele.postDislikes} </button>
-                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonComment}> <i class="fa-solid fa-comments"></i> {ele.postComments} </button>
+                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonLike}> <i className="fa-solid fa-thumbs-up"></i> {ele.postLikes} </button>
+                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonDislike}> <i className="fa-solid fa-thumbs-down"></i> {ele.postDislikes} </button>
+                                    <button className={classes.reactionButton + ' ' + classes.reactionButtonComment}> <i className="fa-solid fa-comments"></i> {ele.postComments} </button>
                                 </div>
 
                                 {/* <div className={classes.PostEnd}>
@@ -287,8 +363,6 @@ function HomePage() {
             </div>
 
         </div>
-
-        // </Layout>
 
     )
 }
