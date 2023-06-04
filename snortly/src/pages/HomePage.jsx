@@ -46,11 +46,20 @@ function DisplayFormatedDate({ dateDifference, postCreationDate }) {
 }
 
 function DisplayImageWithHeightCheckup({ imageSrc }) {
+
+    /*
+    This function runs when post image loads, checks for its height and decides whether we want to 
+    add expand button or not
+    */
+
     const imageRef = useRef(null);
-    const [isImageLoaded, setIsImageLoaded] = useState(false);
     const MAX_IMAGE_HEIGHT = 1000;
+
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
+
     const [wasImageExpandedOnce, setWasImageExpandedOnce] = useState(false);
+
 
     // Use Effect to change state with image will actually load and then we want to 
     // Run again, to add expand button if neccesasary
