@@ -19,6 +19,8 @@ function DisplayFormatedDate({ dateDifference, postCreationDate }) {
         - Display 01.02.2023 if post is not in current year 
     */
 
+    console.log(dateDifference, postCreationDate)
+
     let isDateInCurrentYear = isInCurrentYear(postCreationDate);
 
     // - Display 14:30 HH:mm format if post is from today

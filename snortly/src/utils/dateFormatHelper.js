@@ -3,13 +3,13 @@
 
 // ## DATE FORMATTING HELPERS  ##
 
-
 function getDaysDifference(targetDate) {
+
     /*
-    This function will return difference between date vs current date 
-    So with targetDate 2023-06-02 we will get '1' (1 day is the difference) 
-    Used mainly for post and comments 
-    */
+        This function will return difference between date vs current date 
+        So with targetDate 2023-06-02 we will get '1' (1 day is the difference) 
+        Used mainly for post and comments 
+        */
 
     const today = new Date();
     const target = new Date(targetDate);
@@ -17,11 +17,12 @@ function getDaysDifference(targetDate) {
     // Calculate the difference in milliseconds
     const differenceInMs = target - today;
 
-    // Convert milliseconds to days
-    const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
+    // Convert milliseconds to days, rounding down using Math.floor
+    const differenceInDays = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
 
     return Math.abs(differenceInDays);
 }
+
 
 function extractHourAndMinutes(dateString) {
     /*
