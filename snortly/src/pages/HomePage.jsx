@@ -45,7 +45,7 @@ function DisplayFormatedDate({ dateDifference, postCreationDate }) {
     return <span className={classes.PostDate}>{dateDifference}d</span>;
 }
 
-function DisplayImageWithHeightCheckup({ imageSrc }) {
+function DisplayImageWithHeightCheckup({ imageSrc, scrollPositionBeforeClick, scrollToPosition }) {
 
     /*
     This function runs when post image loads, checks for its height and decides whether we want to 
@@ -69,9 +69,16 @@ function DisplayImageWithHeightCheckup({ imageSrc }) {
         }
     }, []);
 
-    function handleExpandImageClick() {
+    // When expand image is clicked
+    function handleExpandImageClick(event) {
         setIsExpanded(!isExpanded);
         setWasImageExpandedOnce(true);
+
+        // Timeout is added so our expand image wont get wrong scrollPositionBeforeClick, it will 
+        // be added to different react cycle, so it will work correctly
+        setTimeout(() => {
+            scrollToPosition(scrollPositionBeforeClick);
+        }, 0);
     }
 
     if (isImageLoaded) {
@@ -105,17 +112,6 @@ function DisplayImageWithHeightCheckup({ imageSrc }) {
                                 Expand image
                             </button>
                         </div>
-
-                        // Here you can decide, if we want to display 'hide image' button 
-                        // By default, i think it is better to not show it, so when user clicks it
-                        // it will expand image and thats it
-
-                        // :
-                        // <div className={classes.PostImageExpandContainer}>
-                        //     <button onClick={handleExpandImageClick} className={"btnPurple"}>
-                        //         Hide image
-                        //     </button>
-                        // </div>
                     }
                 </>
             );
@@ -166,6 +162,39 @@ function HomePage() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
 
+    // These two is for controlling page scroll 
+    const middleContainerRef = useRef(null);
+    const [scrollPosition, setScrollPosition] = useState(0);
+
+    // This effect is for adding event listener scroll to middlePageContainer
+    // It will update current scroll postion of our container
+    useEffect(() => {
+        const middleContainer = middleContainerRef.current; // Create a variable to hold the ref value
+
+        const handleScroll = () => {
+            if (middleContainer) {
+                const { scrollTop } = middleContainer;
+                setScrollPosition(scrollTop);
+            }
+        };
+
+        if (middleContainer) {
+            middleContainer.addEventListener('scroll', handleScroll);
+        }
+
+        return () => {
+            if (middleContainer) {
+                middleContainer.removeEventListener('scroll', handleScroll);
+            }
+        };
+    }, []);
+
+    const scrollToPosition = (position) => {
+        if (middleContainerRef.current) {
+            middleContainerRef.current.scrollTop = position;
+            setScrollPosition(position);
+        }
+    };
 
     // Data for categories 
     const DUMMY_CATEGORIES = [
@@ -396,7 +425,7 @@ function HomePage() {
 
 
             {/* Here, we display memes (middle section ) */}
-            <div className={classes.ContainerWrapper + ' ' + classes.MiddleContainerWrapper}>
+            <div ref={middleContainerRef} className={classes.ContainerWrapper + ' ' + classes.MiddleContainerWrapper}>
 
                 <div className={classes.middleSideContainer}>
 
@@ -460,7 +489,7 @@ function HomePage() {
                                     {/* Here we also check if image is not too big in height */}
                                     {/* if so, we add box that says 'Extend image or something' */}
 
-                                    <DisplayImageWithHeightCheckup imageSrc={ele.postImage} />
+                                    <DisplayImageWithHeightCheckup imageSrc={ele.postImage} scrollPositionBeforeClick={scrollPosition} scrollToPosition={scrollToPosition} />
 
 
 

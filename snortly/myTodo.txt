@@ -5,5 +5,9 @@ Here you type things that you wanted to do before you went ..
 - DONE | Skończyłeś na tworzeniu errorMessage stuff, zrób to, dodaj style globalne 
 
 01.06.2023 
-- Dodaj podstawowy wzór aplikacji (Home page)
-- Dodaj wzór memów bazując na 2-3 memach, zrób to jako gotową symulację 
+- DONE | Dodaj podstawowy wzór aplikacji (Home page)
+- DONE | Dodaj wzór memów bazując na 2-3 memach, zrób to jako gotową symulację 
+
+04.06.2023
+- Napraw bug, kiedy klikamy Expand image to leci na sam dół .. 
+- Ogarnij prawą część strony 
