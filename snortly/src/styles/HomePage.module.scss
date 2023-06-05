@@ -426,7 +426,6 @@
 
             .AdBox {
                 width: 100%;
-                height: 200px;
 
                 border-radius: 4px;
 
@@ -434,9 +433,18 @@
 
                 overflow: hidden;
 
+                padding: 0.5rem 1rem;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                cursor: pointer;
+
                 .AdBoxTitleContainer {
                     width: 100%;
-                    padding: 0.5rem 0.75rem;
+
+                    margin-bottom: 0.5rem;
 
                     .AdBoxTitle {
                         font-size: 18px;
@@ -449,11 +457,27 @@
 
                 .AdBoxImageContainer {
                     width: 100%;
+                    max-height: 100px;
+
+                    border-radius: 2px;
+                    overflow: hidden;
 
                     img {
-                        max-width: 260px;
+                        width: 100%;
                         height: auto;
+
+                        transition: all 150ms;
+
+                        &:hover {
+                            transform: scale(1.05);
+                        }
                     }
+                }
+
+                .AdBoxSpacingBottom {
+                    width: 100%;
+                    height: 0.5rem;
+                    background-color: transparent;
                 }
             }
         }

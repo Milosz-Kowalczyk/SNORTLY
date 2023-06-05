@@ -19,8 +19,6 @@ function DisplayFormatedDate({ dateDifference, postCreationDate }) {
         - Display 01.02.2023 if post is not in current year 
     */
 
-    console.log(dateDifference, postCreationDate)
-
     let isDateInCurrentYear = isInCurrentYear(postCreationDate);
 
     // - Display 14:30 HH:mm format if post is from today
@@ -529,6 +527,8 @@ function HomePage() {
                         <div className={classes.AdBoxImageContainer}>
                             <img src="https://miro.medium.com/v2/resize:fit:1400/0*z1mm6izqSeDiKukb" alt="" />
                         </div>
+
+                        <div className={classes.AdBoxSpacingBottom}></div>
                     </div>
 
                     <div className={classes.AdBox}>
@@ -539,6 +539,8 @@ function HomePage() {
                         <div className={classes.AdBoxImageContainer}>
                             <img src="https://assets-global.website-files.com/5f3c19f18169b62a0d0bf387/60d33be7eedf8e1f31aabcec_BwENfmI0CU5dZGYlSyo142mpfG08-rYgTS-Qm47uMUXN6JXtmdZvtzVzTooUQdXTWmTD8uzF9N6XQJA2vUIMi53tunFyVtvOBJTNfOjHit2P_JkTmFzFsK7ep6Vb9781XZnRAryH.png" alt="" />
                         </div>
+
+                        <div className={classes.AdBoxSpacingBottom}></div>
                     </div>
                 </div>
             </div>

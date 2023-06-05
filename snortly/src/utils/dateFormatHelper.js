@@ -26,7 +26,7 @@ function getDaysDifference(targetDate) {
 
 function extractHourAndMinutes(dateString) {
     /*
-    This function will return date in HH:MM format from '2023-06-02 14:30:00' (dateString)
+        This function will return date in HH:MM format from '2023-06-02 14:30:00' (dateString)
     */
 
 
@@ -40,7 +40,7 @@ function extractHourAndMinutes(dateString) {
 function convertDateToDayAndMonth(dateString) {
 
     /*
-    Converts date string 2023-06-02 to 02.06 
+        Converts date string 2023-06-02 to 02.06 
     */
 
     const date = new Date(dateString);
@@ -52,7 +52,7 @@ function convertDateToDayAndMonth(dateString) {
 function convertDateToDayMonthYear(dateString) {
 
     /*
-    Converts date string 2023-06-02 to 2023.06.02 (yyyy-mm-dd)
+        Converts date string 2023-06-02 to 2023.06.02 (yyyy-mm-dd)
     */
 
     const date = new Date(dateString);
@@ -65,8 +65,8 @@ function convertDateToDayMonthYear(dateString) {
 function isInCurrentYear(dateString) {
 
     /*
-    Check if dateString 2023-06-02 is in current year
-    returns true if year is in users current year 
+        Check if dateString 2023-06-02 is in current year
+        returns true if year is in users current year 
     */
 
     const currentDate = new Date();
