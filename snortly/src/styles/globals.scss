@@ -21,6 +21,26 @@
     }
 }
 
+.btnBlack {
+    color: $font-white;
+    background-color: $page-background;
+
+    border: 0;
+
+    font-family: "SF Pro Display", sans-serif;
+    font-weight: 700;
+
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: $font-white;
+        color: $page-background;
+    }
+}
+
 .btnFormMaxWidth {
     width: 100%;
     font-size: 1.2rem;
@@ -77,6 +97,19 @@
 
     &:hover {
         border-bottom: 1px solid $font-link;
+    }
+}
+
+.linkText-White {
+    color: $font-white;
+    cursor: pointer;
+
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent; // We want this so page will not move when we add border on hover
+
+    &:hover {
+        color: $font-white;
+        border-bottom: 1px solid $font-white;
     }
 }
 

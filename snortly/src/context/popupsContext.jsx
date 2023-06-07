@@ -2,6 +2,7 @@ import React, { createContext, useState } from 'react'
 import LoginForm from '../components/popups/LoginForm';
 import SigninForm from '../components/popups/SigninForm';
 import ForgotPasswordForm from '../components/popups/ForgotPasswordForm';
+import Cookies from '../components/popups/Cookies';
 
 export const ContextPopups = createContext(null);
 
@@ -22,13 +23,18 @@ function PopupsContext(props) {
     //  - SIGNIN_FORM
     const [currentPopup, setCurrentPopup] = useState("")
 
+    // Additional State for cookies, they should be runned once (store it on cookies hehe)
+    const [showCookies, setShowCookies] = useState(false)
+
 
     return (
-        <ContextPopups.Provider value={{ showPopup, setShowPopup, currentPopup, setCurrentPopup }}>
+        <ContextPopups.Provider value={{ showPopup, setShowPopup, currentPopup, setCurrentPopup, setShowCookies }}>
 
             {(showPopup && currentPopup === "LOGIN_FORM") && <LoginForm />}
             {(showPopup && currentPopup === "SIGNIN_FORM") && <SigninForm />}
             {(showPopup && currentPopup === "FORGOT_PASSWORD_FORM") && <ForgotPasswordForm />}
+
+            {(showCookies) && <Cookies />}
 
 
             {props.children}

@@ -9,5 +9,10 @@ Here you type things that you wanted to do before you went ..
 - DONE | Dodaj wzór memów bazując na 2-3 memach, zrób to jako gotową symulację 
 
 04.06.2023
-- Napraw bug, kiedy klikamy Expand image to leci na sam dół .. 
-- Ogarnij prawą część strony 
+- DONE | Napraw bug, kiedy klikamy Expand image to leci na sam dół .. 
+- DONE | Ogarnij prawą część strony v1
+
+07.06.2023 
+- Ogarnij przycisk, który włącza tryb ONLY MEME 
+- Ogarnij Wyświetlenie Cookisów
+- Stwórz popup związany z tworzeniem posta (meme)
