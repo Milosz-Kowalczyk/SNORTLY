@@ -4,6 +4,7 @@ import '../styles/globals.scss';
 import classes from '../styles/HomePage.module.scss';
 import { ContextPopups } from '../context/popupsContext';
 import { convertDateToDayAndMonth, convertDateToDayMonthYear, extractHourAndMinutes, getDaysDifference, isInCurrentYear } from '../utils/dateFormatHelper';
+import { ContextActions } from '../context/actionsContext';
 
 
 function DisplayFormatedDate({ dateDifference, postCreationDate }) {
@@ -161,6 +162,7 @@ function DisplayImageWithHeightCheckup({ imageSrc, scrollPositionBeforeClick, sc
 function HomePage() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
+    const { showCategories } = useContext(ContextActions)
 
     // These two is for controlling page scroll 
     const middleContainerRef = useRef(null);
@@ -389,7 +391,8 @@ function HomePage() {
             {/* Hello You box  */}
             {/* Categories  */}
             <div className={classes.ContainerWrapper + ' ' + classes.LeftContainerWrapper}>
-                <div className={classes.leftSideContainer}>
+
+                <div style={{ visibility: showCategories ? "visible" : "hidden" }} className={classes.leftSideContainer}>
 
                     {/* Hello you box  */}
                     {/* Left side, also categories are here  */}
@@ -420,6 +423,7 @@ function HomePage() {
 
                     </div>
                 </div>
+
             </div>
 
 
@@ -518,15 +522,20 @@ function HomePage() {
 
             {/* We treat adBox as place to show best memes and also ads :)  */}
             <div className={classes.ContainerWrapper + ' ' + classes.RightContainerWrapper}>
-                <div className={classes.rightSideContainer}>
+                <div style={{ visibility: showCategories ? "visible" : "hidden" }} className={classes.rightSideContainer}>
                     <div className={classes.AdBox}>
                         <div className={classes.AdBoxTitleContainer}>
                             <h2 className={classes.AdBoxTitle}> Hottest meme </h2>
                         </div>
 
-                        <div className={classes.AdBoxImageContainer}>
-                            <img src="https://miro.medium.com/v2/resize:fit:1400/0*z1mm6izqSeDiKukb" alt="" />
-                        </div>
+                        {/* We do it also even tho we make this container visibility hidden because img will be hidden with delay
+                            To prevent this, we need to add this check also
+                        */}
+                        {showCategories &&
+                            <div className={classes.AdBoxImageContainer}>
+                                <img src="https://miro.medium.com/v2/resize:fit:1400/0*z1mm6izqSeDiKukb" alt="" loading="lazy" />
+                            </div>
+                        }
                     </div>
 
                     <div className={classes.AdBox}>
@@ -534,9 +543,11 @@ function HomePage() {
                             <h2 className={classes.AdBoxTitle}> Meme of the week </h2>
                         </div>
 
-                        <div className={classes.AdBoxImageContainer}>
-                            <img src="https://assets-global.website-files.com/5f3c19f18169b62a0d0bf387/60d33be7eedf8e1f31aabcec_BwENfmI0CU5dZGYlSyo142mpfG08-rYgTS-Qm47uMUXN6JXtmdZvtzVzTooUQdXTWmTD8uzF9N6XQJA2vUIMi53tunFyVtvOBJTNfOjHit2P_JkTmFzFsK7ep6Vb9781XZnRAryH.png" alt="" />
-                        </div>
+                        {showCategories &&
+                            <div className={classes.AdBoxImageContainer}>
+                                <img src="https://assets-global.website-files.com/5f3c19f18169b62a0d0bf387/60d33be7eedf8e1f31aabcec_BwENfmI0CU5dZGYlSyo142mpfG08-rYgTS-Qm47uMUXN6JXtmdZvtzVzTooUQdXTWmTD8uzF9N6XQJA2vUIMi53tunFyVtvOBJTNfOjHit2P_JkTmFzFsK7ep6Vb9781XZnRAryH.png" alt="" />
+                            </div>
+                        }
                     </div>
 
 

@@ -113,6 +113,15 @@
     }
 }
 
+// Transitions
+.hoverScale {
+    cursor: pointer;
+    transition: all 150ms;
+    &:hover {
+        transform: scale(1.08);
+    }
+}
+
 // TEXT STYLES
 .text-center {
     text-align: center;

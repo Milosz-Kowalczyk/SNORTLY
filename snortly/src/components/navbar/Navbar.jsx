@@ -6,11 +6,14 @@ import logoWhite from './snortHub_Logo1.png';
 import './Navbar.scss'
 import '../../styles/globals.scss'
 import { ContextPopups } from "../../context/popupsContext";
+import { ContextActions } from "../../context/actionsContext";
 
 
 function Navbar() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
+    const { setShowCategories, showCategories } = useContext(ContextActions)
+
 
     // Both refs used to controll two elements that needs additional class to show on mobile 
     const navbarBurger = useRef(null);
@@ -44,6 +47,12 @@ function Navbar() {
                     <a className="navbar-item" href="/">
                         <img alt="" src={logoWhite} />
                     </a>
+
+                    {/* Action Hide Categories and right panel  */}
+                    <div onClick={() => { setShowCategories(!showCategories) }} className={"navbar-item hoverScale navbar-MemeOnlyIcon"}>
+                        <i class="fa-solid fa-expand"></i>
+                    </div>
+
 
                     {/* Nav burger  */}
                     <button onClick={toggleMenu} ref={navbarBurger} className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
