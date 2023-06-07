@@ -53,6 +53,13 @@ function Navbar() {
                         <i class="fa-solid fa-expand"></i>
                     </div>
 
+                    <div className="navbar-item">
+                        <button className="button btnPurple navbar-newPostButton">
+                            <i style={{ marginRight: "0.5rem" }} class="fa-solid fa-pen-to-square"></i> New Post
+                        </button>
+                    </div>
+
+
 
                     {/* Nav burger  */}
                     <button onClick={toggleMenu} ref={navbarBurger} className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">

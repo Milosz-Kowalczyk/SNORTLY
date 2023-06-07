@@ -390,9 +390,9 @@ function HomePage() {
 
             {/* Hello You box  */}
             {/* Categories  */}
-            <div className={classes.ContainerWrapper + ' ' + classes.LeftContainerWrapper}>
+            <div style={{ visibility: showCategories ? "visible" : "hidden" }} className={classes.ContainerWrapper + ' ' + classes.LeftContainerWrapper}>
 
-                <div style={{ visibility: showCategories ? "visible" : "hidden" }} className={classes.leftSideContainer}>
+                <div className={classes.leftSideContainer}>
 
                     {/* Hello you box  */}
                     {/* Left side, also categories are here  */}
@@ -521,8 +521,8 @@ function HomePage() {
 
 
             {/* We treat adBox as place to show best memes and also ads :)  */}
-            <div className={classes.ContainerWrapper + ' ' + classes.RightContainerWrapper}>
-                <div style={{ visibility: showCategories ? "visible" : "hidden" }} className={classes.rightSideContainer}>
+            <div style={{ visibility: showCategories ? "visible" : "hidden" }} className={classes.ContainerWrapper + ' ' + classes.RightContainerWrapper}>
+                <div className={classes.rightSideContainer}>
                     <div className={classes.AdBox}>
                         <div className={classes.AdBoxTitleContainer}>
                             <h2 className={classes.AdBoxTitle}> Hottest meme </h2>
