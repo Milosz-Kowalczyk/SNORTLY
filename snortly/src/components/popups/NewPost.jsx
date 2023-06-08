@@ -231,33 +231,61 @@ function NewPost() {
             setShowFilePreview(true);
 
             if (fileType === "video/mp4") {
-
                 var url = URL.createObjectURL(file);
-                console.log(url)
-                // var url = URL.createObjectURL(e.originFileObj);
+
                 setVideoSrc(url);
                 setFileType("video")
+
+                setUploadedFile(file);
+                setErrorMessages([])
             }
             else {
                 let fileUrl = URL.createObjectURL(e.target.files[0])
                 setFileType("image")
                 setFileUrl(fileUrl);
+
                 setUploadedFile(file)
+                setErrorMessages([])
             }
         }
     }
 
-    // Handle meme url 
+    // Handle post url when it is passed
     function handlePostURL(e) {
-        let val = e.target.value;
-        setPostURL(val);
+        let url = e.target.value;
+        let urlExtension = String(url.substring(url.length - 3)).toLowerCase();
+        let possibleExtensions = ["gif", "png", "jpg", "jpeg"]
+        setPostURL(url);
+
+        let possible_erros = [];
+
+        if (!possibleExtensions.includes(urlExtension)) {
+            possible_erros.push("Url has wrong extension!")
+        }
+
+        if (possible_erros.length > 0) {
+            setErrorMessages([...possible_erros])
+        }
+        else {
+            setPostURL(url);
+            setFileType("image");
+            setErrorMessages([])
+
+            // We want delay to make image url copy a bit more realistic 
+            setTimeout(() => {
+                setShowFilePreview(true);
+            }, 1000);
+        }
+
     }
 
     // When user has uploaded image, he can still delete it which we handle here 
     // We allow user to delete image and try again
     function handleUploadedImageDelete() {
-        setFileUrl(null);
+        setFileUrl("");
         setShowFilePreview(false);
+        setPostURL("");
+        setUploadedFile("")
     }
 
 
@@ -274,9 +302,25 @@ function NewPost() {
             possible_errors.push("There has to be at least one tag added!")
         }
 
-        if (uploadedFile === null || uploadedFile === "" || uploadedFile === undefined) {
+        console.log(postURL, uploadedFile)
+        // Here we check two things
+        // If user uploaded file instead of pasting image
+        if (!postURL) {
+            if ((uploadedFile === null || uploadedFile === "" || uploadedFile === undefined)) {
+                possible_errors.push("File is required!")
+            }
+        }
+        // If user passed image url (we check if it correct and exists)
+        else if (!uploadedFile) {
+            if ((postURL === null || postURL === "" || postURL === undefined)) {
+                possible_errors.push("File is required!")
+            }
+        }
+
+        else if (!postURL && !uploadedFile) {
             possible_errors.push("File is required!")
         }
+
 
         if (possible_errors.length > 0) {
             setErrorMessages([...possible_errors])
@@ -285,9 +329,12 @@ function NewPost() {
         else {
             // Here we have everything, we can add post to db 
             console.log("All ready")
-            console.log("File type: ", fileType)
-            console.log("File Name ", uploadedFile.name)
-            console.log("file size", uploadedFile.size)
+            setErrorMessages([])
+            // console.log("File type: ", fileType)
+            // console.log("File Name ", uploadedFile.name)
+            // console.log("file size", uploadedFile.size)
+            // console.log("Title", postTitle);
+            // console.log("File", uploadedFile)
         }
 
 
@@ -305,7 +352,11 @@ function NewPost() {
                     <i onClick={handleCloseClick} className={"fa-solid fa-xmark " + classes.closeIcon}></i>
 
                     {/* Popup Title  */}
-                    <h2 className={classes.ContainerTitle}> New Post </h2>
+                    {/* Add post or show preview buttons  */}
+                    <div className={classes.PostActionsContainer}>
+                        <h2 className={classes.ContainerTitle}> New Post </h2> <button className='button btnPurple' onClick={handleAddPostClick}> <i class="fa-solid fa-location-arrow"></i>Publish Post </button>
+                    </div>
+
 
                     {/* Error messages here  */}
                     {(errorMessages.length > 0 || fileErrors.length > 0) &&
@@ -353,7 +404,7 @@ function NewPost() {
 
                         {/* Here we display max tags number  */}
                         <div className={classes.SelectTagsMaxTagsContainer}>
-                            <p className={classes.SelectTagsText}> Select at least one tag! </p>
+                            <p className={classes.SelectTagsText}> <i class="fa-solid fa-tags"></i> Add at least one tag </p>
 
                             {
                                 ((MAX_TAGS - selectedTags.length) > 0)
@@ -377,7 +428,7 @@ function NewPost() {
                                 ))}
                             </select>
 
-                            <button className='button btnPurple' onClick={handleAddTagClick}> Add </button>
+                            <button className='button btnPurple' onClick={handleAddTagClick}> <i class="fa-regular fa-square-plus"></i> </button>
 
                         </div>
 
@@ -397,23 +448,11 @@ function NewPost() {
                     {/* Upload image container  */}
                     <div className={classes.UploadImageContainer}>
 
-                        {/* Show preview of file if this is image (or gif) */}
-                        {(showFilePreview && fileType === "image")
-                            ?
-                            <div className={classes.UploadedImageContainer}>
-                                <div className={classes.UploadedImageWrapper}>
-                                    <div className={classes.DeleteUploadedImageContainer} onClick={handleUploadedImageDelete}>
-                                        <i className="fa-solid fa-trash-can"></i>
-                                    </div>
-
-                                    <img src={fileUrl} alt="" />
-                                </div>
-                            </div>
-                            :
-
-
+                        {/* Show upload container is image / video wasnt picked yet! */}
+                        {(!showFilePreview) &&
                             <>
                                 <div className={classes.UploadLinkContainer}>
+
                                     {/* // Upload via link */}
                                     <p className={classes.InputLabel}> Enter link </p>
                                     <p className={"control has-icons-left"}>
@@ -436,6 +475,22 @@ function NewPost() {
                             </>
                         }
 
+                        {/* Show preview of file if this is image (or gif) */}
+                        {(showFilePreview && fileType === "image")
+                            &&
+                            <div className={classes.UploadedImageContainer}>
+                                <div className={classes.UploadedImageWrapper}>
+                                    <div className={classes.DeleteUploadedImageContainer} onClick={handleUploadedImageDelete}>
+                                        <i className="fa-solid fa-trash-can"></i>
+                                    </div>
+
+                                    {(fileUrl) && <img src={fileUrl} alt="" />}
+                                    {(postURL) && <img src={postURL} alt="" />}
+
+                                </div>
+                            </div>
+                        }
+
                         {/* Show preview of file if this is video  */}
                         {(showFilePreview && fileType === "video") &&
                             <div className={classes.VideoPreviewContainer}>
@@ -444,24 +499,16 @@ function NewPost() {
                                         <i className="fa-solid fa-trash-can"></i>
                                     </div>
 
-                                    <Player
-                                        playsInline
-                                        src={videoSrc}
-                                        fluid={false}
-                                        width={"100%"}
-                                        height={272}
-                                    />
+                                    <Player >
+                                        <source src={videoSrc} />
+                                    </Player>
+
 
                                 </div>
                             </div>
                         }
 
 
-                    </div>
-
-                    {/* Add post or show preview buttons  */}
-                    <div className={classes.PostActionsContainer}>
-                        <button className='button btnPurple' onClick={handleAddPostClick}> Add Post </button>
                     </div>
 
                 </div>

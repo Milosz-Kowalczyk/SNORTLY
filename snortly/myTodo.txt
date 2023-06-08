@@ -18,10 +18,12 @@ Here you type things that you wanted to do before you went ..
 - DONE | Stwórz popup związany z tworzeniem posta (meme)
 
 08.06.2023 
-- Dodaj nowy popup związany z tworzeniem posta!
+- DONE | Dodaj nowy popup związany z tworzeniem posta!
 - Dodaj miejsce gdzie moze byc potencjalna reklama
 - Dodaj na samym koncu miejsce mowiące o "To nasze wszystkie memy.." 
 - Dodaj Funkcjonalność, aby ładował kolejne memy kiedy będzie w odpowiednim momencie 
 - Popraw menu, aby Hot, Trening Fresh wyświetlało się po środku (?)
 - Dodaj przycisk (wróc do góry)
 - Dodaj smooth scroll 
+- Dodaj classy z responsywnymi textami 
+- Popraw w PopUp NewPost w responsywność PostTitle inputa (bo się wysokość nie zmienia)
