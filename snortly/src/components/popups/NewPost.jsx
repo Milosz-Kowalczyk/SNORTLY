@@ -1,4 +1,6 @@
 import React, { useContext, useState } from 'react'
+import { Player } from 'video-react'
+// import '~video-react/dist/video-react.css'; // import css
 import TextareaAutosize from 'react-textarea-autosize';
 
 import classes from './NewPost.module.scss';
@@ -11,19 +13,27 @@ function NewPost() {
 
     // Meme title (max 280 letters!)
     const MAX_TITLE_LENGTH = 280;
-    const [memeTitle, setMemeTitle] = useState("")
-    const [memeTitleCount, setMemeTitleCount] = useState(MAX_TITLE_LENGTH); // Here we count down from MAX_TITLE_LENGTH to 0 (max title length)
+    const [postTitle, setPostTitle] = useState("")
+    const [postTitleCount, setPostTitleCount] = useState(MAX_TITLE_LENGTH); // Here we count down from MAX_TITLE_LENGTH to 0 (max title length)
 
-    // MEME file 
+    // MEME file
     // We allow only for PNG, JPG, GIF, MP4
-    const [file, setFile] = useState();
-    const [memeURL, setMemeURL] = useState();
+    const MAX_KB_FILE_SIZE = 2000 // Max is 2000KB, 2MB;
+    const [uploadedFile, setUploadedFile] = useState() // Stores file that was uploaded (can be image or video)
+    const [fileUrl, setFileUrl] = useState(); // Stores file URL
+    const [postURL, setPostURL] = useState();   // Stores URL that user passed in input (optional)
+    const [fileType, setFileType] = useState(); // Helper that stores information either "image" or "video"
+    const [videoSrc, setVideoSrc] = useState();
     const [showFilePreview, setShowFilePreview] = useState(false)
 
     // Select tags stuff 
     const MAX_TAGS = 5; // Max number of selected tags
     const [selectedTag, setSelectedTag] = useState("")  // Currently selected tag in select box
     const [selectedTags, setSelectedTags] = useState([]);
+
+    // Errors 
+    const [errorMessages, setErrorMessages] = useState([]); // We store errors in array
+    const [fileErrors, setFileErrors] = useState([]) // Same thing but individually for file
 
     // Data for categories 
     const DUMMY_CATEGORIES = [
@@ -150,13 +160,13 @@ function NewPost() {
     }
 
     // This is for controling meme title max letters 
-    function handleMemeTitleChange(e) {
+    function handlepostTitleChange(e) {
         let val = e.target.value;
 
-        // Updates memeTitle and also memeTitleCount is updated to go until it reaches 0
+        // Updates postTitle and also postTitleCount is updated to go until it reaches 0
         if (val.length <= MAX_TITLE_LENGTH) {
-            setMemeTitle(val)
-            setMemeTitleCount(MAX_TITLE_LENGTH - val.length)
+            setPostTitle(val)
+            setPostTitleCount(MAX_TITLE_LENGTH - val.length)
         }
     }
 
@@ -198,31 +208,90 @@ function NewPost() {
     function handleFileChange(e) {
 
         let file = e.target.files[0];
-        let fileUrl = URL.createObjectURL(e.target.files[0])
         let fileType = file.type;
 
-        // Update this, add more fileTypes ..
-        if (fileType === "image/jpeg" || fileType === "image/png" || fileType === "image/jpg") {
-            setFile(fileUrl);
-            setShowFilePreview(true);
+        let fileSizeInKB = parseInt(file.size / 1000)
+
+        let possible_errors = [];
+
+        // Checking for errors
+        if (fileType !== "image/jpeg" && fileType !== "image/png" && fileType !== "image/jpg" && fileType !== "image/gif" && fileType !== "video/mp4") {
+            possible_errors.push("This file extension is not supported!")
+        }
+        if (fileSizeInKB > MAX_KB_FILE_SIZE) {
+            possible_errors.push("Your file is too big, max file size is 2MB!")
         }
 
+        if (possible_errors.length > 0) {
+            setFileErrors([...possible_errors])
+        }
         else {
-            // Handle wrong fileType error here
+            // Here we have correct file to add.. 
+
+            setShowFilePreview(true);
+
+            if (fileType === "video/mp4") {
+
+                var url = URL.createObjectURL(file);
+                console.log(url)
+                // var url = URL.createObjectURL(e.originFileObj);
+                setVideoSrc(url);
+                setFileType("video")
+            }
+            else {
+                let fileUrl = URL.createObjectURL(e.target.files[0])
+                setFileType("image")
+                setFileUrl(fileUrl);
+                setUploadedFile(file)
+            }
         }
     }
 
     // Handle meme url 
-    function handleMemeUrl(e) {
+    function handlePostURL(e) {
         let val = e.target.value;
-        setMemeURL(val);
+        setPostURL(val);
     }
 
     // When user has uploaded image, he can still delete it which we handle here 
     // We allow user to delete image and try again
     function handleUploadedImageDelete() {
-        setFile(null);
+        setFileUrl(null);
         setShowFilePreview(false);
+    }
+
+
+    // When we click 'Add post' button (main one)
+    function handleAddPostClick() {
+
+        let possible_errors = []; // Here we store errors and pass it to errorMessages
+
+        if (postTitle === "" || postTitle.length < 3) {
+            possible_errors.push("Title has to have at least 3 characters!")
+        }
+
+        if (selectedTags.length === 0) {
+            possible_errors.push("There has to be at least one tag added!")
+        }
+
+        if (uploadedFile === null || uploadedFile === "" || uploadedFile === undefined) {
+            possible_errors.push("File is required!")
+        }
+
+        if (possible_errors.length > 0) {
+            setErrorMessages([...possible_errors])
+        }
+
+        else {
+            // Here we have everything, we can add post to db 
+            console.log("All ready")
+            console.log("File type: ", fileType)
+            console.log("File Name ", uploadedFile.name)
+            console.log("file size", uploadedFile.size)
+        }
+
+
+
     }
 
     return (
@@ -238,6 +307,25 @@ function NewPost() {
                     {/* Popup Title  */}
                     <h2 className={classes.ContainerTitle}> New Post </h2>
 
+                    {/* Error messages here  */}
+                    {(errorMessages.length > 0 || fileErrors.length > 0) &&
+                        <div style={{ marginTop: "0" }} className="errorMessageContainer">
+                            <p className='errorMessageText'>
+                                {
+                                    errorMessages.map((ele, idx) => (
+                                        <span key={`error-${idx}`}> - {ele} <br /> </span>
+                                    ))
+                                }
+
+                                {
+                                    fileErrors.map((ele, idx) => (
+                                        <span key={`file-error-${idx}`}> - {ele} <br /> </span>
+                                    ))
+                                }
+                            </p>
+                        </div>
+                    }
+
                     {/* // Here we count and display title length  */}
                     <div className={classes.TitleInputContainer}>
                         <h2 className={classes.InputLabel}>
@@ -247,17 +335,17 @@ function NewPost() {
                             Post Title
                         </h2>
 
-                        {/* If we reach memeTitleCount = 0, we display it with red color  */}
-                        {(memeTitleCount > 0)
+                        {/* If we reach postTitleCount = 0, we display it with red color  */}
+                        {(postTitleCount > 0)
                             ?
-                            < p className={classes.TitleCounter}> {memeTitleCount} </p>
+                            < p className={classes.TitleCounter}> {postTitleCount} </p>
                             :
-                            < p className={classes.TitleCounter + ' ' + classes.TitleCounterLimit}> {memeTitleCount} </p>
+                            < p className={classes.TitleCounter + ' ' + classes.TitleCounterLimit}> {postTitleCount} </p>
                         }
                     </div>
 
                     {/* Title Text area (Because we wanted to add new line when user reaches some input limit) */}
-                    <TextareaAutosize spellCheck="false" maxRows={5} value={memeTitle} onChange={(e) => { handleMemeTitleChange(e) }} className={classes.TitleTextArea} />
+                    <TextareaAutosize spellCheck="false" maxRows={5} value={postTitle} onChange={(e) => { handlepostTitleChange(e) }} className={classes.TitleTextArea} />
 
 
                     {/* // Add tags section  */}
@@ -309,7 +397,8 @@ function NewPost() {
                     {/* Upload image container  */}
                     <div className={classes.UploadImageContainer}>
 
-                        {(showFilePreview)
+                        {/* Show preview of file if this is image (or gif) */}
+                        {(showFilePreview && fileType === "image")
                             ?
                             <div className={classes.UploadedImageContainer}>
                                 <div className={classes.UploadedImageWrapper}>
@@ -317,17 +406,18 @@ function NewPost() {
                                         <i className="fa-solid fa-trash-can"></i>
                                     </div>
 
-                                    <img src={file} alt="" />
+                                    <img src={fileUrl} alt="" />
                                 </div>
                             </div>
                             :
 
-                            // Upload via link
+
                             <>
                                 <div className={classes.UploadLinkContainer}>
+                                    {/* // Upload via link */}
                                     <p className={classes.InputLabel}> Enter link </p>
                                     <p className={"control has-icons-left"}>
-                                        <input value={memeURL} onChange={(e) => { handleMemeUrl(e) }} className="input" type="text" />
+                                        <input value={postURL} onChange={(e) => { handlePostURL(e) }} className="input" type="text" />
                                         <span className={"icon is-small is-left " + classes.myIcon}>
                                             <i className="fa-solid fa-link"></i>
                                         </span>
@@ -345,11 +435,33 @@ function NewPost() {
                                 <p className={classes.WeSupportText}> We support files and links with PNG, JPG, GIF or MP4 extensions. </p>
                             </>
                         }
+
+                        {/* Show preview of file if this is video  */}
+                        {(showFilePreview && fileType === "video") &&
+                            <div className={classes.VideoPreviewContainer}>
+                                <div className={classes.VideoWrapper}>
+                                    <div className={classes.DeleteUploadedImageContainer} onClick={handleUploadedImageDelete}>
+                                        <i className="fa-solid fa-trash-can"></i>
+                                    </div>
+
+                                    <Player
+                                        playsInline
+                                        src={videoSrc}
+                                        fluid={false}
+                                        width={"100%"}
+                                        height={272}
+                                    />
+
+                                </div>
+                            </div>
+                        }
+
+
                     </div>
 
                     {/* Add post or show preview buttons  */}
                     <div className={classes.PostActionsContainer}>
-                        <button className='button btnPurple'> Add Post </button>
+                        <button className='button btnPurple' onClick={handleAddPostClick}> Add Post </button>
                     </div>
 
                 </div>
