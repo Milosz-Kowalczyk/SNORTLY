@@ -12,7 +12,7 @@ import { ContextActions } from "../../context/actionsContext";
 function Navbar() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
-    const { setShowCategories, showCategories } = useContext(ContextActions)
+    const { showSidePanels, setShowSidePanels } = useContext(ContextActions)
 
 
     // Both refs used to controll two elements that needs additional class to show on mobile 
@@ -37,6 +37,12 @@ function Navbar() {
         setCurrentPopup("SIGNIN_FORM");
     }
 
+    // When new post is clicked 
+    function handleNewPostButtonClick() {
+        setShowPopup(true);
+        setCurrentPopup("NEW_POST");
+    }
+
 
     return (
         <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
@@ -49,13 +55,13 @@ function Navbar() {
                     </a>
 
                     {/* Action Hide Categories and right panel  */}
-                    <div onClick={() => { setShowCategories(!showCategories) }} className={"navbar-item hoverScale navbar-MemeOnlyIcon"}>
-                        <i class="fa-solid fa-expand"></i>
+                    <div onClick={() => { setShowSidePanels(!showSidePanels) }} className={"navbar-item hoverScale navbar-MemeOnlyIcon"}>
+                        <i className="fa-solid fa-expand"></i>
                     </div>
 
-                    <div className="navbar-item">
+                    <div className="navbar-item" onClick={handleNewPostButtonClick} >
                         <button className="button btnPurple navbar-newPostButton">
-                            <i style={{ marginRight: "0.5rem" }} class="fa-solid fa-pen-to-square"></i> New Post
+                            <i style={{ marginRight: "0.5rem" }} className="fa-solid fa-pen-to-square"></i> New Post
                         </button>
                     </div>
 

@@ -7,11 +7,11 @@ export const ContextActions = createContext(null);
 // Mainly used in navbars 
 function ActionsContext(props) {
 
-    // Show or hide categories panel in home page 
-    const [showCategories, setShowCategories] = useState(true)
+    // Show or hide Side panels in home page 
+    const [showSidePanels, setShowSidePanels] = useState(true)
 
     return (
-        <ContextActions.Provider value={{ showCategories, setShowCategories }}>
+        <ContextActions.Provider value={{ showSidePanels, setShowSidePanels }}>
             {props.children}
         </ContextActions.Provider>
     )

@@ -23,3 +23,5 @@ Here you type things that you wanted to do before you went ..
 - Dodaj na samym koncu miejsce mowiące o "To nasze wszystkie memy.." 
 - Dodaj Funkcjonalność, aby ładował kolejne memy kiedy będzie w odpowiednim momencie 
 - Popraw menu, aby Hot, Trening Fresh wyświetlało się po środku (?)
+- Dodaj przycisk (wróc do góry)
+- Dodaj smooth scroll 

@@ -162,7 +162,7 @@ function DisplayImageWithHeightCheckup({ imageSrc, scrollPositionBeforeClick, sc
 function HomePage() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
-    const { showCategories } = useContext(ContextActions)
+    const { showSidePanels } = useContext(ContextActions)
 
     // These two is for controlling page scroll 
     const middleContainerRef = useRef(null);
@@ -390,7 +390,7 @@ function HomePage() {
 
             {/* Hello You box  */}
             {/* Categories  */}
-            <div style={{ visibility: showCategories ? "visible" : "hidden" }} className={classes.ContainerWrapper + ' ' + classes.LeftContainerWrapper}>
+            <div style={{ visibility: showSidePanels ? "visible" : "hidden" }} className={classes.ContainerWrapper + ' ' + classes.LeftContainerWrapper}>
 
                 <div className={classes.leftSideContainer}>
 
@@ -521,7 +521,7 @@ function HomePage() {
 
 
             {/* We treat adBox as place to show best memes and also ads :)  */}
-            <div style={{ visibility: showCategories ? "visible" : "hidden" }} className={classes.ContainerWrapper + ' ' + classes.RightContainerWrapper}>
+            <div style={{ visibility: showSidePanels ? "visible" : "hidden" }} className={classes.ContainerWrapper + ' ' + classes.RightContainerWrapper}>
                 <div className={classes.rightSideContainer}>
                     <div className={classes.AdBox}>
                         <div className={classes.AdBoxTitleContainer}>
@@ -531,7 +531,7 @@ function HomePage() {
                         {/* We do it also even tho we make this container visibility hidden because img will be hidden with delay
                             To prevent this, we need to add this check also
                         */}
-                        {showCategories &&
+                        {showSidePanels &&
                             <div className={classes.AdBoxImageContainer}>
                                 <img src="https://miro.medium.com/v2/resize:fit:1400/0*z1mm6izqSeDiKukb" alt="" loading="lazy" />
                             </div>
@@ -543,7 +543,7 @@ function HomePage() {
                             <h2 className={classes.AdBoxTitle}> Meme of the week </h2>
                         </div>
 
-                        {showCategories &&
+                        {showSidePanels &&
                             <div className={classes.AdBoxImageContainer}>
                                 <img src="https://assets-global.website-files.com/5f3c19f18169b62a0d0bf387/60d33be7eedf8e1f31aabcec_BwENfmI0CU5dZGYlSyo142mpfG08-rYgTS-Qm47uMUXN6JXtmdZvtzVzTooUQdXTWmTD8uzF9N6XQJA2vUIMi53tunFyVtvOBJTNfOjHit2P_JkTmFzFsK7ep6Vb9781XZnRAryH.png" alt="" />
                             </div>
