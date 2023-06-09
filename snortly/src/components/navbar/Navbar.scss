@@ -1,0 +1,42 @@
+@import "../../styles/colors.scss";
+@import "../../styles/mixins.scss";
+
+.navbar {
+    background-color: $menu-bg-color;
+
+    color: $font-white;
+
+    height: 50px;
+}
+
+.navbar-burger {
+    color: $white;
+}
+
+.navbar-menu {
+    background-color: $menu-bg-color;
+}
+
+.navbar-start {
+    width: 100%;
+
+    justify-content: flex-start;
+    gap: 0.5rem;
+
+    // margin-left: 3rem;
+
+    // @include bulmaTablet {
+    //     margin-left: 0;
+    // }
+}
+
+.navbar-MemeOnlyIcon {
+    i {
+        color: $font-white;
+    }
+}
+
+.navbar-newPostButton {
+    border-radius: 50px;
+    font-size: 14px;
+}
