@@ -1,0 +1,153 @@
+@import "./colors.scss";
+
+// BUTTONS STYLES
+.btnPurple {
+    color: $font-white;
+    background-color: $strong-purple;
+
+    border: 0;
+
+    font-family: "SF Pro Display", sans-serif;
+    font-weight: 700;
+
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: $light-purple;
+        color: $font-white;
+    }
+}
+
+.btnBlack {
+    color: $font-white;
+    background-color: $page-background;
+
+    border: 0;
+
+    font-family: "SF Pro Display", sans-serif;
+    font-weight: 700;
+
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: $font-white;
+        color: $page-background;
+    }
+}
+
+.btnFormMaxWidth {
+    width: 100%;
+    font-size: 1.2rem;
+    border-radius: 4px;
+
+    padding: 0.5rem 0.25rem;
+
+    cursor: pointer;
+}
+
+.btnLightBorder {
+    color: $font-white;
+    background-color: transparent;
+
+    border: 1px solid $white;
+
+    font-family: "SF Pro Display", sans-serif;
+    font-weight: 500;
+
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    &:hover {
+        color: $font-white;
+    }
+}
+
+.navLinkLight {
+    color: $font-white;
+
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 12;
+
+    line-height: 1.5;
+    padding: 0.5rem 0.75rem;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        background-color: transparent;
+        color: $strong-purple;
+    }
+}
+
+.linkText {
+    color: $font-link;
+    cursor: pointer;
+
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent; // We want this so page will not move when we add border on hover
+
+    &:hover {
+        border-bottom: 1px solid $font-link;
+    }
+}
+
+.linkText-White {
+    color: $font-white;
+    cursor: pointer;
+
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent; // We want this so page will not move when we add border on hover
+
+    &:hover {
+        color: $font-white;
+        border-bottom: 1px solid $font-white;
+    }
+}
+
+// Transitions
+.hoverScale {
+    cursor: pointer;
+    transition: all 150ms;
+    &:hover {
+        transform: scale(1.08);
+    }
+}
+
+// TEXT STYLES
+.text-center {
+    text-align: center;
+}
+
+.textGray-medium {
+    font-size: 16px;
+    font-weight: 500px;
+    color: $font-lightGrey;
+}
+
+// Error message container
+.errorMessageContainer {
+    width: 100%;
+
+    background-color: $error-background;
+
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+
+    margin: 1rem 0;
+
+    .errorMessageText {
+        font-weight: 300;
+        font-size: 14px;
+
+        color: $font-error;
+    }
+}
