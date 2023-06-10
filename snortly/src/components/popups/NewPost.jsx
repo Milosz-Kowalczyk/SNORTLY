@@ -255,18 +255,20 @@ function NewPost() {
         let url = e.target.value;
         let urlExtension = String(url.substring(url.length - 3)).toLowerCase();
         let possibleExtensions = ["gif", "png", "jpg", "jpeg"]
-        setPostURL(url);
 
         let possible_erros = [];
 
-        if (!possibleExtensions.includes(urlExtension)) {
+        if (!possibleExtensions.includes(urlExtension) && url.length > 0) {
             possible_erros.push("Url has wrong extension!")
         }
 
         if (possible_erros.length > 0) {
             setErrorMessages([...possible_erros])
         }
-        else {
+        else if (url.length <= 0) {
+            setErrorMessages([])
+        }
+        else if (url.length > 0) {
             setPostURL(url);
             setFileType("image");
             setErrorMessages([])
@@ -354,7 +356,7 @@ function NewPost() {
                     {/* Popup Title  */}
                     {/* Add post or show preview buttons  */}
                     <div className={classes.PostActionsContainer}>
-                        <h2 className={classes.ContainerTitle}> New Post </h2> <button className='button btnPurple' onClick={handleAddPostClick}> <i class="fa-solid fa-location-arrow"></i>Publish Post </button>
+                        <h2 style={{ marginBottom: "0" }} className="PopupTitle"> New Post </h2> <button className='button btnPurple' onClick={handleAddPostClick}> <i className="fa-solid fa-location-arrow"></i>Publish Post </button>
                     </div>
 
 
@@ -379,8 +381,8 @@ function NewPost() {
 
                     {/* // Here we count and display title length  */}
                     <div className={classes.TitleInputContainer}>
-                        <h2 className={classes.InputLabel}>
-                            <span className={"icon is-small is-left " + classes.myIcon}>
+                        <h2 className="inputLabel">
+                            <span className={"icon is-small is-left "}>
                                 <i className="fa-solid fa-signature"></i>
                             </span>
                             Post Title
@@ -388,10 +390,8 @@ function NewPost() {
 
                         {/* If we reach postTitleCount = 0, we display it with red color  */}
                         {(postTitleCount > 0)
-                            ?
-                            < p className={classes.TitleCounter}> {postTitleCount} </p>
-                            :
-                            < p className={classes.TitleCounter + ' ' + classes.TitleCounterLimit}> {postTitleCount} </p>
+                            ? < p className={classes.TitleCounter}> {postTitleCount} </p>
+                            : < p className={classes.TitleCounter + ' ' + classes.TitleCounterLimit}> {postTitleCount} </p>
                         }
                     </div>
 
@@ -404,14 +404,14 @@ function NewPost() {
 
                         {/* Here we display max tags number  */}
                         <div className={classes.SelectTagsMaxTagsContainer}>
-                            <p className={classes.SelectTagsText}> <i class="fa-solid fa-tags"></i> Add at least one tag </p>
+                            <h2 className="inputLabel">
+                                <span> <i className="fa-solid fa-tags"></i> </span>
+                                Add at least one tag
+                            </h2>
 
-                            {
-                                ((MAX_TAGS - selectedTags.length) > 0)
-                                    ?
-                                    <p className={classes.MaxTagsText}> {MAX_TAGS - selectedTags.length} </p>
-                                    :
-                                    <p className={classes.MaxTagsText + " " + classes.MaxTagsTextLimit}> {MAX_TAGS - selectedTags.length} </p>
+                            {((MAX_TAGS - selectedTags.length) > 0)
+                                ? <p className={classes.MaxTagsText}> {MAX_TAGS - selectedTags.length} </p>
+                                : <p className={classes.MaxTagsText + " " + classes.MaxTagsTextLimit}> {MAX_TAGS - selectedTags.length} </p>
                             }
 
                         </div>
@@ -419,7 +419,7 @@ function NewPost() {
                         {/* Select box with possible tags  */}
                         <div className={classes.SelectTagsContainer}>
 
-                            <select defaultValue="" onChange={handleSelectedTagChange}>
+                            <select className="selectLight" defaultValue="" onChange={handleSelectedTagChange}>
                                 <option value="" disabled>Select tag</option>
                                 {DUMMY_CATEGORIES.map((ele, idx) => (
                                     <option key={`${ele.categoryTitle}-${idx}`} value={ele.categoryTitle}>
@@ -428,7 +428,7 @@ function NewPost() {
                                 ))}
                             </select>
 
-                            <button className='button btnPurple' onClick={handleAddTagClick}> <i class="fa-regular fa-square-plus"></i> </button>
+                            <button className='button btnPurple' onClick={handleAddTagClick}> <i className="fa-regular fa-square-plus"></i> </button>
 
                         </div>
 
@@ -454,7 +454,7 @@ function NewPost() {
                                 <div className={classes.UploadLinkContainer}>
 
                                     {/* // Upload via link */}
-                                    <p className={classes.InputLabel}> Enter link </p>
+                                    <p className="inputLabel"> Enter link </p>
                                     <p className={"control has-icons-left"}>
                                         <input value={postURL} onChange={(e) => { handlePostURL(e) }} className="input" type="text" />
                                         <span className={"icon is-small is-left " + classes.myIcon}>
@@ -484,6 +484,7 @@ function NewPost() {
                                         <i className="fa-solid fa-trash-can"></i>
                                     </div>
 
+                                    {/* Display img depending if it is from file upload or direct link */}
                                     {(fileUrl) && <img src={fileUrl} alt="" />}
                                     {(postURL) && <img src={postURL} alt="" />}
 
@@ -499,9 +500,7 @@ function NewPost() {
                                         <i className="fa-solid fa-trash-can"></i>
                                     </div>
 
-                                    <Player >
-                                        <source src={videoSrc} />
-                                    </Player>
+                                    <Player > <source src={videoSrc} /> </Player>
 
 
                                 </div>

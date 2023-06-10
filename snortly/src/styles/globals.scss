@@ -1,5 +1,7 @@
 @import "./colors.scss";
 
+// Global styles that we use across the page
+
 // BUTTONS STYLES
 .btnPurple {
     color: $font-white;
@@ -68,6 +70,31 @@
     }
 }
 
+// Input styles
+.selectLight {
+    max-width: 250px;
+
+    background-color: $menu-bg-light1;
+    box-shadow: none;
+    border: none;
+
+    outline: none;
+
+    color: $font-white;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 16px;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+
+    padding: 0 1rem;
+
+    &:focus {
+        border: 1px solid $strong-purple;
+    }
+}
+
 .navLinkLight {
     color: $font-white;
 
@@ -84,7 +111,7 @@
 
     &:hover {
         background-color: transparent;
-        color: $strong-purple;
+        color: $light-purple;
     }
 }
 
@@ -131,6 +158,38 @@
     font-size: 16px;
     font-weight: 500px;
     color: $font-lightGrey;
+}
+
+// Responsive Text here
+.PopupTitle {
+    font-size: 40px;
+    font-weight: 600;
+    color: $font-white;
+
+    text-align: center;
+
+    margin-bottom: 2rem;
+}
+
+.inputLabel {
+    // You are using it in all pop ups
+    // also supports span and icon inside it
+    font-size: 16px;
+    font-weight: 600;
+
+    color: $font-lightGrey;
+
+    margin-bottom: 0.25rem;
+    margin-left: 0.1rem;
+
+    span {
+        margin-right: 0.5rem;
+    }
+
+    // Here we also can control Icons before text
+    // i {
+    // color: blue;
+    // }
 }
 
 // Error message container

@@ -1,3 +1,5 @@
+// Here we define mixins, so we can use them later in page responsivenes
+
 @mixin mobile {
     @media screen and (max-width: 480px) {
         @content;
@@ -24,6 +26,13 @@
 
 @mixin laptop {
     @media screen and (max-width: 1200px) {
+        @content;
+    }
+}
+
+// User for right side panel to hide at this max-width
+@mixin rightSidePanelHide {
+    @media screen and (max-width: 1215px) {
         @content;
     }
 }

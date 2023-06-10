@@ -1,32 +1,36 @@
-// Navbar
-$menu-bg-color: #1c1c1c;
-$menu-bg-light1: #2d2d2d;
+// Colors on our app, they are added everywhere so this is our main panel with colors
 
-// main colors
+// Navbar colors
+$menu-bg-color: #1c1c1c; // Menu navbar color and also container color
+$menu-bg-light1: #2d2d2d; // Menu navbar color but lighter (mainly for inputs)
+
+// Main colors
 $strong-purple: #6f20db; // Main purple color
-$light-purple: #5e10ca; // Hover color
+$light-purple: #5e10ca; // Main purple color : hover
 
-$page-background: #121212; // Page background
+$page-background: #121212; // Our Main Page container background color
+$page-blur-background-color: rgba(18, 18, 18, 0.2); // A slight dark color in background while popup is shown
 
-$error-background: #b52a44;
+$error-background: #d92a4a; // Our Error Container color (When we type something wrong etc.)
 
 // Reaction buttons colors
-$reactionLike: #8c43f2;
-$reactionDislike: #b52a44;
-$reactionComment: rgb(250, 171, 97);
+$reactionLike: #8c43f2; // Button like color
+$reactionDislike: #b52a44; // Button dislike color
+$reactionComment: rgb(250, 171, 97); // Button comments color
 
-// post tag
-$postTagBackground: #6f20db;
-$postTagText: #fff;
+// Post Tag
+$postTagBackground: $strong-purple; // Tag background
+$postTagText: #fff; // Tag Text color
 
+// Colors for basic texts
 // fonts / texts
 $font-white: #fff; // Default white color for text, might change later
 $font-lightGrey: #dbdbdb;
-$font-link: #6052f6;
+$font-link: #6052f6; // Page link color
 $font-dark: #2d2d2d;
 $font-error: #260f14;
 
-$font-cookie: rgb(250, 171, 97);
+$font-cookie: rgb(250, 171, 97); // Color that highlights Cookie text
 
 // These colors use in borders or other stuff, their naming wont change later,
 // font-white might be a little different over time like #ddd

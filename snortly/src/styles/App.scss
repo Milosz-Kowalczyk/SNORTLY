@@ -2,6 +2,7 @@
 @import url("https://fonts.cdnfonts.com/css/sf-pro-display");
 @import "./colors.scss";
 
+// Fonts to be used in our project
 // font-family: 'Inter', sans-serif;
 // font-family: 'Work Sans', sans-serif;
 
@@ -17,6 +18,13 @@ body {
 
     // font-family: "Inter", sans-serif;
     font-family: "SF Pro Display", sans-serif;
+
+    // Hide scrollbar for whole page
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 button,

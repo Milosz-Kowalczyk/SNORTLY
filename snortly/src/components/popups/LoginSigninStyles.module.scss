@@ -1,4 +1,5 @@
 @import "../../styles/colors.scss";
+@import "../../styles/variables.scss";
 
 .BlurryContainer {
     width: 100%;
@@ -9,7 +10,8 @@
     left: 0;
 
     z-index: 1000;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur($POPUP_BLUR_STRENGTH);
+    background-color: $page-blur-background-color;
 
     .ContainerWrapper {
         width: 100%;
@@ -49,29 +51,9 @@
                 }
             }
 
-            .FormTitle {
-                font-size: 40px;
-                font-weight: 600;
-                color: $font-white;
-
-                text-align: center;
-
-                margin-bottom: 2rem;
-            }
-
             .myIcon {
                 // Change this Important stuff later
                 color: $font-lightGrey !important;
-            }
-
-            .inputLabel {
-                font-size: 16px;
-                font-weight: 600;
-
-                color: $font-lightGrey;
-
-                margin-bottom: 0.25rem;
-                margin-left: 0.1rem;
             }
 
             input {

@@ -41,7 +41,7 @@ function DisplayFormatedDate({ dateDifference, postCreationDate }) {
         return <span className={classes.PostDate}>{convertDateToDayMonthYear(postCreationDate)}</span>;
     }
 
-    console.log(dateDifference, postCreationDate);
+    // console.log(dateDifference, postCreationDate);
 
     return <span className={classes.PostDate}>{dateDifference}d</span>;
 }
@@ -191,12 +191,22 @@ function HomePage() {
         };
     }, []);
 
-    const scrollToPosition = (position) => {
+    // This function is helper to our useEffect EventListener
+    // When we click "Expand image" this is triggered and moves our current scroll position
+    // To place when image was clicked (this is just a trick). Without this, our image expand button
+    // Would move scroll to the end of the image!
+    function scrollToPosition(position) {
         if (middleContainerRef.current) {
             middleContainerRef.current.scrollTop = position;
             setScrollPosition(position);
         }
     };
+
+    // When user clicks on signin button on 'Hey you' container
+    function handleSingupButtonClick() {
+        setCurrentPopup("SIGNIN_FORM")
+        setShowPopup(true);
+    }
 
     // Data for categories 
     const DUMMY_CATEGORIES = [
@@ -378,24 +388,17 @@ function HomePage() {
 
     const DUMMY_POPULAR_TAGS = ['Humor', 'WTF', 'Covid-19', 'Food', 'Drink', 'Economy & business', 'Crypto'];
 
-    // When user clicks on signin button on 'Hey you' container
-    function handleSingupButtonClick() {
-        setCurrentPopup("SIGNIN_FORM")
-        setShowPopup(true);
-    }
 
     return (
 
         <div className={'container ' + classes.mainContainer}>
 
-            {/* Hello You box  */}
-            {/* Categories  */}
+            {/* Left side Panel - Categories / Hey You Box  */}
             <div style={{ visibility: showSidePanels ? "visible" : "hidden" }} className={classes.ContainerWrapper + ' ' + classes.LeftContainerWrapper}>
 
                 <div className={classes.leftSideContainer}>
 
-                    {/* Hello you box  */}
-                    {/* Left side, also categories are here  */}
+                    {/* Hello You box (When user is not logged in) */}
                     <div className={classes.HeyYouBox}>
                         <h2 className={classes.HeyYouBoxTitle}> Hello You </h2>
                         <p className={classes.HeyYouBoxText}> Sign up now to see more content! </p>
@@ -447,14 +450,13 @@ function HomePage() {
                         </div>
                     </div>
 
+                    {/* Here we display all posts  */}
                     {
                         DUMMY_DATA.map((ele, idx) => {
                             let dateDifference = getDaysDifference(ele.postCreationDate);
 
                             return (
                                 <div key={`meme-${idx}-${ele.postId}`} className={classes.PostContainer}>
-
-
 
                                     {/* Post Info, Date + Username  */}
                                     <div className={classes.PostInfoContainer}>
@@ -467,12 +469,10 @@ function HomePage() {
                                     </div>
 
 
-
                                     {/* Post title  */}
                                     <div className={classes.PostTitleContainer}>
                                         <h2 className={classes.PostTitle}> {ele.postTitle} </h2>
                                     </div>
-
 
 
                                     {/* Display tags  */}
@@ -492,9 +492,7 @@ function HomePage() {
                                     {/* Post image  */}
                                     {/* Here we also check if image is not too big in height */}
                                     {/* if so, we add box that says 'Extend image or something' */}
-
                                     <DisplayImageWithHeightCheckup imageSrc={ele.postImage} scrollPositionBeforeClick={scrollPosition} scrollToPosition={scrollToPosition} />
-
 
 
                                     {/* Post reactions, likes, dislikes and comments  */}
@@ -519,10 +517,12 @@ function HomePage() {
 
 
 
-
-            {/* We treat adBox as place to show best memes and also ads :)  */}
+            {/* Right side Panel - Best memes, authors, top users, maybe ads? */}
             <div style={{ visibility: showSidePanels ? "visible" : "hidden" }} className={classes.ContainerWrapper + ' ' + classes.RightContainerWrapper}>
+
                 <div className={classes.rightSideContainer}>
+
+                    {/* We call it AdBox but it might change later ..  */}
                     <div className={classes.AdBox}>
                         <div className={classes.AdBoxTitleContainer}>
                             <h2 className={classes.AdBoxTitle}> Hottest meme </h2>

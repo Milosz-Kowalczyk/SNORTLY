@@ -1,3 +1,7 @@
-// This is for post max image height when we crop image and
-// add expand button
+// This file stores global variables, that we want to easily change if needed
+
+// This is for post max image height when we crop image and add expand button
 $MAX_IMAGE_EXPAND_HEIGHT: 1000px;
+
+// This is for blur (when pop up is shown)
+$POPUP_BLUR_STRENGTH: 3px;

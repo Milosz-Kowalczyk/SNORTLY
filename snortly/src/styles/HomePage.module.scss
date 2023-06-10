@@ -2,17 +2,19 @@
 @import "../styles/mixins.scss";
 @import "../styles/variables.scss";
 
+// Our HomePage is splitted into three columns
+// mainContainer
+// - LeftContainerWrapper (Hello You Box, Categories)
+// - MiddleContainerWrapper (Main section with post and popular tags)
+// - RightContainerWrapper (Best memes, top users ..)
+
 .mainContainer {
     width: 100%;
     height: calc(100vh - 50px);
 
-    // overflow: hidden;
-
     display: flex;
     flex-direction: row;
     justify-content: center;
-
-    // gap: 4rem;
 
     @include bulmaTablet {
         max-width: 90%;
@@ -174,17 +176,6 @@
                 flex-direction: row;
                 flex-wrap: wrap;
 
-                // overflow-x: scroll;
-
-                // padding-bottom: 1rem;
-
-                // Hide scrollbar
-                // -ms-overflow-style: none; /* IE and Edge */
-                // scrollbar-width: none; /* Firefox */
-                // &::-webkit-scrollbar {
-                //     display: none;
-                // }
-
                 gap: 0.75rem;
 
                 button {
@@ -201,8 +192,6 @@
         .middleSideContainer {
             max-width: 600px;
 
-            // background-color: $menu-bg-color;
-
             border-radius: 4px;
 
             display: flex;
@@ -214,8 +203,6 @@
             .PostContainer {
                 width: 100%;
                 min-height: 200px;
-
-                // background-color: $menu-bg-color;
 
                 display: flex;
                 flex-direction: column;
@@ -410,7 +397,7 @@
     }
 
     .RightContainerWrapper {
-        @media screen and (max-width: 1215px) {
+        @include rightSidePanelHide {
             display: none;
         }
 
@@ -432,8 +419,6 @@
                 width: 100%;
 
                 border-radius: 4px;
-
-                // background-color: $menu-bg-color;
 
                 overflow: hidden;
 

@@ -1,4 +1,5 @@
 @import "../../styles/colors.scss";
+@import "../../styles/variables.scss";
 
 .BlurryContainer {
     width: 100%;
@@ -8,8 +9,10 @@
     top: 0;
     left: 0;
 
+    background-color: $page-blur-background-color;
+
     z-index: 1000;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur($POPUP_BLUR_STRENGTH);
 
     .ContainerWrapper {
         width: 100%;
@@ -25,7 +28,7 @@
             min-height: 400px;
             max-height: 90vh;
 
-            overflow-y: scroll;
+            overflow-y: auto;
 
             background-color: $menu-bg-color;
 
@@ -56,7 +59,6 @@
             }
 
             // Title and text area stuff
-
             .PostActionsContainer {
                 width: 100%;
                 display: flex;
@@ -84,14 +86,6 @@
                         margin-right: 0.5rem;
                     }
                 }
-
-                .ContainerTitle {
-                    font-size: 40px;
-                    font-weight: 600;
-                    color: $font-white;
-
-                    text-align: left;
-                }
             }
 
             .TitleInputContainer {
@@ -100,20 +94,6 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-            }
-
-            .InputLabel {
-                font-size: 16px;
-                font-weight: 600;
-
-                color: $font-lightGrey;
-
-                margin-bottom: 0.25rem;
-                margin-left: 0.1rem;
-
-                span {
-                    margin-right: 0.75rem;
-                }
             }
 
             .TitleCounter {
@@ -195,16 +175,6 @@
 
                     margin-bottom: 0.5rem;
 
-                    .SelectTagsText {
-                        font-size: 16px;
-                        font-weight: 500;
-                        color: $font-lightGrey;
-
-                        i {
-                            margin-right: 0.5rem;
-                        }
-                    }
-
                     .MaxTagsText {
                         font-size: 18px;
                         font-weight: 700;
@@ -222,30 +192,6 @@
                     display: flex;
                     flex-direction: row;
                     gap: 0.5rem;
-
-                    select {
-                        max-width: 250px;
-
-                        background-color: $menu-bg-light1;
-                        box-shadow: none;
-                        border: none;
-
-                        outline: none;
-
-                        color: $font-white;
-                        font-family: inherit;
-                        font-weight: 500;
-                        font-size: 16px;
-
-                        border: 1px solid transparent;
-                        border-radius: 4px;
-
-                        padding: 0 1rem;
-
-                        &:focus {
-                            border: 1px solid $strong-purple;
-                        }
-                    }
 
                     button {
                         width: 32px;

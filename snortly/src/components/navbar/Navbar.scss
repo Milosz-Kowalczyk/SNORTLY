@@ -30,9 +30,24 @@
     // }
 }
 
-.navbar-MemeOnlyIcon {
+// It is for our icon to toggle read mode (called Focus mode)
+.navbar-FocusContainer {
+    text-align: center;
+
+    @include bulmaTablet {
+        display: none;
+    }
+
     i {
+        width: 32px;
+        height: 32px;
         color: $font-white;
+        padding: 0.5rem;
+        border-radius: 50px;
+    }
+
+    .FocusActive {
+        background-color: $reactionDislike;
     }
 }
 

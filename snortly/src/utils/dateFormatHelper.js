@@ -1,4 +1,7 @@
+
+// File Description:
 // Here we write helper functions that can be used somewhere later
+// Functions are mainly focused on date formatting 
 
 
 // ## DATE FORMATTING HELPERS  ##
