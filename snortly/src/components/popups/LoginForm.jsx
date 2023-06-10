@@ -114,7 +114,7 @@ function LoginForm() {
                     </button>
 
                     <br /> <br />
-                    <p className='textGray-medium text-center'>
+                    <p className='p4Text text-center'>
                         Don&apos;t have an account yet? <br /><span className='linkText' onClick={handleSwitchToSignin}>Create one</span>
                     </p>
 

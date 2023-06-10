@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-
-import '../styles/globals.scss';
-import classes from '../styles/HomePage.module.scss';
 import { ContextPopups } from '../context/popupsContext';
 import { convertDateToDayAndMonth, convertDateToDayMonthYear, extractHourAndMinutes, getDaysDifference, isInCurrentYear } from '../utils/dateFormatHelper';
 import { ContextActions } from '../context/actionsContext';
+
+import classes from '../styles/HomePage.module.scss';
+import '../styles/globals.scss';
+
 
 
 function DisplayFormatedDate({ dateDifference, postCreationDate }) {
@@ -24,26 +25,26 @@ function DisplayFormatedDate({ dateDifference, postCreationDate }) {
 
     // - Display 14:30 HH:mm format if post is from today
     if (parseInt(dateDifference) === 0) {
-        return <span className={classes.PostDate}>{extractHourAndMinutes(postCreationDate)}</span>;
+        return <span className="PostDate">{extractHourAndMinutes(postCreationDate)}</span>;
     }
     // - Display 1d, 2d if post is max one week old
     else if (parseInt(dateDifference) < 8) {
-        return <span className={classes.PostDate}>{dateDifference}d</span>;
+        return <span className="PostDate">{dateDifference}d</span>;
     }
 
     // - Display 01.02(dd.mm) if post is in current year and is above week old
     else if (parseInt(dateDifference) > 7 && isDateInCurrentYear) {
-        return <span className={classes.PostDate}>{convertDateToDayAndMonth(postCreationDate)}</span>;
+        return <span className="PostDate">{convertDateToDayAndMonth(postCreationDate)}</span>;
     }
 
     // - Display 01.02.2023 if post is not in current year 
     else if (!isDateInCurrentYear) {
-        return <span className={classes.PostDate}>{convertDateToDayMonthYear(postCreationDate)}</span>;
+        return <span className="PostDate">{convertDateToDayMonthYear(postCreationDate)}</span>;
     }
 
     // console.log(dateDifference, postCreationDate);
 
-    return <span className={classes.PostDate}>{dateDifference}d</span>;
+    return <span className="PostDate">{dateDifference}d</span>;
 }
 
 function DisplayImageWithHeightCheckup({ imageSrc, scrollPositionBeforeClick, scrollToPosition }) {
@@ -400,8 +401,8 @@ function HomePage() {
 
                     {/* Hello You box (When user is not logged in) */}
                     <div className={classes.HeyYouBox}>
-                        <h2 className={classes.HeyYouBoxTitle}> Hello You </h2>
-                        <p className={classes.HeyYouBoxText}> Sign up now to see more content! </p>
+                        <h2 className="h1Text"> Hello You </h2>
+                        <p className="p3Text text-center"> Sign up now to see more content! </p>
 
                         <button onClick={handleSingupButtonClick} className='button btnPurple'>
                             Sign up
@@ -410,7 +411,7 @@ function HomePage() {
 
                     {/* Categories  */}
                     <div className={classes.CategoriesBox}>
-                        <h2 className={classes.CategoriesBoxTitle}> Categories </h2>
+                        <h2 className="h3Text"> Categories </h2>
 
                         {/* Display all categories here  */}
                         {
@@ -418,7 +419,7 @@ function HomePage() {
                                 return (
                                     <div key={`category-${idx}`} className={classes.CategoryBox} >
                                         <div className={classes.CategoryBoxIconContainer}> <i className={ele.fontAwesomeIcon}></i> </div>
-                                        <p className={classes.CategoryTitle}> {ele.categoryTitle} </p>
+                                        <p className="p4Text"> {ele.categoryTitle} </p>
                                     </div>
                                 )
                             })
@@ -438,7 +439,7 @@ function HomePage() {
 
                     {/* Here we display popular tags  */}
                     <div className={classes.middleSidePopularTagsContainer}>
-                        <h2 className={classes.PopularTagsTitle}> Popular tags right now </h2>
+                        <h2 className="h3Text"> Popular tags right now </h2>
                         <div className={classes.PopularTagsBox}>
                             {
                                 DUMMY_POPULAR_TAGS.map((ele, idx) => (
@@ -460,8 +461,11 @@ function HomePage() {
 
                                     {/* Post Info, Date + Username  */}
                                     <div className={classes.PostInfoContainer}>
+                                        {/* Post Owner Avatar  */}
                                         <img className={classes.PostOwnerAvatar} src={ele.postOwnerAvatar} alt="" />
-                                        <h2 className={classes.PostOwner}> {ele.postOwner} </h2>
+
+                                        {/* Post Owner Text  */}
+                                        <h4 className="PostOwner"> {ele.postOwner} </h4>
 
                                         {/* Display post creation date with correct format */}
                                         <DisplayFormatedDate dateDifference={dateDifference} postCreationDate={ele.postCreationDate} />
@@ -471,7 +475,7 @@ function HomePage() {
 
                                     {/* Post title  */}
                                     <div className={classes.PostTitleContainer}>
-                                        <h2 className={classes.PostTitle}> {ele.postTitle} </h2>
+                                        <h2 className="PostTitle"> {ele.postTitle} </h2>
                                     </div>
 
 
@@ -525,7 +529,7 @@ function HomePage() {
                     {/* We call it AdBox but it might change later ..  */}
                     <div className={classes.AdBox}>
                         <div className={classes.AdBoxTitleContainer}>
-                            <h2 className={classes.AdBoxTitle}> Hottest meme </h2>
+                            <h2 className="h3Text"> Hottest meme </h2>
                         </div>
 
                         {/* We do it also even tho we make this container visibility hidden because img will be hidden with delay
@@ -540,7 +544,7 @@ function HomePage() {
 
                     <div className={classes.AdBox}>
                         <div className={classes.AdBoxTitleContainer}>
-                            <h2 className={classes.AdBoxTitle}> Meme of the week </h2>
+                            <h2 className="h3Text"> Meme of the week </h2>
                         </div>
 
                         {showSidePanels &&

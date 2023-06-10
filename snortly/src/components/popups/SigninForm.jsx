@@ -123,7 +123,7 @@ function SigninForm() {
 
 
                     <br /> <br />
-                    <p className='textGray-medium text-center'>
+                    <p className='p4Text text-center'>
                         Already have an account? <br /><span onClick={handleSwitchToLogin} className='linkText'>Log in</span>
                     </p>
 

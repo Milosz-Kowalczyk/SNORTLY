@@ -19,12 +19,13 @@ function NewPost() {
     // MEME file
     // We allow only for PNG, JPG, GIF, MP4
     const MAX_KB_FILE_SIZE = 2000 // Max is 2000KB, 2MB;
-    const [uploadedFile, setUploadedFile] = useState() // Stores file that was uploaded (can be image or video)
-    const [fileUrl, setFileUrl] = useState(); // Stores file URL
-    const [postURL, setPostURL] = useState();   // Stores URL that user passed in input (optional)
-    const [fileType, setFileType] = useState(); // Helper that stores information either "image" or "video"
-    const [videoSrc, setVideoSrc] = useState();
-    const [showFilePreview, setShowFilePreview] = useState(false)
+    const [uploadedFile, setUploadedFile] = useState("") // Stores file that was uploaded (can be image or video)
+    const [fileUrl, setFileUrl] = useState(""); // Stores file URL
+    const [postURL, setPostURL] = useState("");   // Stores URL that user passed in input (optional)
+    const [fileType, setFileType] = useState(""); // Helper that stores information either "image" or "video"
+    const [videoSrc, setVideoSrc] = useState("");
+    const [showFilePreview, setShowFilePreview] = useState(false);
+    const [isPostURLCorrect, setIsPostURLCorrect] = useState(false);
 
     // Select tags stuff 
     const MAX_TAGS = 5; // Max number of selected tags
@@ -214,6 +215,8 @@ function NewPost() {
 
         let possible_errors = [];
 
+        console.log("Hello", file)
+
         // Checking for errors
         if (fileType !== "image/jpeg" && fileType !== "image/png" && fileType !== "image/jpg" && fileType !== "image/gif" && fileType !== "video/mp4") {
             possible_errors.push("This file extension is not supported!")
@@ -233,6 +236,7 @@ function NewPost() {
             if (fileType === "video/mp4") {
                 var url = URL.createObjectURL(file);
 
+                // console.log("url", url)
                 setVideoSrc(url);
                 setFileType("video")
 
@@ -253,31 +257,47 @@ function NewPost() {
     // Handle post url when it is passed
     function handlePostURL(e) {
         let url = e.target.value;
-        let urlExtension = String(url.substring(url.length - 3)).toLowerCase();
-        let possibleExtensions = ["gif", "png", "jpg", "jpeg"]
+        const urlExtension = url.substring(url.lastIndexOf('.') + 1);
+        let possibleExtensions = ["gif", "png", "jpg", "jpeg", "webp"]
 
         let possible_erros = [];
 
-        if (!possibleExtensions.includes(urlExtension) && url.length > 0) {
-            possible_erros.push("Url has wrong extension!")
-        }
-
-        if (possible_erros.length > 0) {
-            setErrorMessages([...possible_erros])
-        }
-        else if (url.length <= 0) {
-            setErrorMessages([])
-        }
-        else if (url.length > 0) {
+        // First we check is url has .mp4 
+        if (urlExtension === 'mp4') {
+            setVideoSrc(url);
+            setFileType("video");
+            setErrorMessages([]);
             setPostURL(url);
-            setFileType("image");
-            setErrorMessages([])
+            setShowFilePreview(true);
+            setIsPostURLCorrect(true);
+        } else {
+            if (!possibleExtensions.includes(urlExtension) && url.length > 0) {
+                possible_erros.push("Url has wrong extension!")
+            }
 
-            // We want delay to make image url copy a bit more realistic 
-            setTimeout(() => {
-                setShowFilePreview(true);
-            }, 1000);
+            if (possible_erros.length > 0) {
+                setErrorMessages([...possible_erros])
+            }
+            else if (url.length <= 0) {
+                setErrorMessages([])
+            }
+            else if (url.length > 0) {
+                setFileType("image");
+                setErrorMessages([])
+                setIsPostURLCorrect(true);
+
+                // We want delay to make image url copy a bit more realistic 
+                setTimeout(() => {
+                    setShowFilePreview(true);
+                }, 1000);
+            }
+
+            setPostURL(url);
         }
+
+
+
+
 
     }
 
@@ -288,6 +308,7 @@ function NewPost() {
         setShowFilePreview(false);
         setPostURL("");
         setUploadedFile("")
+        setIsPostURLCorrect(false);
     }
 
 
@@ -303,8 +324,6 @@ function NewPost() {
         if (selectedTags.length === 0) {
             possible_errors.push("There has to be at least one tag added!")
         }
-
-        console.log(postURL, uploadedFile)
         // Here we check two things
         // If user uploaded file instead of pasting image
         if (!postURL) {
@@ -396,7 +415,9 @@ function NewPost() {
                     </div>
 
                     {/* Title Text area (Because we wanted to add new line when user reaches some input limit) */}
-                    <TextareaAutosize spellCheck="false" maxRows={5} value={postTitle} onChange={(e) => { handlepostTitleChange(e) }} className={classes.TitleTextArea} />
+                    <div className={classes.TextAreaContainer}>
+                        <TextareaAutosize spellCheck="false" maxRows={5} value={postTitle} onChange={(e) => { handlepostTitleChange(e) }} className={classes.TitleTextArea} />
+                    </div>
 
 
                     {/* // Add tags section  */}
@@ -467,11 +488,11 @@ function NewPost() {
 
                                 {/* // Upload via file upload */}
                                 <label className={'button btnPurple ' + classes.BtnUpload}>
-                                    <input type="file" style={{ display: "none" }} onChange={(e) => { handleFileChange(e) }} />
+                                    <input type="file" style={{ display: "none" }} disabled={isPostURLCorrect} onChange={(e) => { handleFileChange(e) }} />
                                     <i className="fa fa-cloud-upload" /> Upload image
                                 </label>
 
-                                <p className={classes.WeSupportText}> We support files and links with PNG, JPG, GIF or MP4 extensions. </p>
+                                <p className="p5Text" style={{ marginTop: "0.75rem", textAlign: "left", alignSelf: "flex-start" }}> We support files and links with PNG, JPG, GIF or MP4 extensions. </p>
                             </>
                         }
 
@@ -493,14 +514,19 @@ function NewPost() {
                         }
 
                         {/* Show preview of file if this is video  */}
-                        {(showFilePreview && fileType === "video") &&
+                        {(showFilePreview && fileType === "video" && videoSrc) &&
                             <div className={classes.VideoPreviewContainer}>
                                 <div className={classes.VideoWrapper}>
                                     <div className={classes.DeleteUploadedImageContainer} onClick={handleUploadedImageDelete}>
                                         <i className="fa-solid fa-trash-can"></i>
                                     </div>
 
-                                    <Player > <source src={videoSrc} /> </Player>
+                                    {console.log("yes", videoSrc)}
+
+                                    <Player >
+                                        <source src={videoSrc} />
+                                    </Player>
+
 
 
                                 </div>

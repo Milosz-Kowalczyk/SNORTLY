@@ -1,4 +1,5 @@
 @import "./colors.scss";
+@import "./mixins.scss";
 
 // Global styles that we use across the page
 
@@ -162,13 +163,17 @@
 
 // Responsive Text here
 .PopupTitle {
-    font-size: 40px;
+    font-size: 2.5rem;
     font-weight: 600;
     color: $font-white;
 
     text-align: center;
 
     margin-bottom: 2rem;
+
+    @include mobile {
+        font-size: 1.6rem;
+    }
 }
 
 .inputLabel {
@@ -190,6 +195,72 @@
     // i {
     // color: blue;
     // }
+}
+
+.PostDate {
+    font-size: 0.8rem;
+    font-weight: 100;
+    color: $font-lightDark;
+}
+
+.PostOwner {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $font-lightGrey;
+
+    cursor: pointer;
+
+    &:hover {
+        color: $white;
+    }
+}
+
+.PostTitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: $font-white;
+}
+
+// Responsive Text, same order as headings (p1 means the biggest text)
+// h{n} is mostly bolded while p{2] is normal light text
+
+.p3Text {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: $font-lightGrey;
+}
+
+.p4Text {
+    font-size: 1rem;
+    font-weight: 400;
+    color: $font-white;
+}
+
+.p5Text {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: $font-white;
+}
+
+.h1Text {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: $font-white;
+
+    margin-bottom: 0.5rem;
+}
+
+.h3Text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $font-white;
+
+    margin-bottom: 0.5rem;
+}
+
+// Optional text colors
+.text-lightGrey {
+    color: $font-lightGrey;
 }
 
 // Error message container

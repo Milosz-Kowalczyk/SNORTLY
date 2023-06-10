@@ -63,25 +63,15 @@
 
                 background-color: $menu-bg-color;
 
-                padding: 1.5rem 1rem;
+                padding: 1rem 1rem;
 
                 display: flex;
                 flex-direction: column;
                 align-items: center;
 
-                gap: 0.5rem;
-
                 button {
                     width: 60%;
                     margin-top: 0.5rem;
-                }
-
-                .HeyYouBoxTitle {
-                    font-size: 26px;
-                    font-weight: 600;
-
-                    color: $font-white;
-                    text-align: center;
                 }
 
                 .HeyYouBoxText {
@@ -110,14 +100,6 @@
                 flex-direction: column;
                 gap: 0.25rem;
 
-                .CategoriesBoxTitle {
-                    font-size: 22px;
-                    font-weight: 600;
-                    color: $font-white;
-
-                    margin-bottom: 1rem;
-                }
-
                 .CategoryBox {
                     display: flex;
                     flex-direction: row;
@@ -135,12 +117,6 @@
                     // For equal space after icon
                     .CategoryBoxIconContainer {
                         width: 32px;
-                    }
-
-                    .CategoryTitle {
-                        font-size: 18px;
-                        font-weight: 400;
-                        color: $font-white;
                     }
 
                     &:hover {
@@ -162,14 +138,6 @@
         .middleSidePopularTagsContainer {
             margin-top: 2rem;
             margin-bottom: -2rem;
-
-            .PopularTagsTitle {
-                font-size: 22px;
-                font-weight: 600;
-                color: $font-white;
-
-                margin-bottom: 0.5rem;
-            }
 
             .PopularTagsBox {
                 display: flex;
@@ -219,37 +187,18 @@
 
                     gap: 0.5rem;
 
-                    color: $font-lightGrey;
-                    font-weight: 500;
-
-                    .PostOwner {
-                        font-weight: 500;
-                    }
-
                     .PostOwnerAvatar {
-                        max-width: 24px;
-                        min-width: 24px;
+                        max-width: 20px;
+                        min-width: 20px;
                         height: auto;
 
                         background-color: $menu-bg-color;
                         border-radius: 50px;
                     }
-
-                    .PostDate {
-                        letter-spacing: 1px;
-                        font-weight: 300;
-                        font-size: 0.8em;
-                    }
                 }
 
                 .PostTitleContainer {
                     width: 100%;
-
-                    .PostTitle {
-                        font-size: 22px;
-                        font-weight: 600;
-                        color: $font-lightGrey;
-                    }
                 }
 
                 .PostImageContainer {
@@ -435,15 +384,6 @@
                     width: 100%;
 
                     margin-top: 0.5rem;
-                    margin-bottom: 0.5rem;
-
-                    .AdBoxTitle {
-                        font-size: 18px;
-                        font-weight: 600;
-
-                        color: $font-white;
-                        text-align: left;
-                    }
                 }
 
                 .AdBoxImageContainer {
