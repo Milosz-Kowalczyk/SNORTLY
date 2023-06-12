@@ -203,14 +203,6 @@
 
                 .PostImageContainer {
                     width: 100%;
-                    background-color: $black;
-
-                    display: flex;
-                    justify-content: center;
-                }
-
-                .PostImageContainerNotExpanded {
-                    width: 100%;
                     max-height: $MAX_IMAGE_EXPAND_HEIGHT;
 
                     overflow: hidden;
@@ -223,6 +215,11 @@
                     }
                 }
 
+                .ExpandImageButton {
+                    width: 100%;
+                    margin-top: -0.5rem;
+                }
+
                 .PostImageContainerExpanded {
                     width: 100%;
 
@@ -230,22 +227,9 @@
 
                     background-color: $black;
 
-                    display: flex;
-                    justify-content: center;
-                }
-
-                .PostImageExpandContainer {
-                    width: 100%;
-                    max-height: 40px;
-
-                    button {
-                        width: 100%;
-                        margin-top: -1rem;
-
-                        font-size: 22px;
-                        font-weight: 600;
-
-                        padding: 0.5rem;
+                    img {
+                        display: block;
+                        margin: 0 auto;
                     }
                 }
 

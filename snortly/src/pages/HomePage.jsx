@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { ContextPopups } from '../context/popupsContext';
 import { convertDateToDayAndMonth, convertDateToDayMonthYear, extractHourAndMinutes, getDaysDifference, isInCurrentYear } from '../utils/dateFormatHelper';
 import { ContextActions } from '../context/actionsContext';
@@ -47,161 +47,60 @@ function DisplayFormatedDate({ dateDifference, postCreationDate }) {
     return <span className="PostDate">{dateDifference}d</span>;
 }
 
-function DisplayImageWithHeightCheckup({ imageSrc, scrollPositionBeforeClick, scrollToPosition }) {
+function DisplayImage({ imgSrc }) {
 
     /*
-    This function runs when post image loads, checks for its height and decides whether we want to 
-    add expand button or not
+    Displaying image depending on its size, we want to hide image above 1500 px in height
+    
+    Fixed : Now It wont re render at every scroll, we found better solution that triggers
+    only when expand button was clicked, awesome
     */
 
-    const imageRef = useRef(null);
-    const MAX_IMAGE_HEIGHT = 1000;
-
-    const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
+    const [imageHeight, setImageHeight] = useState(null);
+    const MAX_IMAGE_EXPAND_HEIGHT = 1500;
 
-    const [wasImageExpandedOnce, setWasImageExpandedOnce] = useState(false);
-
-
-    // Use Effect to change state with image will actually load and then we want to 
-    // Run again, to add expand button if neccesasary
     useEffect(() => {
-        if (imageRef.current && imageRef.current.complete) {
-            setIsImageLoaded(true);
-        }
-    }, []);
+        const image = new Image();
+        image.src = imgSrc;
+        image.onload = () => {
+            setImageHeight(image.height);
+        };
+    }, [imgSrc]);
 
-    // When expand image is clicked
-    function handleExpandImageClick(event) {
+    const toggleExpandImage = () => {
         setIsExpanded(!isExpanded);
-        setWasImageExpandedOnce(true);
-
-        // Timeout is added so our expand image wont get wrong scrollPositionBeforeClick, it will 
-        // be added to different react cycle, so it will work correctly
-        setTimeout(() => {
-            scrollToPosition(scrollPositionBeforeClick);
-        }, 0);
-    }
-
-    if (isImageLoaded) {
-        const imageHeight = imageRef.current.clientHeight;
-
-        // If image is below MAX_IMAGE_HEIGHT, display normally 
-        if (imageHeight < MAX_IMAGE_HEIGHT) {
-            return (
-                <div className={classes.PostImageContainer}>
-                    <img ref={imageRef} src={imageSrc} alt="" />
-                </div>
-            );
-        }
-        // If image is higher than MAX_IMAHE_HEIGHT, display image with expand button 
-        else if (imageHeight > MAX_IMAGE_HEIGHT) {
-            return (
-                <>
-                    <div
-                        className={
-                            (!isExpanded)
-                                ? classes.PostImageContainerNotExpanded
-                                : classes.PostImageContainerExpanded
-                        }
-                    >
-                        <img ref={imageRef} src={imageSrc} alt="" />
-                    </div>
-
-                    {!isExpanded &&
-                        <div className={classes.PostImageExpandContainer}>
-                            <button onClick={handleExpandImageClick} className={"btnPurple"}>
-                                Expand image
-                            </button>
-                        </div>
-                    }
-                </>
-            );
-        }
-        // This is neccessary, because when we click hide and show once, we get image height at 1000 
-        // which will return normal image without expand button, so this is our helper
-        // to display expand button 
-        else if (wasImageExpandedOnce) {
-            return (
-                <>
-                    <div
-                        className={
-                            !isExpanded
-                                ? classes.PostImageContainerNotExpanded
-                                : classes.PostImageContainerExpanded
-                        }
-                    >
-                        <img ref={imageRef} src={imageSrc} alt="" />
-                    </div>
-
-                    {!isExpanded ? (
-                        <div className={classes.PostImageExpandContainer}>
-                            <button onClick={handleExpandImageClick} className={"btnPurple"}>
-                                Expand image
-                            </button>
-                        </div>
-                    ) : (
-                        <div className={classes.PostImageExpandContainer}>
-                            <button onClick={handleExpandImageClick} className={"btnPurple"}>
-                                Hide image
-                            </button>
-                        </div>
-                    )}
-                </>
-            );
-        }
-    }
+    };
 
     return (
-        <div className={classes.PostImageContainer}>
-            <img ref={imageRef} src={imageSrc} alt="" onLoad={() => setIsImageLoaded(true)} />
-        </div>
-    );
-}
+        <Fragment>
+            {
+                (imageHeight > MAX_IMAGE_EXPAND_HEIGHT)
+                    ?
+                    <Fragment>
+                        <div style={isExpanded ? { maxHeight: imageHeight + "px" } : { maxHeight: MAX_IMAGE_EXPAND_HEIGHT + "px" }} className={isExpanded ? classes.PostImageContainer : classes.PostImageContainerExpanded}>
+                            <img src={imgSrc} alt="" />
+                        </div>
 
+                        {
+                            (!isExpanded) && <button className={"button btnPurple " + classes.ExpandImageButton} onClick={toggleExpandImage}> Expand image </button>
+                        }
+
+                    </Fragment>
+                    :
+                    <div className={classes.PostImageContainer}>
+                        <img src={imgSrc} alt="" />
+                    </div>
+            }
+        </Fragment>
+
+    )
+}
 
 function HomePage() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups)
     const { showSidePanels } = useContext(ContextActions)
-
-    // These two is for controlling page scroll 
-    const middleContainerRef = useRef(null);
-    const [scrollPosition, setScrollPosition] = useState(0);
-
-    // This effect is for adding event listener scroll to middlePageContainer
-    // It will update current scroll postion of our container
-    useEffect(() => {
-        const middleContainer = middleContainerRef.current; // Create a variable to hold the ref value
-
-        const handleScroll = () => {
-            if (middleContainer) {
-                const { scrollTop } = middleContainer;
-                setScrollPosition(scrollTop);
-            }
-        };
-
-        if (middleContainer) {
-            middleContainer.addEventListener('scroll', handleScroll);
-        }
-
-        return () => {
-            if (middleContainer) {
-                middleContainer.removeEventListener('scroll', handleScroll);
-            }
-        };
-    }, []);
-
-    // This function is helper to our useEffect EventListener
-    // When we click "Expand image" this is triggered and moves our current scroll position
-    // To place when image was clicked (this is just a trick). Without this, our image expand button
-    // Would move scroll to the end of the image!
-    function scrollToPosition(position) {
-        if (middleContainerRef.current) {
-            middleContainerRef.current.scrollTop = position;
-            setScrollPosition(position);
-        }
-    };
 
     // When user clicks on signin button on 'Hey you' container
     function handleSingupButtonClick() {
@@ -433,7 +332,7 @@ function HomePage() {
 
 
             {/* Here, we display memes (middle section ) */}
-            <div ref={middleContainerRef} className={classes.ContainerWrapper + ' ' + classes.MiddleContainerWrapper}>
+            <div className={classes.ContainerWrapper + ' ' + classes.MiddleContainerWrapper}>
 
                 <div className={classes.middleSideContainer}>
 
@@ -494,10 +393,7 @@ function HomePage() {
 
 
                                     {/* Post image  */}
-                                    {/* Here we also check if image is not too big in height */}
-                                    {/* if so, we add box that says 'Extend image or something' */}
-                                    <DisplayImageWithHeightCheckup imageSrc={ele.postImage} scrollPositionBeforeClick={scrollPosition} scrollToPosition={scrollToPosition} />
-
+                                    <DisplayImage imgSrc={ele.postImage} />
 
                                     {/* Post reactions, likes, dislikes and comments  */}
                                     <div className={classes.PostReactionsContainer}>
