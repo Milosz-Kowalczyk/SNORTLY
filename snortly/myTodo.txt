@@ -27,3 +27,5 @@ Here you type things that you wanted to do before you went ..
 - Dodaj smooth scroll 
 - Dodaj classy z responsywnymi textami 
 - Popraw w PopUp NewPost w responsywność PostTitle inputa (bo się wysokość nie zmienia)
+
+WAŻNE, Popraw HOMEPAGE aby podzielić go na mniejsze reusable components. bo uzyjesz ich jeszcze kilka razy..
