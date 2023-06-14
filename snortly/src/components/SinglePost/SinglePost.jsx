@@ -3,7 +3,6 @@ import React, { Fragment, useEffect, useState } from 'react'
 // MAIN Styles for this component are taken from HomePage module (Because they are related)
 import classes from "../../styles/HomePage.module.scss"
 import { convertDateToDayAndMonth, convertDateToDayMonthYear, extractHourAndMinutes, getDaysDifference, isInCurrentYear } from '../../utils/dateFormatHelper';
-import PopularTags from '../PopularTags/PopularTags';
 
 function DisplayFormatedDate({ postCreationDate }) {
     /*
@@ -44,7 +43,7 @@ function DisplayFormatedDate({ postCreationDate }) {
     return <span className="PostDate">{dateDifference}d</span>;
 }
 
-function DisplayImage({ imgSrc }) {
+function DisplayPostImage({ imgSrc, postId = null, isPostClickable = false }) {
 
     /*
     Displaying image depending on its size, we want to hide image above 1500 px in height
@@ -55,7 +54,7 @@ function DisplayImage({ imgSrc }) {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [imageHeight, setImageHeight] = useState(null);
-    const MAX_IMAGE_EXPAND_HEIGHT = 1500;
+    const MAX_IMAGE_EXPAND_HEIGHT = 1150; // Remeber to match variable in variables.scss
 
     useEffect(() => {
         const image = new Image();
@@ -75,7 +74,7 @@ function DisplayImage({ imgSrc }) {
                 (imageHeight > MAX_IMAGE_EXPAND_HEIGHT)
                     ?
                     <Fragment>
-                        <div style={isExpanded ? { maxHeight: imageHeight + "px" } : { maxHeight: MAX_IMAGE_EXPAND_HEIGHT + "px" }} className={isExpanded ? classes.PostImageContainer : classes.PostImageContainerExpanded}>
+                        <div onClick={() => handlePostClick(postId, isPostClickable)} style={isExpanded ? { maxHeight: imageHeight + "px" } : { maxHeight: MAX_IMAGE_EXPAND_HEIGHT + "px" }} className={isExpanded ? classes.PostImageContainer : classes.PostImageContainerExpanded}>
                             <img src={imgSrc} alt="" />
                         </div>
 
@@ -85,7 +84,7 @@ function DisplayImage({ imgSrc }) {
 
                     </Fragment>
                     :
-                    <div className={classes.PostImageContainer}>
+                    <div onClick={() => handlePostClick(postId, isPostClickable)} className={classes.PostImageContainer}>
                         <img src={imgSrc} alt="" />
                     </div>
             }
@@ -94,7 +93,25 @@ function DisplayImage({ imgSrc }) {
     )
 }
 
-function SinglePost({ POST_DATA }) {
+function handlePostClick(postId, isPostClickable) {
+    /*
+    When we clicked on post image or title, we want to open post in new page (current or new window)
+    
+    isPostClickable is boolean helper, so we can make post clickable on homepage but not on singlePostPage
+    */
+
+    // We want to switch to new page only if postId exists and was passed
+    // it we got null (it might be intentional, then no page will be openned)
+    if (postId && isPostClickable) {
+        window.open("http://localhost:3000/post/" + postId, "_blank")
+    }
+    else {
+        console.log("clicked, got null or false")
+        console.log(postId, isPostClickable)
+    }
+}
+
+function SinglePost({ POST_DATA, isPostClickable = false }) {
 
     /*
     POST_DATA is object that stores all data about single post
@@ -102,69 +119,66 @@ function SinglePost({ POST_DATA }) {
 
     return (
         <Fragment>
-            <div className={classes.middleSideContainer}>
-
-                <PopularTags />
-
-                {/* Here we display all posts  */}
-
-                <div key={`meme-${POST_DATA.postId}`} className={classes.PostContainer}>
-
-                    {/* Post Info, Date + Username  */}
-                    <div className={classes.PostInfoContainer}>
-                        {/* Post Owner Avatar  */}
-                        <img className={classes.PostOwnerAvatar} src={POST_DATA.postOwnerAvatar} alt="" />
-
-                        {/* Post Owner Text  */}
-                        <h4 className="PostOwner"> {POST_DATA.postOwner} </h4>
-
-                        {/* Display post creation date with correct format */}
-                        <DisplayFormatedDate postCreationDate={POST_DATA.postCreationDate} />
-
-                    </div>
 
 
-                    {/* Post title  */}
-                    <div className={classes.PostTitleContainer}>
-                        <h2 className="PostTitle"> {POST_DATA.postTitle} </h2>
-                    </div>
+            {/* Here we display all posts  */}
 
+            <div key={`meme-${POST_DATA.postId}`} className={classes.PostContainer}>
 
-                    {/* Display tags  */}
-                    <div className={classes.PostTagsContainer}>
-                        {
-                            POST_DATA.postTags.map((ele, idx) => {
-                                return (
-                                    <button key={`tag-${idx}-${ele}`} className={classes.PostTag}>
-                                        {ele}
-                                    </button>
-                                )
-                            })
-                        }
-                    </div>
+                {/* Post Info, Date + Username  */}
+                <div className={classes.PostInfoContainer}>
+                    {/* Post Owner Avatar  */}
+                    <img className={classes.PostOwnerAvatar} src={POST_DATA.postOwnerAvatar} alt="" />
 
+                    {/* Post Owner Text  */}
+                    <h4 className="PostOwner"> {POST_DATA.postOwner} </h4>
 
-                    {/* Post image  */}
-                    <DisplayImage imgSrc={POST_DATA.postImage} />
-
-                    {/* Post reactions, likes, dislikes and comments  */}
-                    <div className={classes.PostReactionsContainer}>
-                        <button className={classes.reactionButton + ' ' + classes.reactionButtonLike}> <i className="fa-solid fa-thumbs-up"></i> {POST_DATA.postLikes} </button>
-                        <button className={classes.reactionButton + ' ' + classes.reactionButtonDislike}> <i className="fa-solid fa-thumbs-down"></i> {POST_DATA.postDislikes} </button>
-                        <button className={classes.reactionButton + ' ' + classes.reactionButtonComment}> <i className="fa-solid fa-comments"></i> {POST_DATA.postComments} </button>
-                    </div>
-
-                    {/* <div className={classes.PostEnd}>
-                                    <hr className={classes.PostEndHr} />
-                                </div> */}
+                    {/* Display post creation date with correct format */}
+                    <DisplayFormatedDate postCreationDate={POST_DATA.postCreationDate} />
 
                 </div>
 
 
+                {/* Post title  */}
+                <div className={classes.PostTitleContainer}>
+                    <h2 onClick={() => handlePostClick(POST_DATA.postId, isPostClickable)} className="PostTitle"> {POST_DATA.postTitle} </h2>
+                </div>
 
+
+                {/* Display tags  */}
+                <div className={classes.PostTagsContainer}>
+                    {
+                        POST_DATA.postTags.map((ele, idx) => {
+                            return (
+                                <button key={`tag-${idx}-${ele}`} className={classes.PostTag}>
+                                    {ele}
+                                </button>
+                            )
+                        })
+                    }
+                </div>
+
+
+                {/* Post image  */}
+                <DisplayPostImage isPostClickable={isPostClickable} postId={POST_DATA.postId} imgSrc={POST_DATA.postImage} />
+
+
+                {/* Post reactions, likes, dislikes and comments  */}
+                <div className={classes.PostReactionsContainer}>
+                    <button className={classes.reactionButton + ' ' + classes.reactionButtonLike}> <i className="fa-solid fa-thumbs-up"></i> {POST_DATA.postLikes} </button>
+                    <button className={classes.reactionButton + ' ' + classes.reactionButtonDislike}> <i className="fa-solid fa-thumbs-down"></i> {POST_DATA.postDislikes} </button>
+                    <button className={classes.reactionButton + ' ' + classes.reactionButtonComment}> <i className="fa-solid fa-comments"></i> {POST_DATA.postComments} </button>
+                </div>
+
+                {/* <div className={classes.PostEnd}>
+                                    <hr className={classes.PostEndHr} />
+                                </div> */}
 
             </div>
-        </Fragment>
+
+
+
+        </Fragment >
     )
 }
 

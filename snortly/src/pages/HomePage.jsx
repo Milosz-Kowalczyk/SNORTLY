@@ -4,6 +4,7 @@ import '../styles/globals.scss';
 import CategoriesPanel from '../components/CategoriesPanel/CategoriesPanel';
 import AdsPanel from '../components/AdsPanel/AdsPanel';
 import SinglePost from '../components/SinglePost/SinglePost';
+import PopularTags from '../components/PopularTags/PopularTags';
 
 
 function HomePage() {
@@ -85,15 +86,18 @@ function HomePage() {
 
             {/* Here, we display memes (middle section ) */}
             <div className={classes.ContainerWrapper + ' ' + classes.MiddleContainerWrapper}>
+                <div className={classes.middleSideContainer}>
+                    <PopularTags />
 
-                {
-                    DUMMY_DATA.map((ele, idx) => {
-                        return <SinglePost key={`post-${ele.postId}`} POST_DATA={ele} />
-                    })
-                }
+                    {
+                        DUMMY_DATA.map((ele, idx) => {
+                            return <SinglePost isPostClickable={true} key={`post-${ele.postId}`} POST_DATA={ele} />
+                        })
+                    }
+
+                </div>
 
             </div>
-
 
 
             {/* Right side Panel - Best memes, authors, top users, maybe ads? */}
