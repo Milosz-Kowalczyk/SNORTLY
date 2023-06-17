@@ -4,7 +4,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import classes from "../../styles/HomePage.module.scss"
 import { convertDateToDayAndMonth, convertDateToDayMonthYear, extractHourAndMinutes, getDaysDifference, isInCurrentYear } from '../../utils/dateFormatHelper';
 
-function DisplayFormatedDate({ postCreationDate }) {
+export function DisplayFormatedDate({ postCreationDate }) {
     /*
     Here is our global function that displays date on comments, post etc. in every situation
 
@@ -43,7 +43,7 @@ function DisplayFormatedDate({ postCreationDate }) {
     return <span className="PostDate">{dateDifference}d</span>;
 }
 
-function DisplayPostImage({ imgSrc, postId = null, isPostClickable = false }) {
+export function DisplayPostImage({ imgSrc, postId = null, isPostClickable = false }) {
 
     /*
     Displaying image depending on its size, we want to hide image above 1500 px in height

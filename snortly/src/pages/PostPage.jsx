@@ -8,6 +8,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import '../styles/globals.scss';
 import classes from '../styles/PostPage.module.scss';
+import CommentSection from '../components/CommentSection/CommentSection';
 
 
 function PostPage() {
@@ -117,7 +118,7 @@ function PostPage() {
 
             {/* Here, we display memes (middle section ) */}
             <div className={homePageClasses.ContainerWrapper + ' ' + homePageClasses.MiddleContainerWrapper}>
-                <div className={homePageClasses.middleSideContainer} style={{ paddingTop: "2rem" }}>
+                <div className={homePageClasses.middleSideContainer} style={{ paddingTop: "2rem", gap: "0" }}>
 
                     {(postData) &&
                         <SinglePost key={`post-${postData.postId}`} POST_DATA={postData} isPostClickable={false} />
@@ -125,7 +126,7 @@ function PostPage() {
 
                     {/* Add comment container  */}
 
-                    <div className={classes.AddCommentContainer}>
+                    <div className={classes.AddCommentContainer} >
 
                         <p className={"p4Text color-lightDark " + classes.RespectRulesText}> Remember to keep comments respectful and to follow <span className="linkText"> our Community Guidelines. </span> </p>
 
@@ -138,9 +139,9 @@ function PostPage() {
                             <div className={classes.AddCommentActionsContainer}>
 
                                 <div className={classes.ActionsWrapper}>
-                                    <i class="fa-regular fa-image"></i>
-                                    <i class="fa-solid fa-clapperboard"></i>
-                                    <i class="fa-regular fa-face-laugh-beam"></i>
+                                    <i className="fa-regular fa-image"></i>
+                                    <i className="fa-solid fa-clapperboard"></i>
+                                    <i className="fa-regular fa-face-laugh-beam"></i>
                                 </div>
                                 <div className={classes.ActionsWrapper}>
                                     <p onClick={handleCommentMessageCancelClick} className="CancelCommentText"> Cancel </p>
@@ -153,6 +154,8 @@ function PostPage() {
 
                     </div>
 
+                    <CommentSection />
+
                 </div>
 
             </div>
@@ -161,7 +164,7 @@ function PostPage() {
             {/* Right side Panel - Best memes, authors, top users, maybe ads? */}
             <AdsPanel />
 
-        </div>
+        </div >
     )
 }
 

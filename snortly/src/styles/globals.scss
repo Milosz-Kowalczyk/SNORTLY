@@ -227,7 +227,25 @@
     }
 }
 
+.CommentText {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: $font-white;
+}
+
 .CancelCommentText {
+    font-size: 16px;
+    font-weight: 600;
+    color: $font-lightDark;
+
+    cursor: pointer;
+
+    &:hover {
+        color: $font-lightGrey;
+    }
+}
+
+.CommentActionText {
     font-size: 16px;
     font-weight: 600;
     color: $font-lightDark;

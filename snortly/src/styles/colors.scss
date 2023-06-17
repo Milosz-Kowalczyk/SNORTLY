@@ -3,12 +3,13 @@
 // Navbar colors
 $menu-bg-color: #1c1c1c; // Menu navbar color and also container color
 $menu-bg-light1: #2d2d2d; // Menu navbar color but lighter (mainly for inputs)
+$menu-bg-light2: #1f1f1f; // For hovering comment section
 
 // Main colors
 $strong-purple: #6f20db; // Main purple color
 $light-purple: #5e10ca; // Main purple color : hover
 
-$page-background: #121212; // Our Main Page container background color
+$page-background: #111; // Our Main Page container background color
 $page-blur-background-color: rgba(18, 18, 18, 0.2); // A slight dark color in background while popup is shown
 
 $error-background: #d92a4a; // Our Error Container color (When we type something wrong etc.)
@@ -29,7 +30,7 @@ $font-lightGrey: #dbdbdb;
 $font-link: #6052f6; // Page link color
 $font-dark: #2d2d2d;
 $font-error: #260f14;
-$font-lightDark: #545454;
+$font-lightDark: #797979;
 
 $font-cookie: rgb(250, 171, 97); // Color that highlights Cookie text
 
