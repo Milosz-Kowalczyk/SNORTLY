@@ -20,6 +20,7 @@ function PostPage() {
     const [commentMessage, setCommentMessage] = useState("");
     const [commentMessageBoxClicked, setCommentMessageBoxClicked] = useState(false);
 
+
     const DUMMY_DATA =
         [
             {
@@ -125,7 +126,6 @@ function PostPage() {
                     }
 
                     {/* Add comment container  */}
-
                     <div className={classes.AddCommentContainer} >
 
                         <p className={"p4Text color-lightDark " + classes.RespectRulesText}> Remember to keep comments respectful and to follow <span className="linkText"> our Community Guidelines. </span> </p>

@@ -13,6 +13,35 @@ import TextareaAutosize from 'react-textarea-autosize';
 //  - SingleCommentSubComments
 //      - SingleSubComment
 
+
+// This is our standard addComment Component that you are using in add SubComment and add Comment for main Comment
+export function AddCommentTextArea({ message, handleMessage, handleMessageCancelClick }) {
+
+    return (
+        <div className={classes.SubCommentReplyContainer}>
+            {/* Comment input */}
+            <TextareaAutosize placeholder="Leave a comment... " spellCheck="false" maxRows={5} value={message} onChange={(e) => { handleMessage(e) }} className={classes.TitleTextArea + " " + classes.CommentExpanded} />
+
+            {/* Buttons like submit, add image ..  */}
+            <div className={classes.AddCommentActionsContainer}>
+
+                <div className={classes.ActionsWrapper}>
+                    <i className="fa-regular fa-image"></i>
+                    <i className="fa-solid fa-clapperboard"></i>
+                    <i className="fa-regular fa-face-laugh-beam"></i>
+                </div>
+                <div className={classes.ActionsWrapper}>
+                    <p onClick={handleMessageCancelClick} className="CancelCommentText"> Cancel </p>
+                    <button className='button btnPurple'> Comment </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    )
+}
+
 // Helpers for dummy data 
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -32,26 +61,29 @@ function createRandomSubarrays(mainArray, numArrays) {
 
 export function SingleSubComment({ sub }) {
 
-    const [subCommentReplayClicked, setSubCommentReplayClicked] = useState(false)
+    const [subCommentReplyClicked, setSubCommentReplyClicked] = useState(false)
 
     // For Replays in subcomments 
     const [subCommentMessage, setSubCommentMessage] = useState("")
 
-    function handleSubReplayClick(subOwner) {
-        setSubCommentReplayClicked(true)
-
+    function handleSubReplyClick(subOwner) {
         handleCommentMessageFocus(subOwner)
     }
 
     // We also add @username here 
     function handleCommentMessageFocus(ownerOfMainComment) {
 
+        // console.log("Sub Comment clicked")
+
         if (ownerOfMainComment) {
-            let commentOwnerFirstText = "@" + ownerOfMainComment + " "
-            setSubCommentMessage(commentOwnerFirstText)
+            let startingCommentText = "@" + ownerOfMainComment + " "
+            setSubCommentMessage(startingCommentText)
+        }
+        else {
+            setSubCommentMessage("")
         }
 
-
+        setSubCommentReplyClicked(true)
     }
 
     function handleSubCommentMessage(e) {
@@ -60,7 +92,7 @@ export function SingleSubComment({ sub }) {
     }
 
     function handleSubCommentMessageCancelClick() {
-        setSubCommentReplayClicked(false)
+        setSubCommentReplyClicked(false)
         setSubCommentMessage("")
     }
 
@@ -82,7 +114,7 @@ export function SingleSubComment({ sub }) {
 
                         {/* subComment action buttons  */}
                         <div className={classes.CommentActionButtons}>
-                            <p className={"CommentActionText"} onClick={() => handleSubReplayClick(sub.subCommentOwner)}> Reply </p>
+                            <p className={"CommentActionText"} onClick={() => handleSubReplyClick(sub.subCommentOwner)}> Reply </p>
                             <div className={classes.CommentReactionsWrapper}>
                                 <i className="fa-regular fa-thumbs-up "></i>
                                 <p> {sub.subCommentLikes} </p>
@@ -103,30 +135,10 @@ export function SingleSubComment({ sub }) {
 
             </div>
 
-            {/* subComment replay comment box  */}
+            {/* subComment replay comment input box  */}
             {
-                (subCommentReplayClicked) &&
-                <div className={classes.SubCommentReplyContainer}>
-                    {/* Comment input */}
-                    <TextareaAutosize placeholder="Leave a comment... " spellCheck="false" maxRows={5} value={subCommentMessage} onChange={(e) => { handleSubCommentMessage(e) }} className={classes.TitleTextArea + " " + classes.CommentExpanded} />
-
-                    {/* Buttons like submit, add image ..  */}
-                    <div className={classes.AddCommentActionsContainer}>
-
-                        <div className={classes.ActionsWrapper}>
-                            <i className="fa-regular fa-image"></i>
-                            <i className="fa-solid fa-clapperboard"></i>
-                            <i className="fa-regular fa-face-laugh-beam"></i>
-                        </div>
-                        <div className={classes.ActionsWrapper}>
-                            <p onClick={handleSubCommentMessageCancelClick} className="CancelCommentText"> Cancel </p>
-                            <button className='button btnPurple'> Comment </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
+                (subCommentReplyClicked) &&
+                <AddCommentTextArea message={subCommentMessage} handleMessage={handleSubCommentMessage} handleMessageCancelClick={handleSubCommentMessageCancelClick} />
             }
         </Fragment>
     )
@@ -166,12 +178,36 @@ export function SingleComment({ commentData, subCommentData }) {
     // Toggle show replies 
     const [showReplies, setShowReplies] = useState(false);
 
+    // Message when we reply to main comment owner 
+    const [subMainCommentMessage, setSubMainCommentMessage] = useState("")
+    const [subMainReplyClicked, setSubMainReplyClicked] = useState(false)
+
     function toggleShowReplies() {
         setShowReplies(!showReplies);
     }
 
+    function handleSubMainCommentMessage(e) {
+        let val = e.target.value;
+        setSubMainCommentMessage(val);
+    }
+
+    function handleSubCommentMessageCancelClick() {
+        setSubMainCommentMessage("")
+        setSubMainReplyClicked(false)
+    }
+
+    function handleMainReplyClick() {
+        let startingCommentText = "@" + commentData.commentOwner + " "
+        setSubMainCommentMessage(startingCommentText)
+        setSubMainReplyClicked(true)
+
+        // console.log("Main COmment clicked")
+    }
+
+
     return (
         <Fragment key={`comment-${commentData.commentId}`} >
+
             <div className={classes.CommentWrapper}>
 
                 {/* User Avatar  */}
@@ -196,7 +232,7 @@ export function SingleComment({ commentData, subCommentData }) {
 
                             {/* Comment action buttons  */}
                             <div className={classes.CommentActionButtons}>
-                                <p className={"CommentActionText"}> Reply </p>
+                                <p className={"CommentActionText"} onClick={handleMainReplyClick}> Reply </p>
                                 <div className={classes.CommentReactionsWrapper}>
                                     <i className="fa-regular fa-thumbs-up "></i>
                                     <p> {commentData.commentLikes} </p>
@@ -224,17 +260,24 @@ export function SingleComment({ commentData, subCommentData }) {
                                         : <i className="fa-solid fa-caret-down"></i>
                                     }
 
-                                    <p className=''> View {subCommentData.length} replies </p>
+                                    <p className=''> {(showReplies) ? "Hide" : "View"} {subCommentData.length} replies </p>
                                 </div>
                             </div>
                         }
 
                     </div>
 
-
                 </div>
 
             </div>
+
+            {
+                (subMainReplyClicked) &&
+                <div className={classes.SubCommentContainer}>
+                    <AddCommentTextArea message={subMainCommentMessage} handleMessage={handleSubMainCommentMessage} handleMessageCancelClick={handleSubCommentMessageCancelClick} />
+                </div>
+            }
+
 
             <SingleCommentSubComments subCommentData={subCommentData} showReplies={showReplies} />
 
@@ -553,6 +596,7 @@ function CommentSection() {
         }
         // ... continue with more elements
     ];
+
 
 
     return (

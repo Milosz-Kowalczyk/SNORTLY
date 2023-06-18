@@ -51,6 +51,11 @@
                 align-items: center;
                 gap: 1rem;
 
+                // Dont allow to select text
+                -webkit-user-select: none; /* Safari */
+                -ms-user-select: none; /* IE 10 and IE 11 */
+                user-select: none; /* Standard syntax */
+
                 .CommentReactionsWrapper {
                     display: flex;
                     align-items: center;
@@ -90,6 +95,11 @@
 
             display: flex;
 
+            // Dont allow to select text
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax */
+
             div {
                 color: $strong-purple;
                 font-weight: 600;
@@ -101,11 +111,6 @@
                 gap: 0.5rem;
 
                 border-bottom: 1px solid transparent;
-
-                // Dont allow to select text
-                -webkit-user-select: none; /* Safari */
-                -ms-user-select: none; /* IE 10 and IE 11 */
-                user-select: none; /* Standard syntax */
 
                 &:hover {
                     color: $light-purple;
