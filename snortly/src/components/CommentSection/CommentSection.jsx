@@ -1,10 +1,247 @@
-import React from 'react'
+import React, { Fragment, useState } from 'react'
 import classes from './CommentSection.module.scss'
 import '../../styles/globals.scss'
 import { DisplayFormatedDate } from '../../components/SinglePost/SinglePost'
+import TextareaAutosize from 'react-textarea-autosize';
 
-
+// File description:
 // This is for displaying all comments and subcomments for specific post id 
+
+// Components work in this order
+// CommentSection
+// - SingleComment
+//  - SingleCommentSubComments
+//      - SingleSubComment
+
+// Helpers for dummy data 
+function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Function to create random arrays
+function createRandomSubarrays(mainArray, numArrays) {
+    const randomArray = [];
+
+    for (let i = 0; i < numArrays; i++) {
+        const numElements = getRandomNumber(1, mainArray.length - 1);
+        randomArray.push(mainArray[numElements]);
+    }
+
+    return randomArray;
+}
+
+export function SingleSubComment({ sub }) {
+
+    const [subCommentReplayClicked, setSubCommentReplayClicked] = useState(false)
+
+    // For Replays in subcomments 
+    const [subCommentMessage, setSubCommentMessage] = useState("")
+
+    function handleSubReplayClick(subOwner) {
+        setSubCommentReplayClicked(true)
+
+        handleCommentMessageFocus(subOwner)
+    }
+
+    // We also add @username here 
+    function handleCommentMessageFocus(ownerOfMainComment) {
+
+        if (ownerOfMainComment) {
+            let commentOwnerFirstText = "@" + ownerOfMainComment + " "
+            setSubCommentMessage(commentOwnerFirstText)
+        }
+
+
+    }
+
+    function handleSubCommentMessage(e) {
+        let val = e.target.value;
+        setSubCommentMessage(val)
+    }
+
+    function handleSubCommentMessageCancelClick() {
+        setSubCommentReplayClicked(false)
+        setSubCommentMessage("")
+    }
+
+
+    return (
+
+        <Fragment >
+            <div className={classes.SubCommentsContainer} >
+                <div className={classes.SubCommentsAvatarContainer}>
+                    <img src={sub.subCommentOwnerAvatar} alt="" />
+                </div>
+
+                <div className={classes.SubCommentUserInfo}>
+                    <a className="SubCommentOwner" href="/"> {sub.subCommentOwner} </a>
+                    <DisplayFormatedDate postCreationDate={sub.subCommentCreationDate} />
+
+                    <div className={classes.CommentTextContainer}>
+                        <p className='CommentText'> {sub.subCommentText} </p>
+
+                        {/* subComment action buttons  */}
+                        <div className={classes.CommentActionButtons}>
+                            <p className={"CommentActionText"} onClick={() => handleSubReplayClick(sub.subCommentOwner)}> Reply </p>
+                            <div className={classes.CommentReactionsWrapper}>
+                                <i className="fa-regular fa-thumbs-up "></i>
+                                <p> {sub.subCommentLikes} </p>
+                            </div>
+                            <div className={classes.CommentReactionsWrapper}>
+                                <i className="fa-regular fa-thumbs-down "></i>
+                                <p> {sub.subCommentDislikes} </p>
+                            </div>
+
+                            <div className={classes.CommentReactionsWrapper}>
+                                <i className="fa-solid fa-ellipsis-vertical"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            {/* subComment replay comment box  */}
+            {
+                (subCommentReplayClicked) &&
+                <div className={classes.SubCommentReplyContainer}>
+                    {/* Comment input */}
+                    <TextareaAutosize placeholder="Leave a comment... " spellCheck="false" maxRows={5} value={subCommentMessage} onChange={(e) => { handleSubCommentMessage(e) }} className={classes.TitleTextArea + " " + classes.CommentExpanded} />
+
+                    {/* Buttons like submit, add image ..  */}
+                    <div className={classes.AddCommentActionsContainer}>
+
+                        <div className={classes.ActionsWrapper}>
+                            <i className="fa-regular fa-image"></i>
+                            <i className="fa-solid fa-clapperboard"></i>
+                            <i className="fa-regular fa-face-laugh-beam"></i>
+                        </div>
+                        <div className={classes.ActionsWrapper}>
+                            <p onClick={handleSubCommentMessageCancelClick} className="CancelCommentText"> Cancel </p>
+                            <button className='button btnPurple'> Comment </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        </Fragment>
+    )
+}
+
+// This display all subComments 
+export function SingleCommentSubComments({ subCommentData, showReplies }) {
+
+    return (
+        <div className={classes.SubCommentContainer}>
+
+
+            {(showReplies && subCommentData.length > 0) &&
+                <div className={classes.SubCommentsWrapper}>
+
+                    {subCommentData.map((sub, idx) => {
+                        return (
+
+                            // sub is single subComment object 
+                            <SingleSubComment key={`${sub.commentId}-${idx}`} sub={sub} />
+
+                        )
+                    })}
+                </div>
+
+            }
+
+        </div>
+
+
+    )
+}
+
+// This is for displaying singleComment and its subTree of comments
+export function SingleComment({ commentData, subCommentData }) {
+
+    // Toggle show replies 
+    const [showReplies, setShowReplies] = useState(false);
+
+    function toggleShowReplies() {
+        setShowReplies(!showReplies);
+    }
+
+    return (
+        <Fragment key={`comment-${commentData.commentId}`} >
+            <div className={classes.CommentWrapper}>
+
+                {/* User Avatar  */}
+                <div className={classes.CommentAvatarContainer}>
+                    <img src={commentData.commentOwnerAvatar} alt="" />
+                </div>
+
+                <div className={classes.CommentContainer}>
+
+                    <div className={classes.CommentUserInfoContainer}>
+
+                        {/* Comment username and comment date  */}
+                        <div className={classes.CommentUserInfo}>
+                            <a className="PostOwner" href="/"> {commentData.commentOwner} </a>
+                            <DisplayFormatedDate postCreationDate={commentData.commentCreationDate} />
+
+                        </div>
+
+                        {/* Comment text  */}
+                        <div className={classes.CommentTextContainer}>
+                            <p className='CommentText'> {commentData.commentText} </p>
+
+                            {/* Comment action buttons  */}
+                            <div className={classes.CommentActionButtons}>
+                                <p className={"CommentActionText"}> Reply </p>
+                                <div className={classes.CommentReactionsWrapper}>
+                                    <i className="fa-regular fa-thumbs-up "></i>
+                                    <p> {commentData.commentLikes} </p>
+                                </div>
+                                <div className={classes.CommentReactionsWrapper}>
+                                    <i className="fa-regular fa-thumbs-down "></i>
+                                    <p> {commentData.commentDislikes} </p>
+                                </div>
+
+                                <div className={classes.CommentReactionsWrapper}>
+                                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        {/* /* Button to display subComments  */}
+
+                        {(subCommentData.length > 0) &&
+                            <div className={classes.ViewSubCommentsContainer} onClick={toggleShowReplies}>
+                                <div>
+                                    {(showReplies)
+                                        ? <i className="fa-solid fa-caret-up"></i>
+                                        : <i className="fa-solid fa-caret-down"></i>
+                                    }
+
+                                    <p className=''> View {subCommentData.length} replies </p>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <SingleCommentSubComments subCommentData={subCommentData} showReplies={showReplies} />
+
+
+        </Fragment>
+    )
+}
 
 function CommentSection() {
 
@@ -114,60 +351,220 @@ function CommentSection() {
         ]
 
     const SUB_COMMENTS = [
-        "aa"
-    ]
+        {
+            subCommentOwner: "Smith12",
+            subCommentId: "31",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/4140/4140037.png",
+            subCommentText: "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe Temporibus. autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe",
+            subCommentLikes: '765',
+            subCommentDislikes: '42',
+            subCommentCreationDate: '2023-06-22 11:10:00',
+            subCommentTreeOwnerId: "27"
+        },
+        {
+            subCommentOwner: "JohnDoe",
+            subCommentId: "32",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/5678/5678901.png",
+            subCommentText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas hendrerit",
+            subCommentLikes: '200',
+            subCommentDislikes: '5',
+            subCommentCreationDate: '2023-06-22 15:30:00',
+            subCommentTreeOwnerId: "27"
+        },
+        {
+            subCommentOwner: "JaneSmith",
+            subCommentId: "33",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/9764/9764596.png",
+            subCommentText: "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam",
+            subCommentLikes: '50',
+            subCommentDislikes: '3',
+            subCommentCreationDate: '2023-06-22 18:45:00',
+            subCommentTreeOwnerId: "31"
+        },
+        {
+            subCommentOwner: "User456",
+            subCommentId: "34",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/3456/3456789.png",
+            subCommentText: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium",
+            subCommentLikes: '100',
+            subCommentDislikes: '10',
+            subCommentCreationDate: '2023-06-23 09:20:00',
+            subCommentTreeOwnerId: "31"
+        },
+        {
+            subCommentOwner: "SarahJohnson",
+            subCommentId: "35",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/7890/7890123.png",
+            subCommentText: "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam",
+            subCommentLikes: '75',
+            subCommentDislikes: '2',
+            subCommentCreationDate: '2023-06-23 12:35:00',
+            subCommentTreeOwnerId: "32"
+        },
+        {
+            subCommentOwner: "MarkWilson",
+            subCommentId: "36",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/2345/2345678.png",
+            subCommentText: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
+            subCommentLikes: '300',
+            subCommentDislikes: '8',
+            subCommentCreationDate: '2023-06-23 14:50:00',
+            subCommentTreeOwnerId: "32"
+        },
+        {
+            subCommentOwner: "EmilyJones",
+            subCommentId: "37",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/6789/6789012.png",
+            subCommentText: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet",
+            subCommentLikes: '150',
+            subCommentDislikes: '6',
+            subCommentCreationDate: '2023-06-23 16:15:00',
+            subCommentTreeOwnerId: "33"
+        },
+        {
+            subCommentOwner: "AlexBrown",
+            subCommentId: "38",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/8901/8901234.png",
+            subCommentText: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit",
+            subCommentLikes: '50',
+            subCommentDislikes: '1',
+            subCommentCreationDate: '2023-06-24 09:40:00',
+            subCommentTreeOwnerId: "33"
+        },
+        {
+            subCommentOwner: "LilyDavis",
+            subCommentId: "39",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/6789/6789023.png",
+            subCommentText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            subCommentLikes: '80',
+            subCommentDislikes: '3',
+            subCommentCreationDate: '2023-06-24 11:55:00',
+            subCommentTreeOwnerId: "34"
+        },
+        {
+            subCommentOwner: "MichaelSmith",
+            subCommentId: "40",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/4567/4567890.png",
+            subCommentText: "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe",
+            subCommentLikes: '250',
+            subCommentDislikes: '12',
+            subCommentCreationDate: '2023-06-24 13:20:00',
+            subCommentTreeOwnerId: "34"
+        },
+        {
+            subCommentOwner: "SophiaJohnson",
+            subCommentId: "41",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/9012/9012345.png",
+            subCommentText: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit",
+            subCommentLikes: '120',
+            subCommentDislikes: '4',
+            subCommentCreationDate: '2023-06-24 15:45:00',
+            subCommentTreeOwnerId: "35"
+        },
+        {
+            subCommentOwner: "DanielWilson",
+            subCommentId: "42",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/4140/4140051.png",
+            subCommentText: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque",
+            subCommentLikes: '90',
+            subCommentDislikes: '2',
+            subCommentCreationDate: '2023-06-25 09:10:00',
+            subCommentTreeOwnerId: "35"
+        },
+        {
+            subCommentOwner: "EmmaBrown",
+            subCommentId: "43",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/5678/5678901.png",
+            subCommentText: "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam",
+            subCommentLikes: '70',
+            subCommentDislikes: '1',
+            subCommentCreationDate: '2023-06-25 11:35:00',
+            subCommentTreeOwnerId: "36"
+        },
+        {
+            subCommentOwner: "OliviaDavis",
+            subCommentId: "44",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/9764/9764596.png",
+            subCommentText: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium",
+            subCommentLikes: '180',
+            subCommentDislikes: '6',
+            subCommentCreationDate: '2023-06-25 14:00:00',
+            subCommentTreeOwnerId: "36"
+        },
+        {
+            subCommentOwner: "NoahSmith",
+            subCommentId: "45",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/3456/3456789.png",
+            subCommentText: "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam",
+            subCommentLikes: '130',
+            subCommentDislikes: '4',
+            subCommentCreationDate: '2023-06-26 10:25:00',
+            subCommentTreeOwnerId: "37"
+        },
+        {
+            subCommentOwner: "MiaJohnson",
+            subCommentId: "46",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/7890/7890123.png",
+            subCommentText: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
+            subCommentLikes: '90',
+            subCommentDislikes: '3',
+            subCommentCreationDate: '2023-06-26 12:50:00',
+            subCommentTreeOwnerId: "37"
+        },
+        {
+            subCommentOwner: "JamesWilson",
+            subCommentId: "47",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/2345/2345678.png",
+            subCommentText: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit",
+            subCommentLikes: '200',
+            subCommentDislikes: '7',
+            subCommentCreationDate: '2023-06-26 15:15:00',
+            subCommentTreeOwnerId: "38"
+        },
+        {
+            subCommentOwner: "AvaBrown",
+            subCommentId: "48",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/6789/6789012.png",
+            subCommentText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            subCommentLikes: '70',
+            subCommentDislikes: '2',
+            subCommentCreationDate: '2023-06-27 09:40:00',
+            subCommentTreeOwnerId: "38"
+        },
+        {
+            subCommentOwner: "WilliamDavis",
+            subCommentId: "49",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/8901/8901234.png",
+            subCommentText: "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe",
+            subCommentLikes: '180',
+            subCommentDislikes: '5',
+            subCommentCreationDate: '2023-06-27 12:05:00',
+            subCommentTreeOwnerId: "39"
+        },
+        {
+            subCommentOwner: "SofiaSmith",
+            subCommentId: "50",
+            subCommentOwnerAvatar: "https://cdn-icons-png.flaticon.com/512/9012/9012345.png",
+            subCommentText: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit",
+            subCommentLikes: '120',
+            subCommentDislikes: '3',
+            subCommentCreationDate: '2023-06-27 14:30:00',
+            subCommentTreeOwnerId: "39"
+        }
+        // ... continue with more elements
+    ];
+
 
     return (
         <div className={classes.CommentSectionContainer}>
 
             {DUMMY_DATA.map((ele, idx) => {
+
+                let randomSubArrayMax = getRandomNumber(0, 10)
+                let randomSubArray = createRandomSubarrays(SUB_COMMENTS, randomSubArrayMax)
+
                 return (
-                    <div key={`comment-${ele.commentId}`} className={classes.CommentWrapper}>
-
-                        {/* User Avatar  */}
-                        <div className={classes.CommentAvatarContainer}>
-                            <img src={ele.commentOwnerAvatar} alt="" />
-                        </div>
-
-                        <div className={classes.CommentContainer}>
-
-                            <div className={classes.CommentUserInfoContainer}>
-
-                                {/* Comment username and comment date  */}
-                                <div className={classes.CommentUserInfo}>
-                                    <a className="PostOwner" href="/"> {ele.commentOwner} </a>
-                                    <DisplayFormatedDate postCreationDate={ele.commentCreationDate} />
-
-                                </div>
-
-                                {/* Comment text  */}
-                                <div className={classes.CommentTextContainer}>
-                                    <p className='CommentText'> {ele.commentText} </p>
-
-                                    {/* Comment action buttons  */}
-                                    <div className={classes.CommentActionButtons}>
-                                        <p className={"CommentActionText"}> Reply </p>
-                                        <div className={classes.CommentReactionsWrapper}>
-                                            <i class="fa-regular fa-thumbs-up "></i>
-                                            <p> {ele.commentLikes} </p>
-                                        </div>
-                                        <div className={classes.CommentReactionsWrapper}>
-                                            <i class="fa-regular fa-thumbs-down "></i>
-                                            <p> {ele.commentDislikes} </p>
-                                        </div>
-
-                                        <div className={classes.CommentReactionsWrapper}>
-                                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div >
+                    <SingleComment key={`comment-${idx}`} commentData={ele} subCommentData={randomSubArray} />
                 )
             })}
 
