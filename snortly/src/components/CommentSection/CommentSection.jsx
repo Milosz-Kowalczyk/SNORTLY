@@ -28,7 +28,6 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
                 <div className={classes.ActionsWrapper}>
                     <i className="fa-regular fa-image"></i>
                     <i className="fa-solid fa-clapperboard"></i>
-                    <i className="fa-regular fa-face-laugh-beam"></i>
                 </div>
                 <div className={classes.ActionsWrapper}>
                     <p onClick={handleMessageCancelClick} className="CancelCommentText"> Cancel </p>
