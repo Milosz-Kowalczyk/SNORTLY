@@ -17,6 +17,65 @@ import TextareaAutosize from 'react-textarea-autosize';
 // This is our standard addComment Component that you are using in add SubComment and add Comment for main Comment
 export function AddCommentTextArea({ message, handleMessage, handleMessageCancelClick }) {
 
+    // These variables are for controling, what image or video user added to comment!
+    // selectedImage can be a video also
+    // We allow for png, jpg, webp, gif, mp4
+    const [selectedImage, setSelectedImage] = useState(null);   // Image object
+    const [selectedImageType, setSelectedImageType] = useState("") // Image Type like png or jpg
+    const [selectedImageSrc, setSelectedImageSrc] = useState("") // Image / Video src
+    const MAX_KB_FILE_SIZE = 2000 // Max is 2000KB, 2MB;
+    const allowed_extentions = ['png', 'jpeg', 'jpg', 'webp', 'gif']
+
+    const handleImageSelect = (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+
+            let fileSizeInKB = parseInt(file.size / 1000)
+            let fileUrl = URL.createObjectURL(file);
+            let fileType = file.type.split("/")[1]
+            fileType = fileType.toLowerCase();
+
+            if (fileSizeInKB < MAX_KB_FILE_SIZE) {
+
+                console.log("File size ok", fileSizeInKB)
+
+                // If user added video
+                if (fileType === "mp4") {
+                    console.log("Video added")
+
+                    setSelectedImageType(fileType)
+                    setSelectedImageSrc(fileUrl)
+                }
+                // if user added image
+                else if (allowed_extentions.includes(fileType)) {
+                    console.log("Image added")
+
+                    setSelectedImageType(fileType)
+                    setSelectedImageSrc(fileUrl)
+
+                }
+                // DIfferent image type
+                else {
+                    console.log("file type not allowed")
+                }
+
+            }
+            else {
+                console.log("File size too big", fileSizeInKB)
+            }
+
+            setSelectedImage(file);
+        }
+
+    };
+
+    function handleSelectedImageDelete() {
+        setSelectedImage(null);
+        setSelectedImageType("")
+        setSelectedImageSrc("")
+    }
+
     return (
         <div className={classes.SubCommentReplyContainer}>
             {/* Comment input */}
@@ -26,17 +85,41 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
             <div className={classes.AddCommentActionsContainer}>
 
                 <div className={classes.ActionsWrapper}>
-                    <i className="fa-regular fa-image"></i>
+                    {/* Hidden file input button */}
+                    <label htmlFor="imageInput" className={classes.FileInputLabel}>
+                        <i className="far fa-image"></i>
+                    </label>
+                    <input id="imageInput" type="file" accept="image/*, video/mp4" onChange={(e) => { handleImageSelect(e) }} style={{ display: 'none' }} />
                     <i className="fa-solid fa-clapperboard"></i>
                 </div>
-                <div className={classes.ActionsWrapper}>
+                <div className={classes.ActionsWrapperRight}>
                     <p onClick={handleMessageCancelClick} className="CancelCommentText"> Cancel </p>
                     <button className='button btnPurple'> Comment </button>
-
                 </div>
 
             </div>
 
+            {(selectedImageType === "mp4" && selectedImageSrc) &&
+                <div className={classes.AddedFileContainer}>
+                    {/* <Player style={{ width: '100px' }}>
+                        <source style={{ width: '100px' }} src={selectedImageSrc} />
+                    </Player> */}
+
+                    <video controls >
+                        <source src={selectedImageSrc} type="video/mp4" />
+                    </video>
+
+                    <div onClick={handleSelectedImageDelete}> <i className="fa-solid fa-trash-can"></i> </div>
+                </div>
+            }
+
+            {(allowed_extentions.includes(selectedImageType) && selectedImageSrc) &&
+                <div className={classes.AddedFileContainer}>
+                    <img src={selectedImageSrc} alt="" />
+                    <div onClick={handleSelectedImageDelete}> <i className="fa-solid fa-trash-can"></i> </div>
+                </div>
+
+            }
         </div>
     )
 }

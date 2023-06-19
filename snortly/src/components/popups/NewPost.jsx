@@ -521,7 +521,7 @@ function NewPost() {
                                         <i className="fa-solid fa-trash-can"></i>
                                     </div>
 
-                                    {console.log("yes", videoSrc)}
+                                    {/* {console.log("yes", videoSrc)} */}
 
                                     <Player >
                                         <source src={videoSrc} />

@@ -60,6 +60,7 @@
                     display: flex;
                     align-items: center;
                     font-weight: 600;
+                    color: $font-lightDark;
 
                     i {
                         font-size: 16px;
@@ -133,6 +134,41 @@
         .SubCommentReplyContainer {
             padding-left: calc(36px + 0.5rem);
             margin-bottom: 1rem;
+
+            .AddedFileContainer {
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-top: 0.5rem;
+
+                img {
+                    max-width: 64px;
+                    max-height: 64px;
+                    object-fit: cover;
+                    border-radius: 4px;
+                }
+
+                video {
+                    max-width: 200px;
+                    border-radius: 4px;
+                }
+
+                source {
+                    width: 30px;
+                }
+
+                i {
+                    font-size: 20px;
+                    color: $font-lightDark;
+
+                    cursor: pointer;
+
+                    &:hover {
+                        color: $font-lightGrey;
+                    }
+                }
+            }
         }
 
         .SubCommentsWrapper {
@@ -237,8 +273,26 @@
 
             display: flex;
             justify-content: space-between;
+            align-items: center;
 
             .ActionsWrapper {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+
+                i {
+                    font-size: 20px;
+                    color: $font-lightDark;
+
+                    cursor: pointer;
+
+                    &:hover {
+                        color: $font-lightGrey;
+                    }
+                }
+            }
+
+            .ActionsWrapperRight {
                 display: flex;
                 flex-direction: row;
                 gap: 1rem;

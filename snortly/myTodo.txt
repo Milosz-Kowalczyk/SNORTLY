@@ -33,3 +33,4 @@ WAŻNE, Popraw HOMEPAGE aby podzielić go na mniejsze reusable components. bo uz
 17.06.2023 
 - Robisz teraz CommentSection.jsx
 - Podziel kod na mniejsze komponenty aby działał mechanizm związany z "View replies" 
+- Zrób aby Input z Leave a comment był uniwersalny i zeby postPage i CommentSection uzywal tego samego inputu!
