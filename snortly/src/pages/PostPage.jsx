@@ -4,11 +4,10 @@ import homePageClasses from '../styles/HomePage.module.scss';
 import SinglePost from '../components/SinglePost/SinglePost';
 import AdsPanel from '../components/AdsPanel/AdsPanel';
 import { useParams } from 'react-router-dom';
-import TextareaAutosize from 'react-textarea-autosize';
 
 import '../styles/globals.scss';
 import classes from '../styles/PostPage.module.scss';
-import CommentSection from '../components/CommentSection/CommentSection';
+import CommentSection, { AddCommentTextArea } from '../components/CommentSection/CommentSection';
 
 
 function PostPage() {
@@ -18,8 +17,6 @@ function PostPage() {
     const [postData, setPostData] = useState("") // We fetch this for specific postId
 
     const [commentMessage, setCommentMessage] = useState("");
-    const [commentMessageBoxClicked, setCommentMessageBoxClicked] = useState(false);
-
 
     const DUMMY_DATA =
         [
@@ -99,14 +96,7 @@ function PostPage() {
         setCommentMessage(val);
     }
 
-    // When we click on comment box 
-    // We want to increase height and show action buttons when we click on that input 
-    function handleCommentMessageFocusClick() {
-        setCommentMessageBoxClicked(true);
-    }
-
     function handleCommentMessageCancelClick() {
-        setCommentMessageBoxClicked(false);
         setCommentMessage("");
     }
 
@@ -131,25 +121,7 @@ function PostPage() {
                         <p className={"p4Text color-lightDark " + classes.RespectRulesText}> Remember to keep comments respectful and to follow <span className="linkText"> our Community Guidelines. </span> </p>
 
                         {/* Comment input */}
-                        <TextareaAutosize placeholder="Leave a comment... " spellCheck="false" maxRows={5} value={commentMessage} onClick={handleCommentMessageFocusClick} onChange={(e) => { handleCommentMessageChange(e) }} className={classes.TitleTextArea + " " + (commentMessageBoxClicked ? classes.CommentExpanded : "")} />
-
-
-                        {/* Buttons like submit, add image ..  */}
-                        {(commentMessageBoxClicked) &&
-                            <div className={classes.AddCommentActionsContainer}>
-
-                                <div className={classes.ActionsWrapper}>
-                                    <i className="fa-regular fa-image"></i>
-                                    <i className="fa-solid fa-clapperboard"></i>
-                                </div>
-                                <div className={classes.ActionsWrapper}>
-                                    <p onClick={handleCommentMessageCancelClick} className="CancelCommentText"> Cancel </p>
-                                    <button className='button btnPurple'> Post </button>
-
-                                </div>
-
-                            </div>
-                        }
+                        <AddCommentTextArea message={commentMessage} handleMessage={handleCommentMessageChange} handleMessageCancelClick={handleCommentMessageCancelClick} isMainInput={true} />
 
                     </div>
 

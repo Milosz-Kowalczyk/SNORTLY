@@ -3,6 +3,7 @@ import classes from './CommentSection.module.scss'
 import '../../styles/globals.scss'
 import { DisplayFormatedDate } from '../../components/SinglePost/SinglePost'
 import TextareaAutosize from 'react-textarea-autosize';
+import addCommentClasses from './AddCommentTextArea.module.scss'
 
 // File description:
 // This is for displaying all comments and subcomments for specific post id 
@@ -13,9 +14,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 //  - SingleCommentSubComments
 //      - SingleSubComment
 
-
 // This is our standard addComment Component that you are using in add SubComment and add Comment for main Comment
-export function AddCommentTextArea({ message, handleMessage, handleMessageCancelClick }) {
+export function AddCommentTextArea({ message, handleMessage, handleMessageCancelClick, isMainInput }) {
 
     // These variables are for controling, what image or video user added to comment!
     // selectedImage can be a video also
@@ -25,6 +25,12 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
     const [selectedImageSrc, setSelectedImageSrc] = useState("") // Image / Video src
     const MAX_KB_FILE_SIZE = 2000 // Max is 2000KB, 2MB;
     const allowed_extentions = ['png', 'jpeg', 'jpg', 'webp', 'gif']
+
+    // This checks if our input is "isMainInput"
+    // If so, our AddCommentTextArea will behave a bit different, focus Click will work
+    const [hideActions, setHideActions] = useState(isMainInput || false)
+
+    const randomInputImageNumber = `${message}-${Math.random()}` // Adding unique value to prevent input image to be shown on wrong comment input
 
     const handleImageSelect = (event) => {
         const file = event.target.files[0];
@@ -66,6 +72,9 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
             }
 
             setSelectedImage(file);
+
+            // Reset input value 
+            event.target.value = null;
         }
 
     };
@@ -76,31 +85,50 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
         setSelectedImageSrc("")
     }
 
+    function onMainInputCancelHideBottom() {
+        setHideActions(true)
+        handleSelectedImageDelete()
+    }
+
+    function onMainInputShowBottomOnFocus() {
+        setHideActions(false);
+    }
+
     return (
-        <div className={classes.SubCommentReplyContainer}>
+        <div className={addCommentClasses.CommentReplyContainer} style={(isMainInput && { padding: "0" })}>
+
             {/* Comment input */}
-            <TextareaAutosize placeholder="Leave a comment... " spellCheck="false" maxRows={5} value={message} onChange={(e) => { handleMessage(e) }} className={classes.TitleTextArea + " " + classes.CommentExpanded} />
+            <TextareaAutosize placeholder="Leave a comment... " onClick={isMainInput && onMainInputShowBottomOnFocus} spellCheck="false" maxRows={5} value={message} onChange={(e) => { handleMessage(e) }} className={addCommentClasses.TitleTextArea + " " + (isMainInput ? "" : addCommentClasses.CommentExpanded)} />
 
             {/* Buttons like submit, add image ..  */}
-            <div className={classes.AddCommentActionsContainer}>
+            {(!hideActions) &&
+                <div className={addCommentClasses.AddCommentActionsContainer}>
 
-                <div className={classes.ActionsWrapper}>
-                    {/* Hidden file input button */}
-                    <label htmlFor="imageInput" className={classes.FileInputLabel}>
-                        <i className="far fa-image"></i>
-                    </label>
-                    <input id="imageInput" type="file" accept="image/*, video/mp4" onChange={(e) => { handleImageSelect(e) }} style={{ display: 'none' }} />
-                    <i className="fa-solid fa-clapperboard"></i>
-                </div>
-                <div className={classes.ActionsWrapperRight}>
-                    <p onClick={handleMessageCancelClick} className="CancelCommentText"> Cancel </p>
-                    <button className='button btnPurple'> Comment </button>
-                </div>
+                    <div className={addCommentClasses.ActionsWrapper}>
 
-            </div>
+                        {/* Hidden file input button */}
+                        <label htmlFor={`imageInput-${randomInputImageNumber}`} className={addCommentClasses.FileInputLabel}>
+                            <i className="far fa-image"></i>
+                        </label>
+                        <input id={`imageInput-${randomInputImageNumber}`} type="file" accept="image/*, video/mp4" onChange={(e) => { handleImageSelect(e) }} style={{ display: 'none' }} />
+                        <i className="fa-solid fa-clapperboard"></i>
+                    </div>
+                    <div className={addCommentClasses.ActionsWrapperRight}>
+                        <p onClick={() => {
+                            handleMessageCancelClick()
+                            if (isMainInput) {
+                                onMainInputCancelHideBottom()
+                            }
+                        }
+                        } className="CancelCommentText"> Cancel </p>
+                        <button className='button btnPurple'> Comment </button>
+                    </div>
+
+                </div>
+            }
 
             {(selectedImageType === "mp4" && selectedImageSrc) &&
-                <div className={classes.AddedFileContainer}>
+                <div className={addCommentClasses.AddedFileContainer}>
                     {/* <Player style={{ width: '100px' }}>
                         <source style={{ width: '100px' }} src={selectedImageSrc} />
                     </Player> */}
@@ -114,7 +142,7 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
             }
 
             {(allowed_extentions.includes(selectedImageType) && selectedImageSrc) &&
-                <div className={classes.AddedFileContainer}>
+                <div className={addCommentClasses.AddedFileContainer}>
                     <img src={selectedImageSrc} alt="" />
                     <div onClick={handleSelectedImageDelete}> <i className="fa-solid fa-trash-can"></i> </div>
                 </div>
