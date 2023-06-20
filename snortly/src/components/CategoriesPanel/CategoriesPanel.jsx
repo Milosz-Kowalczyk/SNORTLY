@@ -142,7 +142,7 @@ function CategoriesPanel() {
                         <h2 className="h1Text"> Hello You </h2>
                         <p className="p3Text text-center"> Sign up now to see more content! </p>
 
-                        <button onClick={handleSingupButtonClick} className='button btnPurple'>
+                        <button onClick={handleSingupButtonClick} className='myButton btnPurple'>
                             Sign up
                         </button>
                     </div>

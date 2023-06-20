@@ -374,7 +374,7 @@ function NewPost() {
                     {/* Popup Title  */}
                     {/* Add post or show preview buttons  */}
                     <div className={classes.PostActionsContainer}>
-                        <h2 style={{ marginBottom: "0" }} className="PopupTitle"> New Post </h2> <button className='button btnPurple' onClick={handleAddPostClick}> <i className="fa-solid fa-location-arrow"></i>Publish Post </button>
+                        <h2 style={{ marginBottom: "0" }} className="PopupTitle"> New Post </h2> <button className='myButton btnPurple' onClick={handleAddPostClick}> <i className="fa-solid fa-location-arrow"></i>Publish Post </button>
                     </div>
 
 
@@ -448,7 +448,7 @@ function NewPost() {
                                 ))}
                             </select>
 
-                            <button className='button btnPurple' onClick={handleAddTagClick}> <i className="fa-regular fa-square-plus"></i> </button>
+                            <button className='myButton btnPurple' onClick={handleAddTagClick}> <i className="fa-regular fa-square-plus"></i> </button>
 
                         </div>
 
@@ -486,7 +486,7 @@ function NewPost() {
                                 <p className={classes.Divider}> Or </p>
 
                                 {/* // Upload via file upload */}
-                                <label className={'button btnPurple ' + classes.BtnUpload}>
+                                <label className={'myButton btnPurple ' + classes.BtnUpload}>
                                     <input type="file" style={{ display: "none" }} accept="image/*, video/mp4" disabled={isPostURLCorrect} onChange={(e) => { handleFileChange(e) }} />
                                     <i className="fa fa-cloud-upload" /> Upload image
                                 </label>

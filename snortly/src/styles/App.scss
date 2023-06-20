@@ -31,3 +31,21 @@ button,
 input {
     font-family: "SF Pro Display", sans-serif;
 }
+
+// Fking bulma
+.button {
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    &:active {
+        outline: none;
+        box-shadow: none;
+    }
+
+    &:focus-within {
+        outline: none;
+        box-shadow: none;
+    }
+}

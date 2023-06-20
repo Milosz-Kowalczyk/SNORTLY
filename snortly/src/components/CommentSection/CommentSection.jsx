@@ -138,7 +138,7 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
                             }
                         }
                         } className="CancelCommentText"> Cancel </p>
-                        <button className='button btnPurple' onClick={onSubmitComment}> Comment </button>
+                        <button className='myButton btnPurple' onClick={onSubmitComment}> Comment </button>
                     </div>
 
                 </div>
@@ -413,7 +413,7 @@ export function SingleComment({ commentData, subCommentData }) {
     )
 }
 
-function CommentSection() {
+function CommentSection({ commentSectionRef }) {
 
     // Data for posts 
     const DUMMY_DATA =
@@ -727,7 +727,7 @@ function CommentSection() {
 
 
     return (
-        <div className={classes.CommentSectionContainer}>
+        <div className={classes.CommentSectionContainer} ref={commentSectionRef} style={{ paddingTop: "2rem" }}>
 
             {DUMMY_DATA.map((ele, idx) => {
 

@@ -4,6 +4,13 @@
 // Global styles that we use across the page
 
 // BUTTONS STYLES
+.myButton {
+    padding: 0.75rem;
+    font-size: 1rem;
+
+    border-radius: 4px;
+}
+
 .btnPurple {
     color: $font-white;
     background-color: $strong-purple;
@@ -41,6 +48,7 @@
     &:hover {
         background-color: $font-white;
         color: $page-background;
+        box-shadow: none;
     }
 }
 

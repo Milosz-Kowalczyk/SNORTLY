@@ -6,8 +6,7 @@
     width: 100%;
     min-height: 50px;
 
-    margin-top: 4rem;
-    margin-bottom: 1rem;
+    margin-bottom: -1rem; // For scroll to comments trick
 
     .RespectRulesText {
         letter-spacing: 0.5px;
@@ -74,4 +73,11 @@
             }
         }
     }
+}
+
+.CommentSectionFilterContainer {
+    width: 100%;
+
+    margin: 1rem 0rem;
+    margin-top: 2rem;
 }

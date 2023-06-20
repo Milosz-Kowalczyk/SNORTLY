@@ -114,10 +114,13 @@ function handlePostClick(postId, isPostClickable) {
     }
 }
 
-function SinglePost({ POST_DATA, isPostClickable = false }) {
+function SinglePost({ POST_DATA, isPostClickable = false, isPostPage = false }) {
 
     /*
     POST_DATA is object that stores all data about single post
+
+    isPostPage is a boolean that give us information whether we are on main home page or single post like /post/12 
+    if so we want to hide comment button and also we want to click on image to be displayed bigger instead of opening copy of that page!
     */
 
     return (
@@ -170,7 +173,9 @@ function SinglePost({ POST_DATA, isPostClickable = false }) {
                 <div className={classes.PostReactionsContainer}>
                     <button className={classes.reactionButton + ' ' + classes.reactionButtonLike}> <i className="fa-solid fa-thumbs-up"></i> {POST_DATA.postLikes} </button>
                     <button className={classes.reactionButton + ' ' + classes.reactionButtonDislike}> <i className="fa-solid fa-thumbs-down"></i> {POST_DATA.postDislikes} </button>
-                    <button className={classes.reactionButton + ' ' + classes.reactionButtonComment}> <i className="fa-solid fa-comments"></i> {POST_DATA.postComments} </button>
+                    {(!isPostPage) &&
+                        < button className={classes.reactionButton + ' ' + classes.reactionButtonComment}> <i className="fa-solid fa-comments"></i> {POST_DATA.postComments} </button>
+                    }
                 </div>
 
                 {/* <div className={classes.PostEnd}>
