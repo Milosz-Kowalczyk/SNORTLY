@@ -55,6 +55,7 @@ export function DisplayPostImage({ imgSrc, postId = null, isPostClickable = fals
     const [isExpanded, setIsExpanded] = useState(false);
     const [imageHeight, setImageHeight] = useState(null);
     const MAX_IMAGE_EXPAND_HEIGHT = 1150; // Remeber to match variable in variables.scss
+    const MAX_IMAGE_SAFE_DIFFERENCE = 100; // This is for very rare situation where image is like 1159px and we hide it, we dont want that, we want to hide image that is at least 100px+ above Max expand height
 
     useEffect(() => {
         const image = new Image();
@@ -71,8 +72,9 @@ export function DisplayPostImage({ imgSrc, postId = null, isPostClickable = fals
     return (
         <Fragment>
             {
-                (imageHeight > MAX_IMAGE_EXPAND_HEIGHT)
+                (imageHeight > MAX_IMAGE_EXPAND_HEIGHT + MAX_IMAGE_SAFE_DIFFERENCE)
                     ?
+                    // Here we display image that is a bit hidden and we can expand it (button)
                     <Fragment>
                         <div onClick={() => handlePostClick(postId, isPostClickable)} style={isExpanded ? { maxHeight: imageHeight + "px" } : { maxHeight: MAX_IMAGE_EXPAND_HEIGHT + "px" }} className={isExpanded ? classes.PostImageContainer : classes.PostImageContainerExpanded}>
                             <img src={imgSrc} alt="" />
@@ -84,6 +86,7 @@ export function DisplayPostImage({ imgSrc, postId = null, isPostClickable = fals
 
                     </Fragment>
                     :
+                    // Normal image here
                     <div onClick={() => handlePostClick(postId, isPostClickable)} className={classes.PostImageContainer}>
                         <img src={imgSrc} alt="" />
                     </div>

@@ -9,14 +9,40 @@ import '../styles/globals.scss';
 import classes from '../styles/PostPage.module.scss';
 import CommentSection, { AddCommentTextArea } from '../components/CommentSection/CommentSection';
 
+function CommentContainer() {
+    const [commentMessage, setCommentMessage] = useState("");
+
+    function handleCommentMessageChange(e) {
+        let val = e.target.value;
+        setCommentMessage(val);
+    }
+
+    function handleCommentMessageCancelClick() {
+        setCommentMessage("");
+    }
+
+    return (
+        <div className={classes.AddCommentContainer}>
+            <p className={"p4Text color-lightDark " + classes.RespectRulesText}>
+                Remember to keep comments respectful and to follow
+                <span className="linkText"> our Community Guidelines. </span>
+            </p>
+
+            <AddCommentTextArea
+                message={commentMessage}
+                handleMessage={handleCommentMessageChange}
+                handleMessageCancelClick={handleCommentMessageCancelClick}
+                isMainInput={true}
+            />
+        </div>
+    );
+}
 
 function PostPage() {
 
     const { postId } = useParams();
 
     const [postData, setPostData] = useState("") // We fetch this for specific postId
-
-    const [commentMessage, setCommentMessage] = useState("");
 
     const DUMMY_DATA =
         [
@@ -90,16 +116,6 @@ function PostPage() {
         }
     }, [postId])
 
-    // When we write something in comment box
-    function handleCommentMessageChange(e) {
-        let val = e.target.value;
-        setCommentMessage(val);
-    }
-
-    function handleCommentMessageCancelClick() {
-        setCommentMessage("");
-    }
-
     return (
         <div className={'container ' + homePageClasses.mainContainer}>
 
@@ -116,15 +132,9 @@ function PostPage() {
                     }
 
                     {/* Add comment container  */}
-                    <div className={classes.AddCommentContainer} >
+                    <CommentContainer />
 
-                        <p className={"p4Text color-lightDark " + classes.RespectRulesText}> Remember to keep comments respectful and to follow <span className="linkText"> our Community Guidelines. </span> </p>
-
-                        {/* Comment input */}
-                        <AddCommentTextArea message={commentMessage} handleMessage={handleCommentMessageChange} handleMessageCancelClick={handleCommentMessageCancelClick} isMainInput={true} />
-
-                    </div>
-
+                    {/* Render Comment Section  */}
                     <CommentSection />
 
                 </div>

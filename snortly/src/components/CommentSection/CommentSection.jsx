@@ -4,6 +4,7 @@ import '../../styles/globals.scss'
 import { DisplayFormatedDate } from '../../components/SinglePost/SinglePost'
 import TextareaAutosize from 'react-textarea-autosize';
 import addCommentClasses from './AddCommentTextArea.module.scss'
+import Alert from '../popups/Alert';
 
 // File description:
 // This is for displaying all comments and subcomments for specific post id 
@@ -25,6 +26,8 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
     const [selectedImageSrc, setSelectedImageSrc] = useState("") // Image / Video src
     const MAX_KB_FILE_SIZE = 2000 // Max is 2000KB, 2MB;
     const allowed_extentions = ['png', 'jpeg', 'jpg', 'webp', 'gif']
+
+    const [selectedImageError, setSelectedImageError] = useState("") // Here we store single error message
 
     // This checks if our input is "isMainInput"
     // If so, our AddCommentTextArea will behave a bit different, focus Click will work
@@ -52,6 +55,7 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
 
                     setSelectedImageType(fileType)
                     setSelectedImageSrc(fileUrl)
+                    setSelectedImage(file);
                 }
                 // if user added image
                 else if (allowed_extentions.includes(fileType)) {
@@ -59,19 +63,22 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
 
                     setSelectedImageType(fileType)
                     setSelectedImageSrc(fileUrl)
+                    setSelectedImage(file);
 
                 }
                 // DIfferent image type
                 else {
                     console.log("file type not allowed")
+                    setSelectedImageError("This file type is not allowed!")
                 }
 
             }
             else {
                 console.log("File size too big", fileSizeInKB)
+                setSelectedImageError(`Max file size is: ${parseFloat(MAX_KB_FILE_SIZE / 1000)} MB`)
             }
 
-            setSelectedImage(file);
+
 
             // Reset input value 
             event.target.value = null;
@@ -94,11 +101,20 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
         setHideActions(false);
     }
 
+    function onSubmitComment() {
+        console.log("Comment submited!")
+        console.log("File obj: ", selectedImage)
+    }
+
     return (
         <div className={addCommentClasses.CommentReplyContainer} style={(isMainInput && { padding: "0" })}>
 
+            {/* Show alert with error when we do something wrong! */}
+            {selectedImageError && <Alert key={selectedImageError} message={selectedImageError} clearVariableState={setSelectedImageError} />}
+
+
             {/* Comment input */}
-            <TextareaAutosize placeholder="Leave a comment... " onClick={isMainInput && onMainInputShowBottomOnFocus} spellCheck="false" maxRows={5} value={message} onChange={(e) => { handleMessage(e) }} className={addCommentClasses.TitleTextArea + " " + (isMainInput ? "" : addCommentClasses.CommentExpanded)} />
+            <TextareaAutosize placeholder="Leave a comment... " onClick={isMainInput && onMainInputShowBottomOnFocus} spellCheck="false" maxLength={512} maxRows={5} value={message} onChange={(e) => { handleMessage(e) }} className={addCommentClasses.TitleTextArea + " " + (isMainInput ? "" : addCommentClasses.CommentExpanded)} />
 
             {/* Buttons like submit, add image ..  */}
             {(!hideActions) &&
@@ -112,6 +128,7 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
                         </label>
                         <input id={`imageInput-${randomInputImageNumber}`} type="file" accept="image/*, video/mp4" onChange={(e) => { handleImageSelect(e) }} style={{ display: 'none' }} />
                         <i className="fa-solid fa-clapperboard"></i>
+
                     </div>
                     <div className={addCommentClasses.ActionsWrapperRight}>
                         <p onClick={() => {
@@ -121,7 +138,7 @@ export function AddCommentTextArea({ message, handleMessage, handleMessageCancel
                             }
                         }
                         } className="CancelCommentText"> Cancel </p>
-                        <button className='button btnPurple'> Comment </button>
+                        <button className='button btnPurple' onClick={onSubmitComment}> Comment </button>
                     </div>
 
                 </div>

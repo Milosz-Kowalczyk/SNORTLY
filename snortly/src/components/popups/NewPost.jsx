@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import { Player } from 'video-react'
 // import '~video-react/dist/video-react.css'; // import css
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -218,7 +217,7 @@ function NewPost() {
         console.log("Hello", file)
 
         // Checking for errors
-        if (fileType !== "image/jpeg" && fileType !== "image/png" && fileType !== "image/jpg" && fileType !== "image/gif" && fileType !== "video/mp4") {
+        if (fileType !== "image/jpeg" && fileType !== "image/png" && fileType !== "image/jpg" && fileType !== "image/gif" && fileType !== "image/webp" && fileType !== "video/mp4") {
             possible_errors.push("This file extension is not supported!")
         }
         if (fileSizeInKB > MAX_KB_FILE_SIZE) {
@@ -488,7 +487,7 @@ function NewPost() {
 
                                 {/* // Upload via file upload */}
                                 <label className={'button btnPurple ' + classes.BtnUpload}>
-                                    <input type="file" style={{ display: "none" }} disabled={isPostURLCorrect} onChange={(e) => { handleFileChange(e) }} />
+                                    <input type="file" style={{ display: "none" }} accept="image/*, video/mp4" disabled={isPostURLCorrect} onChange={(e) => { handleFileChange(e) }} />
                                     <i className="fa fa-cloud-upload" /> Upload image
                                 </label>
 
@@ -523,9 +522,9 @@ function NewPost() {
 
                                     {/* {console.log("yes", videoSrc)} */}
 
-                                    <Player >
+                                    <video controls>
                                         <source src={videoSrc} />
-                                    </Player>
+                                    </video>
 
 
 

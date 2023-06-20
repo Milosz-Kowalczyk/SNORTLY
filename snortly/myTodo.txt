@@ -31,8 +31,7 @@ Here you type things that you wanted to do before you went ..
 WAŻNE, Popraw HOMEPAGE aby podzielić go na mniejsze reusable components. bo uzyjesz ich jeszcze kilka razy..
 
 17.06.2023 
-- Robisz teraz CommentSection.jsx
-- Podziel kod na mniejsze komponenty aby działał mechanizm związany z "View replies" 
-- Zrób aby Input z Leave a comment był uniwersalny i zeby postPage i CommentSection uzywal tego samego inputu!
-- Popraw zeby jak mamy expand image to nie bylo ze mamy image 1005px a ukrywa go na 1000px (zrob jakis spacing typu ze jak image jest powyzej 1000 + 100 to wtedy zakryj do 1000)
+- DONE | Podziel kod na mniejsze komponenty aby działał mechanizm związany z "View replies" 
+- DONE | Zrób aby Input z Leave a comment był uniwersalny i zeby postPage i CommentSection uzywal tego samego inputu!
+- DONE | Popraw zeby jak mamy expand image to nie bylo ze mamy image 1005px a ukrywa go na 1000px (zrob jakis spacing typu ze jak image jest powyzej 1000 + 100 to wtedy zakryj do 1000)
 - Dodaj error handling do comment image / video input
