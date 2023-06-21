@@ -56,22 +56,22 @@
                 -ms-user-select: none; /* IE 10 and IE 11 */
                 user-select: none; /* Standard syntax */
 
+                div {
+                    padding: 0 0.5rem;
+                }
+
                 .CommentReactionsWrapper {
                     display: flex;
                     align-items: center;
                     font-weight: 600;
                     color: $font-lightDark;
+                    gap: 0.25rem;
 
                     i {
                         font-size: 16px;
                         color: $font-lightDark;
 
                         cursor: pointer;
-
-                        &:last-child {
-                            margin-left: 1rem;
-                        }
-                        padding: 0 0.5rem;
                     }
 
                     &:hover {
@@ -164,21 +164,27 @@
                         align-items: center;
                         gap: 1rem;
 
+                        // Dont allow to select text
+                        -webkit-user-select: none; /* Safari */
+                        -ms-user-select: none; /* IE 10 and IE 11 */
+                        user-select: none; /* Standard syntax */
+
+                        div {
+                            padding: 0 0.5rem;
+                        }
+
                         .CommentReactionsWrapper {
                             display: flex;
                             align-items: center;
                             font-weight: 600;
+                            color: $font-lightDark;
+                            gap: 0.25rem;
 
                             i {
                                 font-size: 16px;
                                 color: $font-lightDark;
 
                                 cursor: pointer;
-
-                                &:last-child {
-                                    margin-left: 1rem;
-                                }
-                                padding: 0 0.5rem;
                             }
 
                             &:hover {

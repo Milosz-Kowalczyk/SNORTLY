@@ -1,8 +1,39 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
 // MAIN Styles for this component are taken from HomePage module (Because they are related)
-import classes from "../../styles/HomePage.module.scss"
+import homePageClasses from "../../styles/HomePage.module.scss"
 import { convertDateToDayAndMonth, convertDateToDayMonthYear, extractHourAndMinutes, getDaysDifference, isInCurrentYear } from '../../utils/dateFormatHelper';
+
+
+export function DropdownButton() {
+
+    return (
+        <div className="dropdown is-hoverable is-right">
+            <div className="dropdown-trigger">
+                <button className={homePageClasses.reactionButton} aria-haspopup="true" aria-controls="dropdown-menu3">
+                    <span> <i className="fa-solid fa-up-right-from-square"></i> Share </span>
+                </button>
+            </div>
+            <div className="dropdown-menu" id="dropdown-menu3" role="menu">
+                <div className={`dropdown-content ${homePageClasses.DropDownMenu}`}>
+                    <div>
+                        <i className="fa-solid fa-link"></i> <p> Copy link </p>
+                    </div>
+                    <div>
+                        <i className="fa-solid fa-download"></i> <p> Download image </p>
+                    </div>
+                    <div>
+                        <i className="fa-solid fa-paper-plane"></i> <p> Email </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
+
+}
+
+
 
 export function DisplayFormatedDate({ postCreationDate }) {
     /*
@@ -76,18 +107,18 @@ export function DisplayPostImage({ imgSrc, postId = null, isPostClickable = fals
                     ?
                     // Here we display image that is a bit hidden and we can expand it (button)
                     <Fragment>
-                        <div onClick={() => handlePostClick(postId, isPostClickable)} style={isExpanded ? { maxHeight: imageHeight + "px" } : { maxHeight: MAX_IMAGE_EXPAND_HEIGHT + "px" }} className={isExpanded ? classes.PostImageContainer : classes.PostImageContainerExpanded}>
+                        <div onClick={() => handlePostClick(postId, isPostClickable)} style={isExpanded ? { maxHeight: imageHeight + "px" } : { maxHeight: MAX_IMAGE_EXPAND_HEIGHT + "px" }} className={isExpanded ? homePageClasses.PostImageContainer : homePageClasses.PostImageContainerExpanded}>
                             <img src={imgSrc} alt="" />
                         </div>
 
                         {
-                            (!isExpanded) && <button className={"button btnPurple " + classes.ExpandImageButton} onClick={toggleExpandImage}> Expand image </button>
+                            (!isExpanded) && <button className={"button btnPurple " + homePageClasses.ExpandImageButton} onClick={toggleExpandImage}> Expand image </button>
                         }
 
                     </Fragment>
                     :
                     // Normal image here
-                    <div onClick={() => handlePostClick(postId, isPostClickable)} className={classes.PostImageContainer}>
+                    <div onClick={() => handlePostClick(postId, isPostClickable)} className={homePageClasses.PostImageContainer}>
                         <img src={imgSrc} alt="" />
                     </div>
             }
@@ -129,12 +160,12 @@ function SinglePost({ POST_DATA, isPostClickable = false, isPostPage = false }) 
 
             {/* Here we display all posts  */}
 
-            <div key={`meme-${POST_DATA.postId}`} className={classes.PostContainer}>
+            <div key={`meme-${POST_DATA.postId}`} className={homePageClasses.PostContainer}>
 
                 {/* Post Info, Date + Username  */}
-                <div className={classes.PostInfoContainer}>
+                <div className={homePageClasses.PostInfoContainer}>
                     {/* Post Owner Avatar  */}
-                    <img className={classes.PostOwnerAvatar} src={POST_DATA.postOwnerAvatar} alt="" />
+                    <img className={homePageClasses.PostOwnerAvatar} src={POST_DATA.postOwnerAvatar} alt="" />
 
                     {/* Post Owner Text  */}
                     <h4 className="PostOwner"> {POST_DATA.postOwner} </h4>
@@ -146,17 +177,17 @@ function SinglePost({ POST_DATA, isPostClickable = false, isPostPage = false }) 
 
 
                 {/* Post title  */}
-                <div className={classes.PostTitleContainer}>
+                <div className={homePageClasses.PostTitleContainer}>
                     <h2 onClick={() => handlePostClick(POST_DATA.postId, isPostClickable)} className="PostTitle"> {POST_DATA.postTitle} </h2>
                 </div>
 
 
                 {/* Display tags  */}
-                <div className={classes.PostTagsContainer}>
+                <div className={homePageClasses.PostTagsContainer}>
                     {
                         POST_DATA.postTags.map((ele, idx) => {
                             return (
-                                <button key={`tag-${idx}-${ele}`} className={classes.PostTag}>
+                                <button key={`tag-${idx}-${ele}`} className={homePageClasses.PostTag}>
                                     {ele}
                                 </button>
                             )
@@ -170,16 +201,25 @@ function SinglePost({ POST_DATA, isPostClickable = false, isPostPage = false }) 
 
 
                 {/* Post reactions, likes, dislikes and comments  */}
-                <div className={classes.PostReactionsContainer}>
-                    <button className={classes.reactionButton + ' ' + classes.reactionButtonLike}> <i className="fa-solid fa-thumbs-up"></i> {POST_DATA.postLikes} </button>
-                    <button className={classes.reactionButton + ' ' + classes.reactionButtonDislike}> <i className="fa-solid fa-thumbs-down"></i> {POST_DATA.postDislikes} </button>
-                    {(!isPostPage) &&
-                        < button className={classes.reactionButton + ' ' + classes.reactionButtonComment}> <i className="fa-solid fa-comments"></i> {POST_DATA.postComments} </button>
-                    }
+                <div className={homePageClasses.PostReactionsContainer}>
+                    <div className={homePageClasses.PostReactionsLeft}>
+                        <button className={homePageClasses.reactionButton + ' ' + homePageClasses.reactionButtonLike}> <i className="fa-solid fa-thumbs-up"></i> {POST_DATA.postLikes} </button>
+                        <button className={homePageClasses.reactionButton + ' ' + homePageClasses.reactionButtonDislike}> <i className="fa-solid fa-thumbs-down"></i> {POST_DATA.postDislikes} </button>
+                        {(!isPostPage) &&
+                            < button className={homePageClasses.reactionButton + ' ' + homePageClasses.reactionButtonComment}> <i className="fa-solid fa-comments"></i> {POST_DATA.postComments} </button>
+                        }
+                    </div>
+
+
+
+                    <div className={homePageClasses.PostReactionsRight}>
+                        <DropdownButton />
+                    </div>
+
                 </div>
 
-                {/* <div className={classes.PostEnd}>
-                                    <hr className={classes.PostEndHr} />
+                {/* <div className={homePageClasses.PostEnd}>
+                                    <hr className={homePageClasses.PostEndHr} />
                                 </div> */}
 
             </div>
