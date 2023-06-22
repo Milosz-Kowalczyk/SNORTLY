@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ContextPopups } from "../../context/popupsContext";
 import { ContextActions } from "../../context/actionsContext";
@@ -25,6 +25,25 @@ function Navbar() {
         navbarBurger.current.classList.toggle("is-active")
         navbarMenu.current.classList.toggle("is-active")
     }
+
+    // Use Effect to add event listeners, so we can close navbar when we click outside of it
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                navbarMenu.current &&
+                !navbarMenu.current.contains(event.target) &&
+                !navbarBurger.current.contains(event.target)
+            ) {
+                toggleMenu();
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
 
     // Function when login button is clicked
     function handleLoginButtonClick() {

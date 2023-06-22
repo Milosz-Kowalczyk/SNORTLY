@@ -1,5 +1,6 @@
 @import "../../styles/colors.scss";
 @import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 
 .BlurryContainer {
     width: 100%;
@@ -271,6 +272,12 @@
 
                     i {
                         margin-right: 0.5rem;
+                    }
+
+                    @include mobile {
+                        max-width: 100%;
+                        width: 100%;
+                        text-align: center;
                     }
                 }
 
