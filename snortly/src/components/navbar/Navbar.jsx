@@ -1,12 +1,13 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { ContextPopups } from "../../context/popupsContext";
+import { ContextActions } from "../../context/actionsContext";
 
 import logoWhite from './snortHub_Logo1.png';
 
-import './Navbar.scss'
 import '../../styles/globals.scss'
-import { ContextPopups } from "../../context/popupsContext";
-import { ContextActions } from "../../context/actionsContext";
+import './Navbar.scss'
+
 
 
 function Navbar() {
@@ -24,6 +25,25 @@ function Navbar() {
         navbarBurger.current.classList.toggle("is-active")
         navbarMenu.current.classList.toggle("is-active")
     }
+
+    // Use Effect to add event listeners, so we can close navbar when we click outside of it
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                navbarMenu.current &&
+                !navbarMenu.current.contains(event.target) &&
+                !navbarBurger.current.contains(event.target)
+            ) {
+                toggleMenu();
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
 
     // Function when login button is clicked
     function handleLoginButtonClick() {
@@ -54,17 +74,11 @@ function Navbar() {
                         <img alt="" src={logoWhite} />
                     </a>
 
-                    {/* Action Hide Categories and right panel  */}
-                    <div onClick={() => { setShowSidePanels(!showSidePanels) }} className={"navbar-item hoverScale navbar-MemeOnlyIcon"}>
-                        <i className="fa-solid fa-expand"></i>
-                    </div>
-
                     <div className="navbar-item" onClick={handleNewPostButtonClick} >
                         <button className="button btnPurple navbar-newPostButton">
                             <i style={{ marginRight: "0.5rem" }} className="fa-solid fa-pen-to-square"></i> New Post
                         </button>
                     </div>
-
 
 
                     {/* Nav burger  */}
@@ -75,12 +89,25 @@ function Navbar() {
                     </button>
                 </div>
 
+
                 <div id="navbarBasicExample" className="navbar-menu" ref={navbarMenu}>
+
                     {/* Nav start, our main options */}
                     <div className="navbar-start">
+
+                        {/* Action Hide Categories and right panel | Focus mode */}
+                        <div onClick={() => { setShowSidePanels(!showSidePanels) }} className={"hoverScale navbar-FocusContainer navbar-item"}>
+
+                            {(showSidePanels)
+                                ? <i className={"fa-solid fa-expand"}></i>
+                                : <i className="fa-solid fa-expand FocusActive"></i>
+                            }
+
+                        </div>
                         <Link className="navLinkLight" href='/'>  Hot  </Link>
                         <Link className="navLinkLight" href='/'>  Trending  </Link>
                         <Link className="navLinkLight" href='/'>  Fresh  </Link>
+
                     </div>
 
                     {/* Login / sign up buttons, with user profile  */}

@@ -1,15 +1,53 @@
-import React from 'react';
-import classes from '../styles/HomePage.module.scss';
-import '../styles/globals.scss';
-import CategoriesPanel from '../components/CategoriesPanel/CategoriesPanel';
-import AdsPanel from '../components/AdsPanel/AdsPanel';
+import React, { useEffect, useRef, useState } from 'react'
+import CategoriesPanel from '../components/CategoriesPanel/CategoriesPanel'
+import homePageClasses from '../styles/HomePage.module.scss';
 import SinglePost from '../components/SinglePost/SinglePost';
-import PopularTags from '../components/PopularTags/PopularTags';
+import AdsPanel from '../components/AdsPanel/AdsPanel';
+import { useParams } from 'react-router-dom';
 
+import '../styles/globals.scss';
+import classes from '../styles/PostPage.module.scss';
+import CommentSection, { AddCommentTextArea } from '../components/CommentSection/CommentSection';
 
-function HomePage() {
+function CommentContainer() {
+    const [commentMessage, setCommentMessage] = useState("");
 
-    // Data for posts 
+    function handleCommentMessageChange(e) {
+        let val = e.target.value;
+        setCommentMessage(val);
+    }
+
+    function handleCommentMessageCancelClick() {
+        setCommentMessage("");
+    }
+
+    return (
+        <div className={classes.AddCommentContainer}>
+            <p className={"p4Text color-lightDark " + classes.RespectRulesText}>
+                Remember to keep comments respectful and to follow
+                <span className="linkText"> our Community Guidelines. </span>
+            </p>
+
+            <AddCommentTextArea
+                message={commentMessage}
+                handleMessage={handleCommentMessageChange}
+                handleMessageCancelClick={handleCommentMessageCancelClick}
+                isMainInput={true}
+            />
+        </div>
+    );
+}
+
+function PostPage() {
+
+    // HERE WE SHOULD FETCH DATA ABOUT POST AND COMMENTS and then pass it down!
+
+    const { postId } = useParams();
+
+    const [postData, setPostData] = useState("") // We fetch this for specific postId
+
+    const commentSectionRef = useRef(null); // this is for smoothScroll to commentSection
+
     const DUMMY_DATA =
         [
             {
@@ -75,25 +113,45 @@ function HomePage() {
 
         ]
 
-    return (
+    useEffect(() => {
+        if (postId) {
+            let data = DUMMY_DATA.filter(ele => ele.postId === postId)
+            setPostData(...data);
+        }
+    }, [postId])
 
-        <div className={'container ' + classes.mainContainer}>
+
+    function handleScrollToCommentSection() {
+        commentSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    return (
+        <div className={'container ' + homePageClasses.mainContainer}>
 
             {/* Left side Panel - Categories / Hey You Box  */}
             <CategoriesPanel />
 
 
-
             {/* Here, we display memes (middle section ) */}
-            <div className={classes.ContainerWrapper + ' ' + classes.MiddleContainerWrapper}>
-                <div className={classes.middleSideContainer}>
-                    <PopularTags />
+            <div className={homePageClasses.ContainerWrapper + ' ' + homePageClasses.MiddleContainerWrapper}>
+                <div className={homePageClasses.middleSideContainer} style={{ paddingTop: "2rem", gap: "0" }}>
 
-                    {
-                        DUMMY_DATA.map((ele, idx) => {
-                            return <SinglePost isPostClickable={true} key={`post-${ele.postId}`} POST_DATA={ele} />
-                        })
+                    {(postData) &&
+                        <SinglePost key={`post-${postData.postId}`} POST_DATA={postData} isPostClickable={false} isPostPage={true} />
                     }
+
+                    <div className={classes.CommentSectionFilterContainer}>
+                        <button onClick={handleScrollToCommentSection} className={"myButton btnPurple"}> Comments 281 </button>
+                        {/* Later you can add other buttons for filtering or something */}
+                    </div>
+
+                    {/* Add comment container  */}
+                    <CommentContainer />
+
+                    {/* Render Comment Section (with ref to scroll to it when comment button clicked)  */}
+                    <div>
+                        <CommentSection commentSectionRef={commentSectionRef} />
+                    </div>
 
                 </div>
 
@@ -103,9 +161,8 @@ function HomePage() {
             {/* Right side Panel - Best memes, authors, top users, maybe ads? */}
             <AdsPanel />
 
-        </div>
-
+        </div >
     )
 }
 
-export default HomePage
+export default PostPage

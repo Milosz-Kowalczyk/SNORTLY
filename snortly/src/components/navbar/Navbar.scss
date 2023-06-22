@@ -7,6 +7,7 @@
     color: $font-white;
 
     height: 50px;
+    box-shadow: 0px 2px 12px $page-background;
 }
 
 .navbar-burger {
@@ -14,12 +15,12 @@
 }
 
 .navbar-menu {
-    background-color: $menu-bg-color;
+    @include bulmaTablet() {
+        background-color: $menu-bg-color;
+    }
 }
 
 .navbar-start {
-    width: 100%;
-
     justify-content: flex-start;
     gap: 0.5rem;
 
@@ -30,9 +31,24 @@
     // }
 }
 
-.navbar-MemeOnlyIcon {
+// It is for our icon to toggle read mode (called Focus mode)
+.navbar-FocusContainer {
+    text-align: center;
+
+    @include bulmaTablet {
+        display: none;
+    }
+
     i {
+        width: 32px;
+        height: 32px;
         color: $font-white;
+        padding: 0.5rem;
+        border-radius: 50px;
+    }
+
+    .FocusActive {
+        background-color: $reactionDislike;
     }
 }
 

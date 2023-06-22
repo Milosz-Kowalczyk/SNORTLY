@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import { Player } from 'video-react'
 // import '~video-react/dist/video-react.css'; // import css
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -11,20 +10,21 @@ function NewPost() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups);
 
-    // Meme title (max 280 letters!)
-    const MAX_TITLE_LENGTH = 280;
+    // Meme title (max 256 letters!)
+    const MAX_TITLE_LENGTH = 256;
     const [postTitle, setPostTitle] = useState("")
     const [postTitleCount, setPostTitleCount] = useState(MAX_TITLE_LENGTH); // Here we count down from MAX_TITLE_LENGTH to 0 (max title length)
 
     // MEME file
     // We allow only for PNG, JPG, GIF, MP4
     const MAX_KB_FILE_SIZE = 2000 // Max is 2000KB, 2MB;
-    const [uploadedFile, setUploadedFile] = useState() // Stores file that was uploaded (can be image or video)
-    const [fileUrl, setFileUrl] = useState(); // Stores file URL
-    const [postURL, setPostURL] = useState();   // Stores URL that user passed in input (optional)
-    const [fileType, setFileType] = useState(); // Helper that stores information either "image" or "video"
-    const [videoSrc, setVideoSrc] = useState();
-    const [showFilePreview, setShowFilePreview] = useState(false)
+    const [uploadedFile, setUploadedFile] = useState("") // Stores file that was uploaded (can be image or video)
+    const [fileUrl, setFileUrl] = useState(""); // Stores file URL
+    const [postURL, setPostURL] = useState("");   // Stores URL that user passed in input (optional)
+    const [fileType, setFileType] = useState(""); // Helper that stores information either "image" or "video"
+    const [videoSrc, setVideoSrc] = useState("");
+    const [showFilePreview, setShowFilePreview] = useState(false);
+    const [isPostURLCorrect, setIsPostURLCorrect] = useState(false);
 
     // Select tags stuff 
     const MAX_TAGS = 5; // Max number of selected tags
@@ -214,8 +214,10 @@ function NewPost() {
 
         let possible_errors = [];
 
+        console.log("Hello", file)
+
         // Checking for errors
-        if (fileType !== "image/jpeg" && fileType !== "image/png" && fileType !== "image/jpg" && fileType !== "image/gif" && fileType !== "video/mp4") {
+        if (fileType !== "image/jpeg" && fileType !== "image/png" && fileType !== "image/jpg" && fileType !== "image/gif" && fileType !== "image/webp" && fileType !== "video/mp4") {
             possible_errors.push("This file extension is not supported!")
         }
         if (fileSizeInKB > MAX_KB_FILE_SIZE) {
@@ -233,6 +235,7 @@ function NewPost() {
             if (fileType === "video/mp4") {
                 var url = URL.createObjectURL(file);
 
+                // console.log("url", url)
                 setVideoSrc(url);
                 setFileType("video")
 
@@ -253,29 +256,47 @@ function NewPost() {
     // Handle post url when it is passed
     function handlePostURL(e) {
         let url = e.target.value;
-        let urlExtension = String(url.substring(url.length - 3)).toLowerCase();
-        let possibleExtensions = ["gif", "png", "jpg", "jpeg"]
-        setPostURL(url);
+        const urlExtension = url.substring(url.lastIndexOf('.') + 1);
+        let possibleExtensions = ["gif", "png", "jpg", "jpeg", "webp"]
 
         let possible_erros = [];
 
-        if (!possibleExtensions.includes(urlExtension)) {
-            possible_erros.push("Url has wrong extension!")
-        }
-
-        if (possible_erros.length > 0) {
-            setErrorMessages([...possible_erros])
-        }
-        else {
+        // First we check is url has .mp4 
+        if (urlExtension === 'mp4') {
+            setVideoSrc(url);
+            setFileType("video");
+            setErrorMessages([]);
             setPostURL(url);
-            setFileType("image");
-            setErrorMessages([])
+            setShowFilePreview(true);
+            setIsPostURLCorrect(true);
+        } else {
+            if (!possibleExtensions.includes(urlExtension) && url.length > 0) {
+                possible_erros.push("Url has wrong extension!")
+            }
 
-            // We want delay to make image url copy a bit more realistic 
-            setTimeout(() => {
-                setShowFilePreview(true);
-            }, 1000);
+            if (possible_erros.length > 0) {
+                setErrorMessages([...possible_erros])
+            }
+            else if (url.length <= 0) {
+                setErrorMessages([])
+            }
+            else if (url.length > 0) {
+                setFileType("image");
+                setErrorMessages([])
+                setIsPostURLCorrect(true);
+
+                // We want delay to make image url copy a bit more realistic 
+                setTimeout(() => {
+                    setShowFilePreview(true);
+                }, 1000);
+            }
+
+            setPostURL(url);
         }
+
+
+
+
 
     }
 
@@ -286,6 +307,7 @@ function NewPost() {
         setShowFilePreview(false);
         setPostURL("");
         setUploadedFile("")
+        setIsPostURLCorrect(false);
     }
 
 
@@ -301,8 +323,6 @@ function NewPost() {
         if (selectedTags.length === 0) {
             possible_errors.push("There has to be at least one tag added!")
         }
-
-        console.log(postURL, uploadedFile)
         // Here we check two things
         // If user uploaded file instead of pasting image
         if (!postURL) {
@@ -354,7 +374,7 @@ function NewPost() {
                     {/* Popup Title  */}
                     {/* Add post or show preview buttons  */}
                     <div className={classes.PostActionsContainer}>
-                        <h2 className={classes.ContainerTitle}> New Post </h2> <button className='button btnPurple' onClick={handleAddPostClick}> <i class="fa-solid fa-location-arrow"></i>Publish Post </button>
+                        <h2 style={{ marginBottom: "0" }} className="PopupTitle"> New Post </h2> <button className='myButton btnPurple' onClick={handleAddPostClick}> <i className="fa-solid fa-location-arrow"></i>Publish Post </button>
                     </div>
 
 
@@ -379,8 +399,8 @@ function NewPost() {
 
                     {/* // Here we count and display title length  */}
                     <div className={classes.TitleInputContainer}>
-                        <h2 className={classes.InputLabel}>
-                            <span className={"icon is-small is-left " + classes.myIcon}>
+                        <h2 className="inputLabel">
+                            <span className={"icon is-small is-left "}>
                                 <i className="fa-solid fa-signature"></i>
                             </span>
                             Post Title
@@ -388,15 +408,15 @@ function NewPost() {
 
                         {/* If we reach postTitleCount = 0, we display it with red color  */}
                         {(postTitleCount > 0)
-                            ?
-                            < p className={classes.TitleCounter}> {postTitleCount} </p>
-                            :
-                            < p className={classes.TitleCounter + ' ' + classes.TitleCounterLimit}> {postTitleCount} </p>
+                            ? < p className={classes.TitleCounter}> {postTitleCount} </p>
+                            : < p className={classes.TitleCounter + ' ' + classes.TitleCounterLimit}> {postTitleCount} </p>
                         }
                     </div>
 
                     {/* Title Text area (Because we wanted to add new line when user reaches some input limit) */}
-                    <TextareaAutosize spellCheck="false" maxRows={5} value={postTitle} onChange={(e) => { handlepostTitleChange(e) }} className={classes.TitleTextArea} />
+                    <div className={classes.TextAreaContainer}>
+                        <TextareaAutosize spellCheck="false" maxRows={5} value={postTitle} onChange={(e) => { handlepostTitleChange(e) }} className={classes.TitleTextArea} />
+                    </div>
 
 
                     {/* // Add tags section  */}
@@ -404,14 +424,14 @@ function NewPost() {
 
                         {/* Here we display max tags number  */}
                         <div className={classes.SelectTagsMaxTagsContainer}>
-                            <p className={classes.SelectTagsText}> <i class="fa-solid fa-tags"></i> Add at least one tag </p>
+                            <h2 className="inputLabel">
+                                <span> <i className="fa-solid fa-tags"></i> </span>
+                                Add at least one tag
+                            </h2>
 
-                            {
-                                ((MAX_TAGS - selectedTags.length) > 0)
-                                    ?
-                                    <p className={classes.MaxTagsText}> {MAX_TAGS - selectedTags.length} </p>
-                                    :
-                                    <p className={classes.MaxTagsText + " " + classes.MaxTagsTextLimit}> {MAX_TAGS - selectedTags.length} </p>
+                            {((MAX_TAGS - selectedTags.length) > 0)
+                                ? <p className={classes.MaxTagsText}> {MAX_TAGS - selectedTags.length} </p>
+                                : <p className={classes.MaxTagsText + " " + classes.MaxTagsTextLimit}> {MAX_TAGS - selectedTags.length} </p>
                             }
 
                         </div>
@@ -419,7 +439,7 @@ function NewPost() {
                         {/* Select box with possible tags  */}
                         <div className={classes.SelectTagsContainer}>
 
-                            <select defaultValue="" onChange={handleSelectedTagChange}>
+                            <select className="selectLight" defaultValue="" onChange={handleSelectedTagChange}>
                                 <option value="" disabled>Select tag</option>
                                 {DUMMY_CATEGORIES.map((ele, idx) => (
                                     <option key={`${ele.categoryTitle}-${idx}`} value={ele.categoryTitle}>
@@ -428,7 +448,7 @@ function NewPost() {
                                 ))}
                             </select>
 
-                            <button className='button btnPurple' onClick={handleAddTagClick}> <i class="fa-regular fa-square-plus"></i> </button>
+                            <button className='myButton btnPurple' onClick={handleAddTagClick}> <i className="fa-regular fa-square-plus"></i> </button>
 
                         </div>
 
@@ -454,7 +474,7 @@ function NewPost() {
                                 <div className={classes.UploadLinkContainer}>
 
                                     {/* // Upload via link */}
-                                    <p className={classes.InputLabel}> Enter link </p>
+                                    <p className="inputLabel"> Enter link </p>
                                     <p className={"control has-icons-left"}>
                                         <input value={postURL} onChange={(e) => { handlePostURL(e) }} className="input" type="text" />
                                         <span className={"icon is-small is-left " + classes.myIcon}>
@@ -466,12 +486,12 @@ function NewPost() {
                                 <p className={classes.Divider}> Or </p>
 
                                 {/* // Upload via file upload */}
-                                <label className={'button btnPurple ' + classes.BtnUpload}>
-                                    <input type="file" style={{ display: "none" }} onChange={(e) => { handleFileChange(e) }} />
+                                <label className={'myButton btnPurple ' + classes.BtnUpload}>
+                                    <input type="file" style={{ display: "none" }} accept="image/*, video/mp4" disabled={isPostURLCorrect} onChange={(e) => { handleFileChange(e) }} />
                                     <i className="fa fa-cloud-upload" /> Upload image
                                 </label>
 
-                                <p className={classes.WeSupportText}> We support files and links with PNG, JPG, GIF or MP4 extensions. </p>
+                                <p className="p5Text" style={{ marginTop: "0.75rem", textAlign: "left", alignSelf: "flex-start" }}> We support files and links with PNG, JPG, GIF or MP4 extensions. </p>
                             </>
                         }
 
@@ -484,6 +504,7 @@ function NewPost() {
                                         <i className="fa-solid fa-trash-can"></i>
                                     </div>
 
+                                    {/* Display img depending if it is from file upload or direct link */}
                                     {(fileUrl) && <img src={fileUrl} alt="" />}
                                     {(postURL) && <img src={postURL} alt="" />}
 
@@ -492,16 +513,19 @@ function NewPost() {
                         }
 
                         {/* Show preview of file if this is video  */}
-                        {(showFilePreview && fileType === "video") &&
+                        {(showFilePreview && fileType === "video" && videoSrc) &&
                             <div className={classes.VideoPreviewContainer}>
                                 <div className={classes.VideoWrapper}>
                                     <div className={classes.DeleteUploadedImageContainer} onClick={handleUploadedImageDelete}>
                                         <i className="fa-solid fa-trash-can"></i>
                                     </div>
 
-                                    <Player >
+                                    {/* {console.log("yes", videoSrc)} */}
+
+                                    <video controls>
                                         <source src={videoSrc} />
-                                    </Player>
+                                    </video>
+
 
 
                                 </div>

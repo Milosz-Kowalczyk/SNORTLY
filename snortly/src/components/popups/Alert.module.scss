@@ -1,0 +1,69 @@
+@import "../../styles/colors.scss";
+@import "../../styles/mixins.scss";
+
+.Alert {
+    max-width: 768px;
+    min-width: 300px;
+
+    @include bigMobile() {
+        width: 95vw;
+        max-width: 95vw;
+    }
+
+    background-color: #d92a4a;
+
+    position: absolute;
+    z-index: 10;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+
+    border-radius: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding: 0.25rem 0.5rem;
+
+    font-size: 0.9rem;
+    color: $font-error;
+
+    p {
+        padding: 0.5rem;
+        line-break: anywhere;
+    }
+
+    i {
+        font-size: 1rem;
+        padding-left: 0.5rem;
+    }
+}
+
+.Alert.show {
+    top: 1rem;
+    animation: slideIn 0.5s forwards;
+}
+
+.Alert.hide {
+    top: -1rem;
+    animation: slideOut 0.5s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        top: -4rem;
+    }
+    to {
+        top: 1rem;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        top: 1rem;
+    }
+    to {
+        top: -4rem;
+    }
+}

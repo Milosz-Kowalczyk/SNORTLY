@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react'
-import classes from './LoginSigninStyles.module.scss';
 import { ContextPopups } from '../../context/popupsContext'
+
+import classes from './LoginSigninStyles.module.scss';
+import '../../styles/globals.scss';
 
 // Login Form popup 
 
@@ -16,7 +18,7 @@ function LoginForm() {
     const [userEmailUsername, setUserEmailUsername] = useState("")
     const [userPassword, setUserPassword] = useState("")
 
-    // Closes login popup
+    // Closes login popup when user clicked X icon
     function handleLoginCloseClick() {
         setCurrentPopup("")
         setShowPopup(false);
@@ -69,10 +71,10 @@ function LoginForm() {
                     {/* // Close window button */}
                     <i onClick={handleLoginCloseClick} className={"fa-solid fa-xmark " + classes.closeIcon}></i>
 
-                    <h1 className={classes.FormTitle}> Login </h1>
+                    <h1 className="PopupTitle"> Login </h1>
 
                     {/* Email Input  */}
-                    <p className={classes.inputLabel}> Enter email or username </p>
+                    <p className="inputLabel"> Enter email or username </p>
                     <p className={"control has-icons-left has-icons-right " + classes.myControl}>
                         <input value={userEmailUsername} onChange={(e) => { handleEmailUsernameChange(e) }} className="input" type="email" placeholder="Email" />
 
@@ -83,7 +85,7 @@ function LoginForm() {
 
 
                     {/* Password Input  */}
-                    <p className={classes.inputLabel}> Enter password </p>
+                    <p className="inputLabel"> Enter password </p>
                     <p className={"control has-icons-left " + classes.myControl}>
                         <input style={{ marginBottom: "0.25rem" }} value={userPassword} onChange={(e) => { handlePasswordChange(e) }} className="input" type="password" placeholder="Password" />
                         <span className={"icon is-small is-left " + classes.myIcon}>
@@ -106,13 +108,13 @@ function LoginForm() {
                     }
 
 
-                    {/* Login Button  */}
+                    {/* Login Submit Button  */}
                     <button onClick={handleLoginButtonPress} className='btnFormMaxWidth btnPurple'>
                         Continue
                     </button>
 
                     <br /> <br />
-                    <p className='textGray-medium text-center'>
+                    <p className='p4Text text-center'>
                         Don&apos;t have an account yet? <br /><span className='linkText' onClick={handleSwitchToSignin}>Create one</span>
                     </p>
 

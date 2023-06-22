@@ -1,0 +1,204 @@
+@import "../../styles/colors.scss";
+
+.CommentSectionContainer {
+    width: 100%;
+    min-height: 50px;
+
+    margin-bottom: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .CommentWrapper {
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        gap: 0.75rem;
+
+        border-radius: 4px;
+        padding: 0.25rem;
+
+        &:hover {
+            background-color: $menu-bg-light2;
+        }
+
+        .CommentAvatarContainer {
+            img {
+                max-width: 36px;
+                border-radius: 50px;
+                background-color: $menu-bg-light1;
+                padding: 2px;
+            }
+        }
+
+        .CommentContainer {
+            width: 100%;
+
+            .CommentUserInfo {
+                a {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+
+        .CommentTextContainer {
+            .CommentActionButtons {
+                width: 100%;
+                margin-top: 0.5rem;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                // Dont allow to select text
+                -webkit-user-select: none; /* Safari */
+                -ms-user-select: none; /* IE 10 and IE 11 */
+                user-select: none; /* Standard syntax */
+
+                div {
+                    padding: 0 0.5rem;
+                }
+
+                .CommentReactionsWrapper {
+                    display: flex;
+                    align-items: center;
+                    font-weight: 600;
+                    color: $font-lightDark;
+                    gap: 0.25rem;
+
+                    i {
+                        font-size: 16px;
+                        color: $font-lightDark;
+
+                        cursor: pointer;
+                    }
+
+                    &:hover {
+                        color: $font-lightGrey;
+                        cursor: pointer;
+
+                        i {
+                            color: $font-lightGrey;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Show subcomments
+        .ViewSubCommentsContainer {
+            width: 100%;
+            height: 100%;
+
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+
+            display: flex;
+
+            // Dont allow to select text
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax */
+
+            div {
+                color: $strong-purple;
+                font-weight: 600;
+                font-size: 0.9rem;
+
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 0.5rem;
+
+                border-bottom: 1px solid transparent;
+
+                &:hover {
+                    color: $light-purple;
+                    border-bottom: 1px solid $light-purple;
+
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    // All about sub comments
+    .SubCommentContainer {
+        width: 100%;
+        height: 100%;
+
+        // Avatar image + spacing to make this equal
+        padding-left: calc(36px + 0.5rem);
+
+        .SubCommentsWrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            .SubCommentsContainer {
+                width: 100%;
+                display: flex;
+                gap: 0.75rem;
+                padding: 0.25rem;
+                border-radius: 4px;
+
+                &:hover {
+                    background-color: $menu-bg-light2;
+                }
+
+                .SubCommentsAvatarContainer {
+                    img {
+                        max-width: 28px;
+                        border-radius: 50px;
+                        background-color: $menu-bg-light1;
+                        padding: 2px;
+                    }
+                }
+
+                .CommentTextContainer {
+                    .CommentActionButtons {
+                        width: 100%;
+                        margin-top: 0.5rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+
+                        // Dont allow to select text
+                        -webkit-user-select: none; /* Safari */
+                        -ms-user-select: none; /* IE 10 and IE 11 */
+                        user-select: none; /* Standard syntax */
+
+                        div {
+                            padding: 0 0.5rem;
+                        }
+
+                        .CommentReactionsWrapper {
+                            display: flex;
+                            align-items: center;
+                            font-weight: 600;
+                            color: $font-lightDark;
+                            gap: 0.25rem;
+
+                            i {
+                                font-size: 16px;
+                                color: $font-lightDark;
+
+                                cursor: pointer;
+                            }
+
+                            &:hover {
+                                color: $font-lightGrey;
+                                cursor: pointer;
+
+                                i {
+                                    color: $font-lightGrey;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

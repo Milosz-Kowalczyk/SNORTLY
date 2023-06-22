@@ -24,6 +24,15 @@ Here you type things that you wanted to do before you went ..
 - Dodaj Funkcjonalność, aby ładował kolejne memy kiedy będzie w odpowiednim momencie 
 - Popraw menu, aby Hot, Trening Fresh wyświetlało się po środku (?)
 - Dodaj przycisk (wróc do góry)
-- Dodaj smooth scroll 
+- DONE | Dodaj smooth scroll do komentarzy
 - Dodaj classy z responsywnymi textami 
-- Popraw w PopUp NewPost w responsywność PostTitle inputa (bo się wysokość nie zmienia)
+- DONE | Popraw w PopUp NewPost w responsywność PostTitle inputa (bo się wysokość nie zmienia)
+
+WAŻNE, Popraw HOMEPAGE aby podzielić go na mniejsze reusable components. bo uzyjesz ich jeszcze kilka razy..
+
+17.06.2023 
+- DONE | Podziel kod na mniejsze komponenty aby działał mechanizm związany z "View replies" 
+- DONE | Zrób aby Input z Leave a comment był uniwersalny i zeby postPage i CommentSection uzywal tego samego inputu!
+- DONE | Popraw zeby jak mamy expand image to nie bylo ze mamy image 1005px a ukrywa go na 1000px (zrob jakis spacing typu ze jak image jest powyzej 1000 + 100 to wtedy zakryj do 1000)
+- DONE | Dodaj error handling do comment image / video input
+- DONE | Dodaj zeby na /post/12 (:id) zamiast klikać w image i iść na inną stronę, po prostu otworzyło obrazek większy :D 

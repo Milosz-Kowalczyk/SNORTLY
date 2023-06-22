@@ -1,6 +1,15 @@
 @import "./colors.scss";
+@import "./mixins.scss";
+// Global styles that we use across the page
 
 // BUTTONS STYLES
+.myButton {
+    padding: 0.75rem;
+    font-size: 1rem;
+
+    border-radius: 4px;
+}
+
 .btnPurple {
     color: $font-white;
     background-color: $strong-purple;
@@ -38,6 +47,29 @@
     &:hover {
         background-color: $font-white;
         color: $page-background;
+        box-shadow: none;
+    }
+}
+
+// First used in maximized image display
+.btnMildBlack {
+    color: $font-white;
+    background-color: $menu-bg-color;
+
+    border: 0;
+
+    font-family: "SF Pro Display", sans-serif;
+    font-weight: 700;
+
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: $font-white;
+        color: $page-background;
+        box-shadow: none;
     }
 }
 
@@ -68,6 +100,31 @@
     }
 }
 
+// Input styles
+.selectLight {
+    max-width: 250px;
+
+    background-color: $menu-bg-light1;
+    box-shadow: none;
+    border: none;
+
+    outline: none;
+
+    color: $font-white;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 16px;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+
+    padding: 0 1rem;
+
+    &:focus {
+        border: 1px solid $strong-purple;
+    }
+}
+
 .navLinkLight {
     color: $font-white;
 
@@ -84,11 +141,23 @@
 
     &:hover {
         background-color: transparent;
-        color: $strong-purple;
+        color: $light-purple;
     }
 }
 
 .linkText {
+    color: $font-link;
+    cursor: pointer;
+
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent; // We want this so page will not move when we add border on hover
+
+    &:hover {
+        border-bottom: 1px solid $font-link;
+    }
+}
+
+.ViewRepliesText {
     color: $font-link;
     cursor: pointer;
 
@@ -133,6 +202,165 @@
     color: $font-lightGrey;
 }
 
+// Responsive Text here
+.PopupTitle {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: $font-white;
+
+    text-align: center;
+
+    margin-bottom: 2rem;
+
+    @include mobile {
+        font-size: 1.6rem;
+    }
+}
+
+.inputLabel {
+    // You are using it in all pop ups
+    // also supports span and icon inside it
+    font-size: 16px;
+    font-weight: 600;
+
+    color: $font-lightGrey;
+
+    margin-bottom: 0.25rem;
+    margin-left: 0.1rem;
+
+    span {
+        margin-right: 0.5rem;
+    }
+
+    // Here we also can control Icons before text
+    // i {
+    // color: blue;
+    // }
+}
+
+.PostDate {
+    font-size: 0.8rem;
+    font-weight: 100;
+    color: $font-lightDark;
+}
+
+.PostOwner {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $font-lightGrey;
+
+    cursor: pointer;
+
+    &:hover {
+        color: $white;
+    }
+}
+
+.SubCommentOwner {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $font-lightGrey;
+    margin-right: 0.5rem;
+
+    cursor: pointer;
+
+    &:hover {
+        color: $white;
+    }
+}
+
+.PostTitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: $font-lightGrey;
+
+    cursor: pointer;
+
+    &:hover {
+        color: $font-white;
+    }
+}
+
+.CommentText {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: $font-white;
+}
+
+.CancelCommentText {
+    font-size: 16px;
+    font-weight: 600;
+    color: $font-lightDark;
+
+    cursor: pointer;
+
+    &:hover {
+        color: $font-lightGrey;
+    }
+}
+
+.CommentActionText {
+    font-size: 16px;
+    font-weight: 600;
+    color: $font-lightDark;
+
+    cursor: pointer;
+
+    &:hover {
+        color: $font-lightGrey;
+    }
+}
+
+// Responsive Text, same order as headings (p1 means the biggest text)
+// h{n} is mostly bolded while p{2] is normal light text
+
+.p3Text {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: $font-lightGrey;
+}
+
+.p4Text {
+    font-size: 1rem;
+    font-weight: 400;
+    color: $font-white;
+}
+
+.p5Text {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: $font-white;
+}
+
+.h1Text {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: $font-white;
+
+    margin-bottom: 0.5rem;
+}
+
+.h3Text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $font-white;
+
+    margin-bottom: 0.5rem;
+}
+
+.h4Text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $font-white;
+
+    margin-bottom: 0.5rem;
+}
+
+// Optional text colors
+.text-lightGrey {
+    color: $font-lightGrey;
+}
+
 // Error message container
 .errorMessageContainer {
     width: 100%;
@@ -150,4 +378,12 @@
 
         color: $font-error;
     }
+}
+
+// colors
+.color-lightGrey {
+    color: $font-lightGrey;
+}
+.color-lightDark {
+    color: $font-lightDark;
 }

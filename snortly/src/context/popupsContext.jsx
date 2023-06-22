@@ -7,12 +7,12 @@ import NewPost from '../components/popups/NewPost';
 
 export const ContextPopups = createContext(null);
 
-
 // Purpose of this Context is to manage all popups on page
 // Mainly for Login, signin components 
+
 function PopupsContext(props) {
 
-    // Flip this when window is on or off (like login page)
+    // Flip this when window is on or off (like login component)
     const [showPopup, setShowPopup] = useState(false)
 
     //  This will monitor what popup is currently on 
@@ -42,6 +42,7 @@ function PopupsContext(props) {
 
 
             {props.children}
+
         </ContextPopups.Provider>
     )
 }

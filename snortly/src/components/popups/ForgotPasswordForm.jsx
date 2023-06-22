@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react'
-import classes from './LoginSigninStyles.module.scss';
 import { ContextPopups } from '../../context/popupsContext'
+
+import classes from './LoginSigninStyles.module.scss';
+import '../../styles/globals.scss';
 
 function ForgotPasswordForm() {
 
@@ -54,11 +56,11 @@ function ForgotPasswordForm() {
                     {/* // Close window button */}
                     <i onClick={handleLoginCloseClick} className={"fa-solid fa-xmark " + classes.closeIcon}></i>
 
-                    <h1 style={{ marginBottom: "0.5rem", textAlign: "left" }} className={classes.FormTitle}> Reset password </h1>
-                    <p className='textGray-medium'> Enter the email address associated with your account and we&apos;ll send you a link to reset your password</p>
+                    <h1 style={{ marginBottom: "0.5rem", textAlign: "left" }} className="PopupTitle"> Reset password </h1>
+                    <p className='p4Text'> Enter the email address associated with your account and we&apos;ll send you a link to reset your password</p>
 
                     {/* Email Input  */}
-                    <p style={{ marginTop: '1.5rem' }} className={classes.inputLabel}> Enter email </p>
+                    <p style={{ marginTop: '1.5rem' }} className="inputLabel"> Enter email </p>
                     <p className={"control has-icons-left has-icons-right " + classes.myControl}>
                         <input value={userEmail} onChange={(e) => { handleEmailChange(e) }} className="input" type="email" placeholder="Email" />
 
@@ -79,13 +81,13 @@ function ForgotPasswordForm() {
                     }
 
 
-                    {/* Login Button  */}
+                    {/* Reset Password submit Button  */}
                     <button onClick={handleLoginButtonPress} className='btnFormMaxWidth btnPurple'>
                         Continue
                     </button>
 
                     <br /> <br />
-                    <p className='textGray-medium text-center'>
+                    <p className='p4Text text-center'>
                         Don&apos;t have an account yet? <br /><span className='linkText' onClick={handleSwitchToSignin}>Create one</span>
                     </p>
 

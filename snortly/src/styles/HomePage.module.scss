@@ -2,17 +2,19 @@
 @import "../styles/mixins.scss";
 @import "../styles/variables.scss";
 
+// Our HomePage is splitted into three columns
+// mainContainer
+// - LeftContainerWrapper (Hello You Box, Categories)
+// - MiddleContainerWrapper (Main section with post and popular tags)
+// - RightContainerWrapper (Best memes, top users ..)
+
 .mainContainer {
     width: 100%;
     height: calc(100vh - 50px);
 
-    // overflow: hidden;
-
     display: flex;
     flex-direction: row;
     justify-content: center;
-
-    // gap: 4rem;
 
     @include bulmaTablet {
         max-width: 90%;
@@ -61,25 +63,15 @@
 
                 background-color: $menu-bg-color;
 
-                padding: 1.5rem 1rem;
+                padding: 1rem 1rem;
 
                 display: flex;
                 flex-direction: column;
                 align-items: center;
 
-                gap: 0.5rem;
-
                 button {
                     width: 60%;
                     margin-top: 0.5rem;
-                }
-
-                .HeyYouBoxTitle {
-                    font-size: 26px;
-                    font-weight: 600;
-
-                    color: $font-white;
-                    text-align: center;
                 }
 
                 .HeyYouBoxText {
@@ -108,14 +100,6 @@
                 flex-direction: column;
                 gap: 0.25rem;
 
-                .CategoriesBoxTitle {
-                    font-size: 22px;
-                    font-weight: 600;
-                    color: $font-white;
-
-                    margin-bottom: 1rem;
-                }
-
                 .CategoryBox {
                     display: flex;
                     flex-direction: row;
@@ -135,14 +119,8 @@
                         width: 32px;
                     }
 
-                    .CategoryTitle {
-                        font-size: 18px;
-                        font-weight: 400;
-                        color: $font-white;
-                    }
-
                     &:hover {
-                        background-color: $light-purple;
+                        background-color: $strong-purple;
                     }
                 }
             }
@@ -161,29 +139,10 @@
             margin-top: 2rem;
             margin-bottom: -2rem;
 
-            .PopularTagsTitle {
-                font-size: 22px;
-                font-weight: 600;
-                color: $font-white;
-
-                margin-bottom: 0.5rem;
-            }
-
             .PopularTagsBox {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
-
-                // overflow-x: scroll;
-
-                // padding-bottom: 1rem;
-
-                // Hide scrollbar
-                // -ms-overflow-style: none; /* IE and Edge */
-                // scrollbar-width: none; /* Firefox */
-                // &::-webkit-scrollbar {
-                //     display: none;
-                // }
 
                 gap: 0.75rem;
 
@@ -201,8 +160,6 @@
         .middleSideContainer {
             max-width: 600px;
 
-            // background-color: $menu-bg-color;
-
             border-radius: 4px;
 
             display: flex;
@@ -214,8 +171,6 @@
             .PostContainer {
                 width: 100%;
                 min-height: 200px;
-
-                // background-color: $menu-bg-color;
 
                 display: flex;
                 flex-direction: column;
@@ -232,48 +187,21 @@
 
                     gap: 0.5rem;
 
-                    color: $font-lightGrey;
-                    font-weight: 500;
-
-                    .PostOwner {
-                        font-weight: 500;
-                    }
-
                     .PostOwnerAvatar {
-                        max-width: 24px;
-                        min-width: 24px;
+                        max-width: 20px;
+                        min-width: 20px;
                         height: auto;
 
                         background-color: $menu-bg-color;
                         border-radius: 50px;
                     }
-
-                    .PostDate {
-                        letter-spacing: 1px;
-                        font-weight: 300;
-                        font-size: 0.8em;
-                    }
                 }
 
                 .PostTitleContainer {
                     width: 100%;
-
-                    .PostTitle {
-                        font-size: 22px;
-                        font-weight: 600;
-                        color: $font-lightGrey;
-                    }
                 }
 
                 .PostImageContainer {
-                    width: 100%;
-                    background-color: $black;
-
-                    display: flex;
-                    justify-content: center;
-                }
-
-                .PostImageContainerNotExpanded {
                     width: 100%;
                     max-height: $MAX_IMAGE_EXPAND_HEIGHT;
 
@@ -281,10 +209,17 @@
 
                     background-color: $black;
 
+                    cursor: pointer;
+
                     img {
                         display: block;
                         margin: 0 auto;
                     }
+                }
+
+                .ExpandImageButton {
+                    width: 100%;
+                    margin-top: -0.5rem;
                 }
 
                 .PostImageContainerExpanded {
@@ -294,22 +229,10 @@
 
                     background-color: $black;
 
-                    display: flex;
-                    justify-content: center;
-                }
-
-                .PostImageExpandContainer {
-                    width: 100%;
-                    max-height: 40px;
-
-                    button {
-                        width: 100%;
-                        margin-top: -1rem;
-
-                        font-size: 22px;
-                        font-weight: 600;
-
-                        padding: 0.5rem;
+                    img {
+                        display: block;
+                        margin: 0 auto;
+                        cursor: pointer;
                     }
                 }
 
@@ -345,7 +268,59 @@
 
                     display: flex;
                     flex-direction: row;
+                    justify-content: space-between;
                     gap: 0.75rem;
+
+                    .PostReactionsLeft {
+                        display: flex;
+                        flex-direction: row;
+                        gap: 0.75rem;
+                    }
+
+                    .PostReactionsRight {
+                        display: flex;
+                        flex-direction: row;
+
+                        @include mobile {
+                            display: none;
+                        }
+                    }
+
+                    .DropDownMenu {
+                        margin-top: 0.05rem;
+                        border-radius: 4px;
+                        background-color: $menu-bg-light1;
+                        display: flex;
+                        flex-direction: column;
+                        flex-wrap: wrap;
+
+                        border: 1px solid $page-background;
+
+                        padding: 0;
+                        overflow: hidden;
+
+                        div {
+                            color: $font-white;
+                            font-weight: 500;
+                            font-size: 14px;
+
+                            display: flex;
+                            align-items: center;
+
+                            padding: 0.5rem 0.75rem;
+
+                            i {
+                                width: 26px;
+                                font-size: 16px;
+                            }
+
+                            &:hover {
+                                cursor: pointer;
+
+                                background-color: $strong-purple;
+                            }
+                        }
+                    }
 
                     .reactionButton {
                         min-width: 100px;
@@ -358,14 +333,18 @@
                         color: $font-lightGrey;
 
                         padding: 0.5rem 1rem;
-                        transition: all 150ms;
 
                         cursor: pointer;
 
+                        @include bigMobile {
+                            padding: 0.5rem 1rem;
+                            min-width: fit-content;
+                            font-size: 14px;
+                        }
+
                         i {
                             color: $font-white;
-                            margin-right: 0.5rem;
-                            transition: all 150ms;
+                            margin-right: 0.25rem;
                         }
                     }
 
@@ -392,6 +371,20 @@
                             }
                         }
                     }
+
+                    .reactionButtonShare {
+                        color: $font-lightGrey;
+
+                        i {
+                            color: $font-lightGrey;
+                        }
+
+                        &:hover {
+                            i {
+                                color: $reactionShare;
+                            }
+                        }
+                    }
                 }
 
                 // .PostEnd {
@@ -410,7 +403,7 @@
     }
 
     .RightContainerWrapper {
-        @media screen and (max-width: 1215px) {
+        @include rightSidePanelHide {
             display: none;
         }
 
@@ -433,8 +426,6 @@
 
                 border-radius: 4px;
 
-                // background-color: $menu-bg-color;
-
                 overflow: hidden;
 
                 padding: 0.5rem 1rem;
@@ -450,15 +441,6 @@
                     width: 100%;
 
                     margin-top: 0.5rem;
-                    margin-bottom: 0.5rem;
-
-                    .AdBoxTitle {
-                        font-size: 18px;
-                        font-weight: 600;
-
-                        color: $font-white;
-                        text-align: left;
-                    }
                 }
 
                 .AdBoxImageContainer {
@@ -474,6 +456,114 @@
                         &:hover {
                             transform: scale(1.05);
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Styles for DisplayMaximizedImage in SinglePost.jsx
+.BlurryContainer {
+    width: 100%;
+    height: 100%;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 1000;
+    backdrop-filter: blur($POPUP_BLUR_STRENGTH);
+    background-color: $page-blur-background-color;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .ContainerWrapper {
+        max-width: 95%;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        .Container {
+            width: 100%;
+            min-width: 300px;
+            min-height: 300px;
+            max-width: 768px;
+
+            background-color: $menu-bg-color;
+
+            overflow-y: auto;
+
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            border-radius: 4px;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ContainerClose {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+
+            width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50px;
+
+            background-color: transparent;
+
+            .closeIcon {
+                color: $white;
+                font-size: 22px;
+
+                cursor: pointer;
+
+                transition: all 150ms;
+
+                &:hover {
+                    transform: scale(1.15);
+                }
+            }
+        }
+
+        .ContainerActions {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding-top: 1rem;
+
+            div {
+                display: flex;
+                gap: 1rem;
+
+                button {
+                    border-radius: 50px;
+
+                    i {
+                        margin-right: 0.25rem;
+                    }
+                }
+
+                @include mobile {
+                    button {
+                        font-size: 0.7rem;
                     }
                 }
             }

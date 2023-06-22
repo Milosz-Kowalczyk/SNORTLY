@@ -1,4 +1,6 @@
 @import "../../styles/colors.scss";
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 
 .BlurryContainer {
     width: 100%;
@@ -8,8 +10,10 @@
     top: 0;
     left: 0;
 
+    background-color: $page-blur-background-color;
+
     z-index: 1000;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur($POPUP_BLUR_STRENGTH);
 
     .ContainerWrapper {
         width: 100%;
@@ -20,12 +24,19 @@
         justify-content: center;
 
         .Container {
-            width: 600px;
+            min-width: 300px;
+            width: 650px;
             max-width: 90%;
             min-height: 400px;
             max-height: 90vh;
 
-            overflow-y: scroll;
+            overflow-y: auto;
+            // Hide scrollbar
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+            &::-webkit-scrollbar {
+                display: none;
+            }
 
             background-color: $menu-bg-color;
 
@@ -56,7 +67,6 @@
             }
 
             // Title and text area stuff
-
             .PostActionsContainer {
                 width: 100%;
                 display: flex;
@@ -84,14 +94,6 @@
                         margin-right: 0.5rem;
                     }
                 }
-
-                .ContainerTitle {
-                    font-size: 40px;
-                    font-weight: 600;
-                    color: $font-white;
-
-                    text-align: left;
-                }
             }
 
             .TitleInputContainer {
@@ -100,20 +102,6 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-            }
-
-            .InputLabel {
-                font-size: 16px;
-                font-weight: 600;
-
-                color: $font-lightGrey;
-
-                margin-bottom: 0.25rem;
-                margin-left: 0.1rem;
-
-                span {
-                    margin-right: 0.75rem;
-                }
             }
 
             .TitleCounter {
@@ -128,32 +116,34 @@
                 color: $reactionDislike;
             }
 
-            .TitleTextArea {
-                width: 100%;
-                min-height: 36px;
-                resize: none;
+            .TextAreaContainer {
+                .TitleTextArea {
+                    width: 100%;
+                    height: 100%;
+                    resize: none;
 
-                border-radius: 4px;
+                    border-radius: 4px;
 
-                background-color: $menu-bg-light1;
-                box-shadow: none;
-                border: none;
+                    background-color: $menu-bg-light1;
+                    box-shadow: none;
+                    border: none;
 
-                color: $font-white;
-                font-family: inherit;
-                font-weight: 500;
-                font-size: 16px;
+                    color: $font-white;
+                    font-family: inherit;
+                    font-weight: 500;
+                    font-size: 16px;
 
-                padding: 0.5rem 0.75rem;
+                    padding: 0.5rem 0.75rem;
 
-                margin-bottom: 1rem;
+                    margin-bottom: 1rem;
 
-                outline: none;
+                    outline: none;
 
-                border: 1px solid transparent;
+                    border: 1px solid transparent;
 
-                &:focus {
-                    border: 1px solid $strong-purple;
+                    &:focus {
+                        border: 1px solid $strong-purple;
+                    }
                 }
             }
 
@@ -195,16 +185,6 @@
 
                     margin-bottom: 0.5rem;
 
-                    .SelectTagsText {
-                        font-size: 16px;
-                        font-weight: 500;
-                        color: $font-lightGrey;
-
-                        i {
-                            margin-right: 0.5rem;
-                        }
-                    }
-
                     .MaxTagsText {
                         font-size: 18px;
                         font-weight: 700;
@@ -223,35 +203,12 @@
                     flex-direction: row;
                     gap: 0.5rem;
 
-                    select {
-                        max-width: 250px;
-
-                        background-color: $menu-bg-light1;
-                        box-shadow: none;
-                        border: none;
-
-                        outline: none;
-
-                        color: $font-white;
-                        font-family: inherit;
-                        font-weight: 500;
-                        font-size: 16px;
-
-                        border: 1px solid transparent;
-                        border-radius: 4px;
-
-                        padding: 0 1rem;
-
-                        &:focus {
-                            border: 1px solid $strong-purple;
-                        }
-                    }
-
                     button {
+                        background-color: $menu-bg-light1;
+                        padding: 0.5rem;
+
                         width: 32px;
                         height: 32px;
-
-                        background-color: $menu-bg-light1;
 
                         &:focus {
                             outline: none;
@@ -316,6 +273,12 @@
                     i {
                         margin-right: 0.5rem;
                     }
+
+                    @include mobile {
+                        max-width: 100%;
+                        width: 100%;
+                        text-align: center;
+                    }
                 }
 
                 .Divider {
@@ -334,17 +297,8 @@
                     }
                 }
 
-                .WeSupportText {
-                    margin-top: 1rem;
-                    align-self: flex-start;
-
-                    font-size: 14px;
-                    color: $font-white;
-                }
-
                 .UploadedImageContainer {
                     width: 100%;
-                    overflow-y: scroll;
 
                     border-radius: 4px;
 
@@ -363,7 +317,6 @@
                             width: 50px;
                             height: 50px;
                             border-radius: 50px;
-                            box-shadow: 0px 0px 8px $page-background;
                             position: absolute;
                             top: 12px;
                             right: 12px;
@@ -373,6 +326,7 @@
                             justify-content: center;
 
                             background-color: $font-white;
+                            border: 1px solid $black;
 
                             cursor: pointer;
 
@@ -406,7 +360,6 @@
                     width: 50px;
                     height: 50px;
                     border-radius: 50px;
-                    box-shadow: 0px 0px 8px $page-background;
                     position: absolute;
                     top: 12px;
                     right: 12px;
@@ -416,6 +369,7 @@
                     justify-content: center;
 
                     background-color: $font-white;
+                    border: 1px solid $black;
 
                     z-index: 99;
 
@@ -435,7 +389,6 @@
                     overflow: hidden;
                     video {
                         width: 100%;
-                        max-height: 230px;
                     }
                     padding: 0rem;
                 }
