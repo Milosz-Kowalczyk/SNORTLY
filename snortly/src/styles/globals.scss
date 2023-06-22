@@ -52,6 +52,28 @@
     }
 }
 
+// First used in maximized image display
+.btnMildBlack {
+    color: $font-white;
+    background-color: $menu-bg-color;
+
+    border: 0;
+
+    font-family: "SF Pro Display", sans-serif;
+    font-weight: 700;
+
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: $font-white;
+        color: $page-background;
+        box-shadow: none;
+    }
+}
+
 .btnFormMaxWidth {
     width: 100%;
     font-size: 1.2rem;

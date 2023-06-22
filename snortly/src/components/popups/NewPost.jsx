@@ -10,8 +10,8 @@ function NewPost() {
 
     const { setCurrentPopup, setShowPopup } = useContext(ContextPopups);
 
-    // Meme title (max 280 letters!)
-    const MAX_TITLE_LENGTH = 280;
+    // Meme title (max 256 letters!)
+    const MAX_TITLE_LENGTH = 256;
     const [postTitle, setPostTitle] = useState("")
     const [postTitleCount, setPostTitleCount] = useState(MAX_TITLE_LENGTH); // Here we count down from MAX_TITLE_LENGTH to 0 (max title length)
 

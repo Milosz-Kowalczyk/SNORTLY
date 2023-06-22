@@ -5,6 +5,7 @@ import homePageClasses from "../../styles/HomePage.module.scss"
 import { convertDateToDayAndMonth, convertDateToDayMonthYear, extractHourAndMinutes, getDaysDifference, isInCurrentYear } from '../../utils/dateFormatHelper';
 
 
+// Dropdown component for single Post page
 export function DropdownButton() {
 
     return (
@@ -24,6 +25,15 @@ export function DropdownButton() {
                     </div>
                     <div>
                         <i className="fa-solid fa-paper-plane"></i> <p> Email </p>
+                    </div>
+                    <div>
+                        <i className="fa-brands fa-facebook-messenger"></i><p> Messenger </p>
+                    </div>
+                    <div>
+                        <i className="fa-brands fa-square-facebook"></i><p> Facebook </p>
+                    </div>
+                    <div>
+                        <i className="fa-brands fa-square-whatsapp"></i> <p> Whatsapp </p>
                     </div>
                 </div>
             </div>
@@ -74,6 +84,45 @@ export function DisplayFormatedDate({ postCreationDate }) {
     return <span className="PostDate">{dateDifference}d</span>;
 }
 
+export function DisplayMaximizedImage({ imgSrc, setImageShow }) {
+
+    // Displays Maximized Image when clicked in single post 
+
+    function handleClickOutsideLoginForm() {
+        setImageShow(false);
+    }
+
+    function handleImageCloseIcon() {
+        setImageShow(false);
+    }
+
+    return (
+        <div onClick={handleClickOutsideLoginForm} className={homePageClasses.BlurryContainer}>
+
+            <div className={homePageClasses.ContainerWrapper}>
+
+                <div className={homePageClasses.ContainerClose}>
+                    {/* // Close window button */}
+                    <i onClick={handleImageCloseIcon} className={"fa-solid fa-xmark " + homePageClasses.closeIcon}></i>
+                </div>
+
+                <div onClick={(e) => e.stopPropagation()} className={homePageClasses.Container}>
+
+                    <img src={imgSrc} alt="" />
+
+                </div>
+
+                <div className={homePageClasses.ContainerActions}>
+                    <div>
+                        <button className='myButton btnMildBlack'> <i className="fa-solid fa-link"></i> Copy to clipboard </button>
+                        <button className='myButton btnMildBlack'> <i className="fa-solid fa-download"></i> Download image </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export function DisplayPostImage({ imgSrc, postId = null, isPostClickable = false }) {
 
     /*
@@ -88,6 +137,8 @@ export function DisplayPostImage({ imgSrc, postId = null, isPostClickable = fals
     const MAX_IMAGE_EXPAND_HEIGHT = 1150; // Remeber to match variable in variables.scss
     const MAX_IMAGE_SAFE_DIFFERENCE = 100; // This is for very rare situation where image is like 1159px and we hide it, we dont want that, we want to hide image that is at least 100px+ above Max expand height
 
+    const [imageShow, setImageShow] = useState(false); // This is for showing zoomed image (maximized) on single post page
+
     useEffect(() => {
         const image = new Image();
         image.src = imgSrc;
@@ -100,14 +151,28 @@ export function DisplayPostImage({ imgSrc, postId = null, isPostClickable = fals
         setIsExpanded(!isExpanded);
     };
 
+    // When we are on sing post page, we can show image zoomed (or on new page, maybe?)
+    const handleImageShow = () => {
+        if (postId && isPostClickable === false) {
+            setImageShow(true);
+        }
+    }
+
     return (
         <Fragment>
+
+            {(imageShow) && <DisplayMaximizedImage imgSrc={imgSrc} setImageShow={setImageShow} />}
+
             {
                 (imageHeight > MAX_IMAGE_EXPAND_HEIGHT + MAX_IMAGE_SAFE_DIFFERENCE)
                     ?
                     // Here we display image that is a bit hidden and we can expand it (button)
                     <Fragment>
-                        <div onClick={() => handlePostClick(postId, isPostClickable)} style={isExpanded ? { maxHeight: imageHeight + "px" } : { maxHeight: MAX_IMAGE_EXPAND_HEIGHT + "px" }} className={isExpanded ? homePageClasses.PostImageContainer : homePageClasses.PostImageContainerExpanded}>
+                        <div onClick={() => {
+                            handleImageShow()
+                            handlePostClick(postId, isPostClickable)
+                        }
+                        } style={isExpanded ? { maxHeight: imageHeight + "px" } : { maxHeight: MAX_IMAGE_EXPAND_HEIGHT + "px" }} className={isExpanded ? homePageClasses.PostImageContainer : homePageClasses.PostImageContainerExpanded}>
                             <img src={imgSrc} alt="" />
                         </div>
 
@@ -118,7 +183,10 @@ export function DisplayPostImage({ imgSrc, postId = null, isPostClickable = fals
                     </Fragment>
                     :
                     // Normal image here
-                    <div onClick={() => handlePostClick(postId, isPostClickable)} className={homePageClasses.PostImageContainer}>
+                    <div onClick={() => {
+                        handleImageShow()
+                        handlePostClick(postId, isPostClickable)
+                    }} className={homePageClasses.PostImageContainer}>
                         <img src={imgSrc} alt="" />
                     </div>
             }
@@ -139,6 +207,9 @@ function handlePostClick(postId, isPostClickable) {
     if (postId && isPostClickable) {
         window.open("http://localhost:3000/post/" + postId, "_blank")
     }
+    // else if (postId && isPostClickable === false) {
+    //     console.log("We are on single post page, we can only zoom into image")
+    // }
     else {
         console.log("clicked, got null or false")
         console.log(postId, isPostClickable)
